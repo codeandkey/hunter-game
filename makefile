@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -std=gnu99 -Wall -g
 LDFLAGS = -ltds -lGL -ldl -lm -lglfw -lopenal -lSOIL
 
-SOURCES = $(wildcard src/*.c src/tds_game/*.c)
+SOURCES = $(wildcard src/*.c src/tds_game/*.c src/objects/*.c)
 OBJECTS = $(SOURCES:.c=.o)
 
 OUTPUT = hunter-game

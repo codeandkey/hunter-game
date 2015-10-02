@@ -1,6 +1,7 @@
 #include <tds/tds.h>
 
 #include "tds_game/game_input.h"
+#include "objects/objects.h"
 
 static void _load_sounds(struct tds_sound_cache* sndc_handle);
 static void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache* tc_handle);
@@ -39,4 +40,6 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 
 void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_logf(TDS_LOG_MESSAGE, "Loading object types.\n");
+
+	tds_object_type_cache_add(otc_handle, "system", &obj_system_type);
 }
