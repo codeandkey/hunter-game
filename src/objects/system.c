@@ -19,7 +19,8 @@ struct tds_object_type obj_system_type = {
 	.func_draw = (void*) 0,
 	.func_msg = (void*) 0,
 	.func_import = obj_system_import,
-	.func_export = obj_system_export
+	.func_export = obj_system_export,
+	.save = 0
 };
 
 void obj_system_init(struct tds_object* ptr) {

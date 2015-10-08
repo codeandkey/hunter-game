@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=gnu99 -Wall -g
+CFLAGS = -std=gnu99 -Wall -g -DTDS_MEMORY_DEBUG
 LDFLAGS = -ltds -lGL -ldl -lm -lglfw -lopenal -lSOIL
 
 SOURCES = $(wildcard src/*.c src/tds_game/*.c src/objects/*.c)
