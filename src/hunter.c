@@ -40,6 +40,8 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_editor_cursor", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/editor_cursor.png", 32, 32), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_editor_selector", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/editor_selector.png", 64, 32), 2.0f, 1.0f, 0.0f));
 
+	tds_sprite_cache_add(sc_handle, "spr_player", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_idle_right_32x32.png", 32, 32), 1.0f, 1.0f, 0.0f));
+
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }
 
@@ -47,4 +49,5 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_logf(TDS_LOG_MESSAGE, "Loading object types.\n");
 
 	tds_object_type_cache_add(otc_handle, "system", &obj_system_type);
+	tds_object_type_cache_add(otc_handle, "obj_player", &obj_player_type);
 }
