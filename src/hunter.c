@@ -57,5 +57,5 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {
 	tds_logf(TDS_LOG_MESSAGE, "Loading block types.\n");
 
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_01_grass.png", 16, 16, 1, 1), 1, 1);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_001_grass.png", 16, 16, 1, 1), 1, 1);
 }
