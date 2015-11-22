@@ -3,7 +3,7 @@
 
 #define TDS_OBJ_CAMERA_POS_FACTOR 2.0f
 #define TDS_OBJ_CAMERA_SIZE_FACTOR 2.0f
-#define TDS_OBJ_CAMERA_SIZE 10.0f
+#define TDS_OBJ_CAMERA_SIZE 20.0f
 
 struct tds_object_type obj_camera_type;
 
