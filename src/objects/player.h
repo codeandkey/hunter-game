@@ -20,5 +20,6 @@ struct tds_object_param* obj_player_export(struct tds_object* ptr);
 
 struct obj_player_data {
 	int can_jump, direction, movement_direction;
+	float spawn_x, spawn_y;
 	int unused;
 };

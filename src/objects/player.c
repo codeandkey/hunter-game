@@ -36,6 +36,8 @@ void obj_player_init(struct tds_object* ptr) {
 	ptr->cbox_height = 0.9f;
 
 	data->direction = 1;
+	data->spawn_x = ptr->x;
+	data->spawn_y = ptr->y;
 }
 
 void obj_player_destroy(struct tds_object* ptr) {
@@ -49,6 +51,7 @@ void obj_player_update(struct tds_object* ptr) {
 	int move_key_high = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_RIGHT);
 	int move_axis = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_AXIS_MOVEMENT);
 	int move_jump = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP);
+	int move_reset = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_RESET);
 
 	float movement_axis = tds_input_map_get_axis(tds_engine_global->input_map_handle, move_key_low, move_key_high, move_axis);
 
@@ -82,6 +85,13 @@ void obj_player_update(struct tds_object* ptr) {
 
 	if (!data->movement_direction) {
 		ptr->xspeed /= HUNTER_PLAYER_MOVE_DECEL;
+	}
+
+	if (tds_input_map_get_key_pressed(tds_engine_global->input_map_handle, move_reset, 0)) {
+		ptr->x = data->spawn_x;
+		ptr->y = data->spawn_y;
+		ptr->xspeed = 0.0f;
+		ptr->yspeed = 0.0f;
 	}
 
 	/* Movement is addressed in a very special way which allows it to be smooth: we only act on XY collisions if X and Y both fail. */
