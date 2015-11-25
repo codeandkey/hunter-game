@@ -38,6 +38,8 @@ void obj_player_init(struct tds_object* ptr) {
 	data->direction = 1;
 	data->spawn_x = ptr->x;
 	data->spawn_y = ptr->y;
+
+	data->state_hit = data->state_hit_hurt = 0;
 }
 
 void obj_player_destroy(struct tds_object* ptr) {
@@ -66,7 +68,9 @@ void obj_player_update(struct tds_object* ptr) {
 	}
 
 	/* We will first change the player's x and y speeds as necessary. */
-	ptr->xspeed += data->movement_direction * HUNTER_PLAYER_MOVE_ACCEL;
+	if (!data->state_hit) {
+		ptr->xspeed += data->movement_direction * HUNTER_PLAYER_MOVE_ACCEL;
+	}
 
 	if (ptr->xspeed < -HUNTER_PLAYER_MOVE_MAXSPEED) {
 		ptr->xspeed = -HUNTER_PLAYER_MOVE_MAXSPEED;
@@ -139,12 +143,30 @@ void obj_player_update(struct tds_object* ptr) {
 	if (collision_xy && !collision_x && !collision_y) {
 		ptr->xspeed = ptr->yspeed = 0.0f;
 	}
+
+	/* State transfers : We act on the player hit state. */
+	if (data->can_jump) {
+		data->state_hit_hurt = 0; // Stop the 'hurt' animation once we touch the ground.
+	}
+
+	if (data->state_hit && tds_clock_get_ms(data->timer_hit_recover) >= HUNTER_PLAYER_HIT_RECOVERY) {
+		data->state_hit = 0;
+	}
 }
 
 void obj_player_draw(struct tds_object* ptr) {
 	struct obj_player_data* data = (struct obj_player_data*) ptr->object_data;
 
 	/* Animation state switches! */
+	if (data->state_hit) {
+		if (data->direction > 0) {
+			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_hurt_right"));
+		} else {
+			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_hurt_left"));
+		}
+
+		return;
+	}
 
 	if (data->can_jump) {
 		if (data->movement_direction) {
@@ -170,6 +192,19 @@ void obj_player_draw(struct tds_object* ptr) {
 }
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
+	struct obj_player_data* data = (struct obj_player_data*) ptr->object_data;
+
+	switch (msg) {
+	case TDS_GAME_MSG_PLAYER_HIT:
+		if (!data->state_hit) {
+			data->state_hit = data->state_hit_hurt = 1;
+			data->timer_hit_recover = tds_clock_get_point();
+			ptr->xspeed += HUNTER_PLAYER_HIT_VEL;
+			ptr->yspeed += HUNTER_PLAYER_HIT_VEL;
+			data->can_jump = 0;
+		}
+		break;
+	}
 }
 
 void obj_player_import(struct tds_object* ptr, struct tds_object_param* param) {

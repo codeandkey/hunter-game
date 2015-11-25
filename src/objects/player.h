@@ -1,5 +1,6 @@
 #pragma once
 #include <tds/object.h>
+#include <tds/clock.h>
 
 #define HUNTER_PLAYER_MOVE_DEADZONE 0.5f
 #define HUNTER_PLAYER_MOVE_MAXSPEED 0.035f
@@ -7,6 +8,8 @@
 #define HUNTER_PLAYER_MOVE_DECEL 1.1f
 #define HUNTER_PLAYER_GRAVITY -0.002f
 #define HUNTER_PLAYER_JUMP 0.08f
+#define HUNTER_PLAYER_HIT_RECOVERY 3.0f
+#define HUNTER_PLAYER_HIT_VEL 0.1f
 
 struct tds_object_type obj_player_type;
 
@@ -21,5 +24,7 @@ struct tds_object_param* obj_player_export(struct tds_object* ptr);
 struct obj_player_data {
 	int can_jump, direction, movement_direction;
 	float spawn_x, spawn_y;
+	int state_hit, state_hit_hurt;
+	tds_clock_point timer_hit_recover;
 	int unused;
 };
