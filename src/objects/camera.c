@@ -26,7 +26,7 @@ void obj_camera_init(struct tds_object* ptr) {
 
 	data->track = NULL;
 	data->shake = 0.0f;
-	data->size = data->target_size = TDS_OBJ_CAMERA_SIZE;
+	data->size = data->target_size = tds_engine_global->display_handle->desc.height / 32.0f;
 }
 
 void obj_camera_destroy(struct tds_object* ptr) {
