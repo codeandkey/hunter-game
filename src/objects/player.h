@@ -8,8 +8,9 @@
 #define HUNTER_PLAYER_MOVE_DECEL 1.1f
 #define HUNTER_PLAYER_GRAVITY -0.002f
 #define HUNTER_PLAYER_JUMP 0.08f
-#define HUNTER_PLAYER_HIT_RECOVERY 3.0f
-#define HUNTER_PLAYER_HIT_VEL 0.1f
+#define HUNTER_PLAYER_HIT_RECOVERY 3000.0f
+#define HUNTER_PLAYER_HIT_VEL 0.08f
+#define HUNTER_PLAYER_HIT_FLASH 333.0f
 
 struct tds_object_type obj_player_type;
 
@@ -25,6 +26,6 @@ struct obj_player_data {
 	int can_jump, direction, movement_direction;
 	float spawn_x, spawn_y;
 	int state_hit, state_hit_hurt;
-	tds_clock_point timer_hit_recover;
-	int unused;
+	tds_clock_point timer_hit_recover, timer_hit_flash;
+	int hit_flash;
 };

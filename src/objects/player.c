@@ -68,7 +68,7 @@ void obj_player_update(struct tds_object* ptr) {
 	}
 
 	/* We will first change the player's x and y speeds as necessary. */
-	if (!data->state_hit) {
+	if (!data->state_hit_hurt) {
 		ptr->xspeed += data->movement_direction * HUNTER_PLAYER_MOVE_ACCEL;
 	}
 
@@ -152,13 +152,28 @@ void obj_player_update(struct tds_object* ptr) {
 	if (data->state_hit && tds_clock_get_ms(data->timer_hit_recover) >= HUNTER_PLAYER_HIT_RECOVERY) {
 		data->state_hit = 0;
 	}
+
+	if (data->state_hit && tds_clock_get_ms(data->timer_hit_flash) >= HUNTER_PLAYER_HIT_FLASH) {
+		data->hit_flash = !data->hit_flash;
+		data->timer_hit_flash = tds_clock_get_point();
+	}
+
+	if (!data->state_hit) {
+		data->hit_flash = 0;
+	}
+
+	if (data->hit_flash) {
+		ptr->a = 0.3f;
+	} else {
+		ptr->a = 1.0f;
+	}
 }
 
 void obj_player_draw(struct tds_object* ptr) {
 	struct obj_player_data* data = (struct obj_player_data*) ptr->object_data;
 
 	/* Animation state switches! */
-	if (data->state_hit) {
+	if (data->state_hit_hurt) {
 		if (data->direction > 0) {
 			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_hurt_right"));
 		} else {
