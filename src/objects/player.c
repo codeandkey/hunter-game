@@ -54,6 +54,7 @@ void obj_player_update(struct tds_object* ptr) {
 	int move_axis = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_AXIS_MOVEMENT);
 	int move_jump = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP);
 	int move_reset = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_RESET);
+	int key_lookup = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP);
 
 	float movement_axis = tds_input_map_get_axis(tds_engine_global->input_map_handle, move_key_low, move_key_high, move_axis);
 
@@ -167,6 +168,12 @@ void obj_player_update(struct tds_object* ptr) {
 	} else {
 		ptr->a = 1.0f;
 	}
+
+	if (data->can_jump) {
+		data->look_up = tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0);
+	} else {
+		data->look_up = 0;
+	}
 }
 
 void obj_player_draw(struct tds_object* ptr) {
@@ -191,10 +198,18 @@ void obj_player_draw(struct tds_object* ptr) {
 				tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_walk_left"));
 			}
 		} else {
-			if (data->direction > 0) {
-				tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_idle_right"));
+			if (data->look_up) {
+				if (data->direction > 0) {
+					tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_look_up_right"));
+				} else {
+					tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_look_up_left"));
+				}
 			} else {
-				tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_idle_left"));
+				if (data->direction > 0) {
+					tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_idle_right"));
+				} else {
+					tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_idle_left"));
+				}
 			}
 		}
 	} else {

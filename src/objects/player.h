@@ -27,5 +27,5 @@ struct obj_player_data {
 	float spawn_x, spawn_y;
 	int state_hit, state_hit_hurt;
 	tds_clock_point timer_hit_recover, timer_hit_flash;
-	int hit_flash;
+	int hit_flash, look_up;
 };

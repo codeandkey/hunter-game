@@ -44,6 +44,8 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 
 	tds_sprite_cache_add(sc_handle, "spr_player_idle_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_idle_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_player_idle_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_idle_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_look_up_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_look_up_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_look_up_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_look_up_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_player_hurt_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_hurt_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_player_hurt_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_hurt_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_player_walk_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_walk_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
