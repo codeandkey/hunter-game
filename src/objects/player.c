@@ -88,7 +88,7 @@ void obj_player_update(struct tds_object* ptr) {
 		ptr->yspeed += HUNTER_PLAYER_GRAVITY;
 	}
 
-	if (!data->movement_direction) {
+	if (!data->movement_direction && !data->state_hit_hurt) {
 		ptr->xspeed /= HUNTER_PLAYER_MOVE_DECEL;
 	}
 
@@ -229,8 +229,8 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 		if (!data->state_hit) {
 			data->state_hit = data->state_hit_hurt = 1;
 			data->timer_hit_recover = tds_clock_get_point();
-			ptr->xspeed += HUNTER_PLAYER_HIT_VEL;
-			ptr->yspeed += HUNTER_PLAYER_HIT_VEL;
+			ptr->xspeed = (data->direction > 0) ? -HUNTER_PLAYER_HIT_VEL : HUNTER_PLAYER_HIT_VEL;
+			ptr->yspeed = HUNTER_PLAYER_HIT_VEL;
 			data->can_jump = 0;
 		}
 		break;
