@@ -26,7 +26,7 @@ void obj_camera_init(struct tds_object* ptr) {
 
 	data->track = NULL;
 	data->shake = 0.0f;
-	data->size = data->target_size = tds_engine_global->display_handle->desc.height / 32.0f;
+	data->size = data->target_size = (tds_engine_global->display_handle->desc.height / 32.0f) / TDS_OBJ_CAMERA_SIZE_DIV;
 
 	tds_camera_set(tds_engine_global->camera_handle, data->size, ptr->x, ptr->y);
 	tds_console_resize(tds_engine_global->console_handle); // Get a prettier console.
