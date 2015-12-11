@@ -103,19 +103,22 @@ void obj_player_update(struct tds_object* ptr) {
 	int collision_x = 0, collision_y = 0, collision_xy = 0;
 
 	/* We will offset the player's position to test collisions. */
+
 	float orig_x = ptr->x, orig_y = ptr->y;
 
 	ptr->x = orig_x + ptr->xspeed;
 	ptr->y = orig_y;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr)) {
+	float cx_x = 0.0f, cx_y = 0.0f, cx_w = 0.0f, cx_h = 0.0f;
+
+	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &cx_x, &cx_y, &cx_w, &cx_h)) {
 		collision_x = 1;
 	}
 
 	ptr->x = orig_x;
 	ptr->y = orig_y + ptr->yspeed;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr)) {
+	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL)) {
 		collision_y = 1;
 
 		data->can_jump = (ptr->yspeed < 0.0f);
@@ -126,15 +129,34 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->x = orig_x + ptr->xspeed;
 	ptr->y = orig_y + ptr->yspeed;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr)) {
+	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL)) {
 		collision_xy = 1;
 	}
 
 	ptr->x = orig_x;
-	ptr->y = orig_y;
+	ptr->y = orig_y; /* We reset the player's position before calculating autolift. This makes necessary teleportation easier. */
 
 	if (collision_x) {
-		ptr->xspeed = 0.0f;
+		float d = (cx_y + cx_h / 2.0f) - (ptr->y - ptr->cbox_height / 2.0f);
+		tds_logf(TDS_LOG_MESSAGE, "Phase 1 autolift detection, d=%f, ald=%f\n", d, HUNTER_PLAYER_AUTOLIFT_DIST);
+
+		if (d <= HUNTER_PLAYER_AUTOLIFT_DIST && d >= 0 && data->can_jump) {
+
+			ptr->y = orig_y + d;
+			ptr->x = orig_x + ptr->xspeed;
+
+			if (!tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL)) {
+				ptr->yspeed = 0.0f;
+				tds_logf(TDS_LOG_MESSAGE, "Autolifting player, d = %f\n", d);
+			} else {
+				ptr->y = orig_y;
+				ptr->xspeed = 0.0f;
+			}
+
+			ptr->x = orig_x;
+		} else {
+			ptr->xspeed = 0.0f;
+		}
 	}
 
 	if (collision_y) {

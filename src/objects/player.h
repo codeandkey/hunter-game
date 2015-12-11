@@ -11,6 +11,7 @@
 #define HUNTER_PLAYER_HIT_RECOVERY 3000.0f
 #define HUNTER_PLAYER_HIT_VEL 0.08f
 #define HUNTER_PLAYER_HIT_FLASH 333.0f
+#define HUNTER_PLAYER_AUTOLIFT_DIST 1.0f
 
 struct tds_object_type obj_player_type;
 
