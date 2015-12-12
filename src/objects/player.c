@@ -235,10 +235,18 @@ void obj_player_draw(struct tds_object* ptr) {
 			}
 		}
 	} else {
-		if (data->direction > 0) {
-			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_jump_right"));
+		if (ptr->yspeed > 0.0f) {
+			if (data->direction > 0) {
+				tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_jump_right"));
+			} else {
+				tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_jump_left"));
+			}
 		} else {
-			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_jump_left"));
+			if (data->direction > 0) {
+				tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_fall_right"));
+			} else {
+				tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_fall_left"));
+			}
 		}
 	}
 }
