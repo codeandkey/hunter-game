@@ -19,8 +19,8 @@ struct tds_object_type obj_system_type = {
 	.func_update = obj_system_update,
 	.func_draw = obj_system_draw,
 	.func_msg = (void*) 0,
-	.func_import = obj_system_import,
-	.func_export = obj_system_export,
+	.func_import = (void*) 0,
+	.func_export = (void*) 0,
 	.save = 0
 };
 
@@ -50,33 +50,4 @@ void obj_system_draw(struct tds_object* ptr) {
 	snprintf(data->fps_str, sizeof data->fps_str / sizeof *(data->fps_str), "FPS %f", tds_engine_global->state.fps);
 
 	tds_text_submit(tds_engine_global->text_handle, &tb);
-}
-
-void obj_system_import(struct tds_object* ptr, struct tds_object_param* param_list) {
-	if (param_list) {
-		while (param_list) {
-			tds_console_print(tds_engine_global->console_handle, "loaded parameter ");
-			tds_console_print(tds_engine_global->console_handle, param_list->key);
-			tds_console_print(tds_engine_global->console_handle, " : ");
-			tds_console_print(tds_engine_global->console_handle, param_list->value);
-			tds_console_print(tds_engine_global->console_handle, "\n");
-
-			param_list = param_list->next;
-		}
-	}
-}
-
-struct tds_object_param* obj_system_export(struct tds_object* ptr) {
-	struct tds_object_param* first = tds_malloc(sizeof(struct tds_object_param));
-
-	const char* key = "test_key";
-	const char* value = "test_value";
-
-	memcpy(first->key, key, strlen(key));
-	memcpy(first->value, value, strlen(value));
-
-	first->type = TDS_PARAM_STRING;
-	first->next = NULL;
-
-	return first;
 }
