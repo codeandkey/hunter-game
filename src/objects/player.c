@@ -52,8 +52,6 @@ void obj_player_update(struct tds_object* ptr) {
 	int move_key_low = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_LEFT);
 	int move_key_high = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_RIGHT);
 	int move_axis = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_AXIS_MOVEMENT);
-	int move_jump = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP);
-	int move_reset = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_RESET);
 	int key_lookup = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP);
 
 	float movement_axis = tds_input_map_get_axis(tds_engine_global->input_map_handle, move_key_low, move_key_high, move_axis);
@@ -81,23 +79,11 @@ void obj_player_update(struct tds_object* ptr) {
 		ptr->xspeed = HUNTER_PLAYER_MOVE_MAXSPEED;
 	}
 
-	if (data->can_jump && tds_input_map_get_key_pressed(tds_engine_global->input_map_handle, move_jump, 0)) {
-		ptr->yspeed += HUNTER_PLAYER_JUMP;
-		data->can_jump = 0;
-	} else {
-		ptr->yspeed += HUNTER_PLAYER_GRAVITY;
-	}
-
 	if (!data->movement_direction && !data->state_hit_hurt) {
 		ptr->xspeed /= HUNTER_PLAYER_MOVE_DECEL;
 	}
 
-	if (tds_input_map_get_key_pressed(tds_engine_global->input_map_handle, move_reset, 0)) {
-		ptr->x = data->spawn_x;
-		ptr->y = data->spawn_y;
-		ptr->xspeed = 0.0f;
-		ptr->yspeed = 0.0f;
-	}
+	ptr->yspeed += HUNTER_PLAYER_GRAVITY;
 
 	/* Movement is addressed in a very special way which allows it to be smooth: we only act on XY collisions if X and Y both fail. */
 	int collision_x = 0, collision_y = 0, collision_xy = 0;
@@ -138,7 +124,6 @@ void obj_player_update(struct tds_object* ptr) {
 
 	if (collision_x) {
 		float d = (cx_y + cx_h / 2.0f) - (ptr->y - ptr->cbox_height / 2.0f);
-		tds_logf(TDS_LOG_MESSAGE, "Phase 1 autolift detection, d=%f, ald=%f\n", d, HUNTER_PLAYER_AUTOLIFT_DIST);
 
 		if (d <= HUNTER_PLAYER_AUTOLIFT_DIST && d >= 0 && data->can_jump) {
 
@@ -146,8 +131,7 @@ void obj_player_update(struct tds_object* ptr) {
 			ptr->x = orig_x + ptr->xspeed;
 
 			if (!tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL)) {
-				ptr->yspeed = 0.0f;
-				tds_logf(TDS_LOG_MESSAGE, "Autolifting player, d = %f\n", d);
+				//ptr->yspeed = 0.0f;
 			} else {
 				ptr->y = orig_y;
 				ptr->xspeed = 0.0f;
@@ -253,6 +237,7 @@ void obj_player_draw(struct tds_object* ptr) {
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
 	struct obj_player_data* data = (struct obj_player_data*) ptr->object_data;
+	int key = 0;
 
 	switch (msg) {
 	case TDS_GAME_MSG_PLAYER_HIT:
@@ -262,6 +247,19 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 			ptr->xspeed = (data->direction > 0) ? -HUNTER_PLAYER_HIT_VEL : HUNTER_PLAYER_HIT_VEL;
 			ptr->yspeed = HUNTER_PLAYER_HIT_VEL;
 			data->can_jump = 0;
+		}
+		break;
+	case TDS_MSG_KEY_PRESSED:
+		key = *((int*) param);
+		if (data->can_jump && key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP)) {
+			ptr->yspeed += HUNTER_PLAYER_JUMP;
+			data->can_jump = 0;
+		}
+		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_RESET)) {
+			ptr->x = data->spawn_x;
+			ptr->y = data->spawn_y;
+			ptr->xspeed = 0.0f;
+			ptr->yspeed = 0.0f;
 		}
 		break;
 	}
