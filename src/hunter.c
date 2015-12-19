@@ -4,16 +4,28 @@
 #include "tds_game/game_input.h"
 #include "objects/objects.h"
 
+#include "save.h"
+
+#define HUNTER_CONFIG_FILENAME "hunter.cfg"
+
+#include <string.h>
+
 static void _load_sounds(struct tds_sound_cache* sndc_handle);
 static void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache* tc_handle);
 static void _load_object_types(struct tds_object_type_cache* otc_handle);
 static void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle);
 
+static char* _get_level_load(int index);
+
 int main(int argc, char** argv) {
 	struct tds_engine_desc desc = {0};
+	struct tds_config* game_config = tds_config_create(HUNTER_CONFIG_FILENAME);
 
-	desc.config_filename = "tds_hunter.cfg";
-	desc.map_filename = "default";
+	int save_index = tds_config_get_int(game_config, "save");
+	tds_config_free(game_config);
+
+	desc.config_filename = "tds.cfg";
+	desc.map_filename = _get_level_load(save_index);
 	desc.game_input = hunter_get_game_input();
 	desc.game_input_size = hunter_get_game_input_size();
 
@@ -86,4 +98,25 @@ void _load_block_types(struct tds_block_map* block_map_handle, struct tds_textur
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_013_dirt.png", 16, 16, 1, 0), 1, 13);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_014_mossdirt.png", 16, 16, 1, 0), 1, 14);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_015_moss.png", 16, 16, 1, 0), 0, 15);
+}
+
+char* _get_level_load(int index) {
+	struct tds_savestate* ss_ptr = tds_savestate_create();
+	tds_savestate_set_index(ss_ptr, index);
+
+	struct tds_savestate_entry entry = tds_savestate_get(ss_ptr, HUNTER_SAVE_WORLD_NAME);
+
+	if (!entry.data) {
+		tds_logf(TDS_LOG_WARNING, "Missing entry for world name. Using default..\n");
+		tds_savestate_free(ss_ptr);
+		return "default";
+	}
+
+	if (strlen(entry.data) > entry.data_len) {
+		tds_logf(TDS_LOG_WARNING, "savestate entry string was not null-terminated, a character may be missing.\n");
+		((char*) entry.data)[entry.data_len - 1] = 0;
+	}
+
+	tds_savestate_free(ss_ptr);
+	return entry.data;
 }

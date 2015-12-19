@@ -19,7 +19,7 @@ struct tds_object_type obj_player_type = {
 	.func_msg = obj_player_msg,
 	.func_import = obj_player_import,
 	.func_export = obj_player_export,
-	.save = 1
+	.save = 0
 };
 
 void obj_player_init(struct tds_object* ptr) {
