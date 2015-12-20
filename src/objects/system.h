@@ -8,8 +8,6 @@ void obj_system_update(struct tds_object* ptr);
 void obj_system_draw(struct tds_object* ptr);
 void obj_system_init(struct tds_object* ptr);
 void obj_system_destroy(struct tds_object* ptr);
-void obj_system_import(struct tds_object* ptr, struct tds_object_param* param_list);
-struct tds_object_param* obj_system_export(struct tds_object* ptr);
 
 struct obj_system_data {
 	char fps_str[64];

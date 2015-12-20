@@ -9,16 +9,12 @@
 struct tds_object_type obj_ghost_type = {
 	.type_name = "obj_ghost",
 	.default_sprite = "spr_ghost_left",
-	.default_params = 0,
-	.default_params_size = 0,
 	.data_size = sizeof(struct obj_ghost_data),
 	.func_init = obj_ghost_init,
 	.func_destroy = obj_ghost_destroy,
 	.func_update = obj_ghost_update,
 	.func_draw = obj_ghost_draw,
 	.func_msg = obj_ghost_msg,
-	.func_import = obj_ghost_import,
-	.func_export = obj_ghost_export,
 	.save = 1
 };
 
@@ -79,11 +75,4 @@ void obj_ghost_draw(struct tds_object* ptr) {
 }
 
 void obj_ghost_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
-}
-
-void obj_ghost_import(struct tds_object* ptr, struct tds_object_param* param) {
-}
-
-struct tds_object_param* obj_ghost_export(struct tds_object* ptr) {
-	return 0;
 }

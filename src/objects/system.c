@@ -11,16 +11,12 @@
 struct tds_object_type obj_system_type = {
 	.type_name = "system",
 	.default_sprite = (const char*) 0,
-	.default_params = (struct tds_object_param*) 0,
-	.default_params_size = 0,
 	.data_size = sizeof (struct obj_system_data),
 	.func_init = obj_system_init,
 	.func_destroy = obj_system_destroy,
 	.func_update = obj_system_update,
 	.func_draw = obj_system_draw,
 	.func_msg = (void*) 0,
-	.func_import = (void*) 0,
-	.func_export = (void*) 0,
 	.save = 0
 };
 

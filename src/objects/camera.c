@@ -8,16 +8,12 @@
 struct tds_object_type obj_camera_type = {
 	.type_name = "obj_camera",
 	.default_sprite = NULL,
-	.default_params = 0,
-	.default_params_size = 0,
 	.data_size = sizeof(struct obj_camera_data),
 	.func_init = obj_camera_init,
 	.func_destroy = obj_camera_destroy,
 	.func_update = obj_camera_update,
 	.func_draw = obj_camera_draw,
 	.func_msg = obj_camera_msg,
-	.func_import = obj_camera_import,
-	.func_export = obj_camera_export,
 	.save = 0
 };
 
@@ -69,11 +65,4 @@ void obj_camera_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 		data->size = *((float*) param);
 		break;
 	}
-}
-
-void obj_camera_import(struct tds_object* ptr, struct tds_object_param* param) {
-}
-
-struct tds_object_param* obj_camera_export(struct tds_object* ptr) {
-	return 0;
 }
