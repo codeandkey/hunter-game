@@ -6,6 +6,8 @@
 #include "../tds_game/game_input.h"
 #include "../tds_game/game_msg.h"
 
+#include "../save.h"
+
 struct tds_object_type obj_player_type = {
 	.type_name = "obj_player",
 	.default_sprite = "spr_player_idle_right",
@@ -15,7 +17,7 @@ struct tds_object_type obj_player_type = {
 	.func_update = obj_player_update,
 	.func_draw = obj_player_draw,
 	.func_msg = obj_player_msg,
-	.save = 0
+	.save = 1
 };
 
 void obj_player_init(struct tds_object* ptr) {
@@ -233,6 +235,8 @@ void obj_player_draw(struct tds_object* ptr) {
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
 	struct obj_player_data* data = (struct obj_player_data*) ptr->object_data;
+	struct tds_object* target_station = (struct tds_object*) param;
+	struct tds_savestate_entry entry;
 	int key = 0;
 
 	switch (msg) {
@@ -245,6 +249,10 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 			data->can_jump = 0;
 		}
 		break;
+	case TDS_GAME_MSG_SAVESTATION_START:
+		ptr->x = data->spawn_x = target_station->x;
+		ptr->y = data->spawn_y = target_station->y;
+		break;
 	case TDS_MSG_KEY_PRESSED:
 		key = *((int*) param);
 		if (data->can_jump && key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP)) {
@@ -256,6 +264,17 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 			ptr->y = data->spawn_y;
 			ptr->xspeed = 0.0f;
 			ptr->yspeed = 0.0f;
+		}
+		break;
+	case TDS_MSG_MAP_READY:
+		/* We hail any savestations that we might belong to. */
+		entry = tds_savestate_get(tds_engine_global->savestate_handle, HUNTER_SAVE_SPAWN_ID);
+
+		if (entry.data) {
+			tds_logf(TDS_LOG_DEBUG, "Player received ready message. Querying for savestations.. Looking for spawn at ID %d\n", *((int*) entry.data));
+			tds_engine_broadcast(tds_engine_global, TDS_GAME_MSG_SAVESTATION_QUERY, entry.data);
+		} else {
+			tds_logf(TDS_LOG_DEBUG, "Player is not querying for savestations, the savestate did not respond with spawn data.\n");
 		}
 		break;
 	}

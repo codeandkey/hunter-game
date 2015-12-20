@@ -24,8 +24,11 @@ int main(int argc, char** argv) {
 	int save_index = tds_config_get_int(game_config, "save");
 	tds_config_free(game_config);
 
+	char* map_filename = _get_level_load(save_index);
+
 	desc.config_filename = "tds.cfg";
-	desc.map_filename = _get_level_load(save_index);
+	desc.map_filename = map_filename;
+	desc.save_index = save_index;
 	desc.game_input = hunter_get_game_input();
 	desc.game_input_size = hunter_get_game_input_size();
 
@@ -39,6 +42,7 @@ int main(int argc, char** argv) {
 	tds_engine_run(engine_handle);
 	tds_engine_free(engine_handle);
 
+	tds_free(map_filename);
 	tds_memcheck();
 
 	return 0;
@@ -107,19 +111,23 @@ char* _get_level_load(int index) {
 	struct tds_savestate* ss_ptr = tds_savestate_create();
 	tds_savestate_set_index(ss_ptr, index);
 
+	char* default_name = (char*) "default";
+
 	struct tds_savestate_entry entry = tds_savestate_get(ss_ptr, HUNTER_SAVE_WORLD_NAME);
 
-	if (!entry.data) {
+	if (!entry.data || !strlen(entry.data)) {
 		tds_logf(TDS_LOG_WARNING, "Missing entry for world name. Using default..\n");
+		tds_savestate_set(ss_ptr, HUNTER_SAVE_WORLD_NAME, default_name, strlen(default_name));
+		tds_savestate_write(ss_ptr);
 		tds_savestate_free(ss_ptr);
-		return "default";
+		return default_name;
 	}
 
-	if (strlen(entry.data) > entry.data_len) {
-		tds_logf(TDS_LOG_WARNING, "savestate entry string was not null-terminated, a character may be missing.\n");
-		((char*) entry.data)[entry.data_len - 1] = 0;
-	}
+	char* output = tds_malloc(entry.data_len + 1);
+	memcpy(output, entry.data, entry.data_len);
+	output[entry.data_len] = 0;
 
 	tds_savestate_free(ss_ptr);
-	return entry.data;
+
+	return output;
 }
