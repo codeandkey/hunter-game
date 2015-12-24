@@ -1,9 +1,10 @@
-#version 120
+#version 330
 
-attribute vec3 v_position;
-attribute vec2 v_texcoord;
+in vec3 v_position;
+in vec2 v_texcoord;
 
-varying vec2 p_texcoord;
+out vec2 p_texcoord;
+
 uniform mat4 tds_transform;
 
 void main(void) {
