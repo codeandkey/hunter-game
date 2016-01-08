@@ -232,7 +232,23 @@ void obj_player_draw(struct tds_object* ptr) {
 		}
 	}
 
-	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 1.0f, 1.0f, 1.0f, 0.5f, NULL};
+	static float dt = 0.0f; dt += 0.01f;
+
+	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x + 3.0f * cos(dt), ptr->y + 3.0f * sin(dt), 0.0f, 0.0f, 0.25f, 10.0f, NULL};
+	tds_render_submit_light(tds_engine_global->render_handle, lt);
+
+	lt.x = ptr->x + 3.0f * cos(dt + (2.0f * 3.141f / 3.0f));
+	lt.y = ptr->y + 3.0f * sin(dt + (2.0f * 3.141f / 3.0f));
+	lt.r = 0.25f;
+	lt.b = 0.0f;
+
+	tds_render_submit_light(tds_engine_global->render_handle, lt);
+
+	lt.x = ptr->x + 3.0f * cos(dt + (4.0f * 3.141f / 3.0f));
+	lt.y = ptr->y + 3.0f * sin(dt + (4.0f * 3.141f / 3.0f));
+	lt.r = 0.0f;
+	lt.g = 0.25f;
+
 	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }
 
