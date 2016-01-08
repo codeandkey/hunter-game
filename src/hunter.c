@@ -9,6 +9,7 @@
 #define HUNTER_CONFIG_FILENAME "hunter.cfg"
 
 #include <string.h>
+#include <unistd.h>
 
 static void _load_sounds(struct tds_sound_cache* sndc_handle);
 static void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache* tc_handle);
@@ -25,6 +26,16 @@ int main(int argc, char** argv) {
 	tds_config_free(game_config);
 
 	char* map_filename = _get_level_load(save_index);
+
+	int arg = 0;
+	while ((arg = getopt(argc, argv, "n")) != -1) {
+		switch (arg) {
+		case 'n':
+			tds_free(map_filename);
+			map_filename = NULL;
+			break;
+		}
+	}
 
 	desc.config_filename = "tds.cfg";
 	desc.map_filename = map_filename;
