@@ -14,4 +14,5 @@ void obj_savestation_msg(struct tds_object* ptr, struct tds_object* sender, int 
 
 struct obj_savestation_data {
 	int unused;
+	float dt_glow;
 };

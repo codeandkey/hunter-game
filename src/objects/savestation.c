@@ -24,6 +24,13 @@ void obj_savestation_init(struct tds_object* ptr) {
 
 	ptr->cbox_width = 0.3f;
 	ptr->cbox_height = 0.9f;
+
+	int* id = tds_object_get_ipart(ptr, HUNTER_SAVESTATION_INDEX_ID);
+	if (id) {
+		tds_logf(TDS_LOG_DEBUG, "Savestation created; ipart%d = %d\n", HUNTER_SAVESTATION_INDEX_ID, *id);
+	} else {
+		tds_logf(TDS_LOG_WARNING, "Savestation created; ipart%d not set\n", HUNTER_SAVESTATION_INDEX_ID);
+	}
 }
 
 void obj_savestation_destroy(struct tds_object* ptr) {
@@ -43,10 +50,17 @@ void obj_savestation_update(struct tds_object* ptr) {
 			tds_savestate_write(tds_engine_global->savestate_handle);
 		}
 	}
+
+	data->dt_glow += 0.02f;
 }
 
 void obj_savestation_draw(struct tds_object* ptr) {
 	struct obj_savestation_data* data = (struct obj_savestation_data*) ptr->object_data;
+
+	float glow_mod = ((sin(data->dt_glow) + 1.0f) / 2.0f) * 0.01f;
+
+	struct tds_render_light lt_glow = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.0f, 0.01f + glow_mod, 0.02f + glow_mod * 2.0f, 25.0f, NULL};
+	tds_render_submit_light(tds_engine_global->render_handle, lt_glow);
 }
 
 void obj_savestation_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
