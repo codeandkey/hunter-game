@@ -46,4 +46,7 @@ void obj_system_draw(struct tds_object* ptr) {
 	snprintf(data->fps_str, sizeof data->fps_str / sizeof *(data->fps_str), "FPS %f", tds_engine_global->state.fps);
 
 	tds_text_submit(tds_engine_global->text_handle, &tb);
+
+	struct tds_render_light lt = {TDS_RENDER_LIGHT_DIRECTIONAL, 1.0f, -1.0f, 0.02f, 0.02f, 0.02f, 0.0f, NULL};
+	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }
