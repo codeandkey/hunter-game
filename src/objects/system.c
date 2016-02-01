@@ -47,6 +47,6 @@ void obj_system_draw(struct tds_object* ptr) {
 
 	tds_text_submit(tds_engine_global->text_handle, &tb);
 
-	struct tds_render_light lt = {TDS_RENDER_LIGHT_DIRECTIONAL, 1.0f, -1.0f, 0.02f, 0.02f, 0.02f, 0.0f, NULL};
+	struct tds_render_light lt = {TDS_RENDER_LIGHT_DIRECTIONAL, 1.0f, -1.0f, 0.14f, 0.14f, 0.14f, 0.0f, NULL};
 	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }
