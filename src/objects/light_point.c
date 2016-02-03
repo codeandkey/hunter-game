@@ -6,6 +6,8 @@
 #include "../tds_game/game_msg.h"
 #include "../save.h"
 
+#include <stdlib.h>
+
 struct tds_object_type obj_light_point_type = {
 	.type_name = "obj_light_point",
 	.default_sprite = NULL,
@@ -40,8 +42,6 @@ void obj_light_point_destroy(struct tds_object* ptr) {
 }
 
 void obj_light_point_update(struct tds_object* ptr) {
-	/* We will not allow slower movement than normal, we will use the axis and implement a basic deadzone */
-	struct obj_light_point_data* data = (struct obj_light_point_data*) ptr->object_data;
 }
 
 void obj_light_point_draw(struct tds_object* ptr) {
@@ -55,5 +55,4 @@ void obj_light_point_draw(struct tds_object* ptr) {
 }
 
 void obj_light_point_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
-	struct obj_light_point_data* data = (struct obj_light_point_data*) ptr->object_data;
 }

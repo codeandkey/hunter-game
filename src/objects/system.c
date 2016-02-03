@@ -31,7 +31,6 @@ void obj_system_update(struct tds_object* ptr) {
 }
 
 void obj_system_draw(struct tds_object* ptr) {
-	struct obj_system_data* data = (struct obj_system_data*) ptr->object_data;
 	struct tds_render_light lt = {TDS_RENDER_LIGHT_DIRECTIONAL, 1.0f, -1.0f, 0.14f, 0.14f, 0.14f, 0.0f, NULL};
 	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }

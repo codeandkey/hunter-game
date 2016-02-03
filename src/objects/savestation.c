@@ -20,8 +20,6 @@ struct tds_object_type obj_savestation_type = {
 };
 
 void obj_savestation_init(struct tds_object* ptr) {
-	struct obj_savestation_data* data = (struct obj_savestation_data*) ptr->object_data;
-
 	ptr->cbox_width = 0.3f;
 	ptr->cbox_height = 0.9f;
 
@@ -64,7 +62,6 @@ void obj_savestation_draw(struct tds_object* ptr) {
 }
 
 void obj_savestation_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
-	struct obj_savestation_data* data = (struct obj_savestation_data*) ptr->object_data;
 	int* id = tds_object_get_ipart(ptr, HUNTER_SAVESTATION_INDEX_ID), t_id = 0;
 
 	switch (msg) {
