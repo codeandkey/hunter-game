@@ -94,6 +94,7 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_logf(TDS_LOG_MESSAGE, "Loading object types.\n");
 
 	tds_object_type_cache_add(otc_handle, "system", &obj_system_type);
+	tds_object_type_cache_add(otc_handle, "env", &obj_env_type);
 	tds_object_type_cache_add(otc_handle, "obj_player", &obj_player_type);
 	tds_object_type_cache_add(otc_handle, "obj_ghost", &obj_ghost_type);
 	tds_object_type_cache_add(otc_handle, "obj_savestation", &obj_savestation_type);

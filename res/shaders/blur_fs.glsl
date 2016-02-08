@@ -9,8 +9,6 @@ uniform vec4 tds_color;
 out vec4 color;
 
 void main(void) {
-	color = texture2D(tds_texture, p_texcoord) * tds_color;
-
 	color = vec4(0.0f);
 
 	/* Apply a Gaussian convolution */

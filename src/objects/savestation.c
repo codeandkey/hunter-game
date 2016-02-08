@@ -20,8 +20,8 @@ struct tds_object_type obj_savestation_type = {
 };
 
 void obj_savestation_init(struct tds_object* ptr) {
-	ptr->cbox_width = 0.3f;
-	ptr->cbox_height = 0.9f;
+	ptr->cbox_width = 1.0f;
+	ptr->cbox_height = 1.0f;
 
 	int* id = tds_object_get_ipart(ptr, HUNTER_SAVESTATION_INDEX_ID);
 	if (id) {
