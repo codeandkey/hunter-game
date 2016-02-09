@@ -33,6 +33,11 @@ void obj_env_destroy(struct tds_object* ptr) {
 }
 
 void obj_env_update(struct tds_object* ptr) {
+	struct obj_env_data* data = (struct obj_env_data*) ptr->object_data;
+
+	if (data->wname && data->wname_pos == strlen(data->wname) - 1 && tds_clock_get_ms(data->wname_alpha_timer) >= HUNTER_ENV_WNAME_ALPHA_TIME) {
+		data->wname_alpha -= HUNTER_ENV_WNAME_ALPHA_DECAY;
+	}
 }
 
 void obj_env_draw(struct tds_object* ptr) {
@@ -49,8 +54,6 @@ void obj_env_draw(struct tds_object* ptr) {
 
 				data->wname_interval_timer = tds_clock_get_point();
 			}
-		} else if (tds_clock_get_ms(data->wname_alpha_timer) >= HUNTER_ENV_WNAME_ALPHA_TIME) {
-			data->wname_alpha -= HUNTER_ENV_WNAME_ALPHA_DECAY;
 		}
 
 		tds_overlay_set_color(tds_engine_global->overlay_handle, 1.0f, 1.0f, 1.0f, data->wname_alpha);
