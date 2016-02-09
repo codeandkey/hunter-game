@@ -1,4 +1,3 @@
-save/*
-save
+save/**
 tds.cfg
 hunter.cfg
