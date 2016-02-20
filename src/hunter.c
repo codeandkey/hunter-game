@@ -107,25 +107,25 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {
 	tds_logf(TDS_LOG_MESSAGE, "Loading block types.\n");
 
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_001_grass.png", 16, 16, 1, 0), 1, 1);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_002_gstone.png", 16, 16, 1, 0), 1, 2);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_003_hmgstone.png", 16, 16, 1, 0), 1, 3);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_004_lgstone.png", 16, 16, 1, 0), 1, 4);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_005_vmgstone.png", 16, 16, 1, 0), 1, 5);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_006_rgstone.png", 16, 16, 1, 0), 1, 6);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_007_tgstone.png", 16, 16, 1, 0), 1, 7);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_008_bgstone.png", 16, 16, 1, 0), 1, 8);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_009_ctlgstone.png", 16, 16, 1, 0), 1, 9);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_010_ctrgstone.png", 16, 16, 1, 0), 1, 10);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_011_cblgstone.png", 16, 16, 1, 0), 1, 11);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_012_cbrgstone.png", 16, 16, 1, 0), 1, 12);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_013_dirt.png", 16, 16, 1, 0), 1, 13);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_014_mossdirt.png", 16, 16, 1, 0), 1, 14);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_015_moss.png", 16, 16, 1, 0), 0, 15);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_016_rslope_grass.png", 16, 16, 1, 0), 0, 16);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_017_lslope_grass.png", 16, 16, 1, 0), 0, 17);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_018_rcorner_grass.png", 16, 16, 1, 0), 0, 18);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_019_lcorner_grass.png", 16, 16, 1, 0), 0, 19);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_001_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 1);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_002_gstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 2);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_003_hmgstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 3);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_004_lgstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 4);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_005_vmgstone.png", 16, 16, 1, 0),TDS_BLOCK_TYPE_SOLID, 5);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_006_rgstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 6);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_007_tgstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 7);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_008_bgstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 8);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_009_ctlgstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 9);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_010_ctrgstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 10);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_011_cblgstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 11);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_012_cbrgstone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 12);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_013_dirt.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 13);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_014_mossdirt.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 14);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_015_moss.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_NOLIGHT, 15);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_016_rslope_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_SOLID, 16);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_017_lslope_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_LTSLOPE | TDS_BLOCK_TYPE_SOLID, 17);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_018_rcorner_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 18);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_019_lcorner_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 19);
 }
 
 char* _get_level_load(int index) {
