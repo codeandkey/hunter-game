@@ -85,9 +85,8 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_ghost_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ghost_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
 	tds_sprite_cache_add(sc_handle, "spr_savestation", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/save_station_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
 
-	tds_sprite_cache_add(sc_handle, "bg_cloud", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/bg_cloud_640x640.png", 640, 640, 0, 0), 1.0f, 1.0f, 0.0f));
-
 	tds_bg_push(tds_engine_global->bg_handle, 0, tds_texture_cache_get(tc_handle, "res/sprites/bg_overworld_sky_640x640.png", 640, 640, 1, 1), 0, 0);
+	tds_bg_push(tds_engine_global->bg_handle, 8, tds_texture_cache_get(tc_handle, "res/sprites/bg_overworld_mountain_640x640.png", 640, 640, 1, 1), 1, 0);
 
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }
