@@ -121,24 +121,7 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->y = orig_y; /* We reset the player's position before calculating autolift. This makes necessary teleportation easier. */
 
 	if (collision_x) {
-		float d = (cx_y + cx_h / 2.0f) - (ptr->y - ptr->cbox_height / 2.0f);
-
-		if (d <= HUNTER_PLAYER_AUTOLIFT_DIST && d >= 0 && data->can_jump) {
-
-			ptr->y = orig_y + d;
-			ptr->x = orig_x + ptr->xspeed;
-
-			if (!tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL)) {
-				//ptr->yspeed = 0.0f;
-			} else {
-				ptr->y = orig_y;
-				ptr->xspeed = 0.0f;
-			}
-
-			ptr->x = orig_x;
-		} else {
-			ptr->xspeed = 0.0f;
-		}
+		ptr->xspeed = 0.0f;
 	}
 
 	if (collision_y) {
