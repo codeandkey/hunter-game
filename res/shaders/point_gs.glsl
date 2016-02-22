@@ -7,7 +7,7 @@ in vec2 p_texcoord[];
 out vec2 out_normal;
 
 void main() {
-	if (dot(p_texcoord[0], gl_in[0].gl_Position.xy) < 0.0) {
+	if (dot(p_texcoord[0], gl_in[0].gl_Position.xy) >= 0.0) {
 		return;
 	}
 
