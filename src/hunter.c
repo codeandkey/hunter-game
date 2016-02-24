@@ -86,7 +86,10 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_savestation", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/save_station_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
 
 	tds_bg_push(tds_engine_global->bg_handle, 0, tds_texture_cache_get(tc_handle, "res/sprites/bg_overworld_sky_640x640.png", 640, 640, 1, 1), 0, 0);
-	tds_bg_push(tds_engine_global->bg_handle, 8, tds_texture_cache_get(tc_handle, "res/sprites/bg_overworld_mountain_640x640.png", 640, 640, 1, 1), 1, 0);
+	tds_bg_push(tds_engine_global->bg_handle, 3, tds_texture_cache_get(tc_handle, "res/sprites/bg_ocean_640x640.png", 640, 640, 1, 1), 1, 0);
+	tds_bg_push(tds_engine_global->bg_handle, 5, tds_texture_cache_get(tc_handle, "res/sprites/bg_oceanlower_640x640.png", 640, 640, 1, 1), 1, 0);
+	tds_bg_push(tds_engine_global->bg_handle, 7, tds_texture_cache_get(tc_handle, "res/sprites/bg_largeisland_640x640.png", 640, 640, 1, 1), 1, 0);
+	tds_bg_push(tds_engine_global->bg_handle, 9, tds_texture_cache_get(tc_handle, "res/sprites/bg_smallisland_640x640.png", 640, 640, 1, 1), 1, 0);
 
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }
