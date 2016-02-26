@@ -84,7 +84,7 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->yspeed += HUNTER_PLAYER_GRAVITY;
 
 	/* Movement is addressed in a very special way which allows it to be smooth: we only act on XY collisions if X and Y both fail. */
-	int collision_x = 0, collision_y = 0, collision_xy = 0;
+	int collision_x = 0, collision_y = 0, collision_xy = 0, collision_slope = 0;
 
 	/* We will offset the player's position to test collisions. */
 
@@ -95,14 +95,16 @@ void obj_player_update(struct tds_object* ptr) {
 
 	float cx_x = 0.0f, cx_y = 0.0f, cx_w = 0.0f, cx_h = 0.0f;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &cx_x, &cx_y, &cx_w, &cx_h)) {
+	int slopes = TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_LTSLOPE;
+
+	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &cx_x, &cx_y, &cx_w, &cx_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		collision_x = 1;
 	}
 
 	ptr->x = orig_x;
 	ptr->y = orig_y + ptr->yspeed;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL)) {
+	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		collision_y = 1;
 
 		data->can_jump = (ptr->yspeed < 0.0f);
@@ -113,12 +115,15 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->x = orig_x + ptr->xspeed;
 	ptr->y = orig_y + ptr->yspeed;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL)) {
+	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		collision_xy = 1;
 	}
 
 	ptr->x = orig_x;
 	ptr->y = orig_y; /* We reset the player's position before calculating autolift. This makes necessary teleportation easier. */
+
+	float slope_x, slope_y, slope_w, slope_h;
+	collision_slope = tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0);
 
 	if (collision_x) {
 		ptr->xspeed = 0.0f;
