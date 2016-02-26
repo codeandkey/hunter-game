@@ -86,10 +86,10 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_savestation", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/save_station_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
 
 	tds_bg_push(tds_engine_global->bg_handle, 0, tds_texture_cache_get(tc_handle, "res/sprites/bg_overworld_sky_640x640.png", 640, 640, 1, 1), 0, 0);
-	tds_bg_push(tds_engine_global->bg_handle, 3, tds_texture_cache_get(tc_handle, "res/sprites/bg_ocean_640x640.png", 640, 640, 1, 1), 1, 0);
-	tds_bg_push(tds_engine_global->bg_handle, 5, tds_texture_cache_get(tc_handle, "res/sprites/bg_oceanlower_640x640.png", 640, 640, 1, 1), 1, 0);
-	tds_bg_push(tds_engine_global->bg_handle, 7, tds_texture_cache_get(tc_handle, "res/sprites/bg_largeisland_640x640.png", 640, 640, 1, 1), 1, 0);
-	tds_bg_push(tds_engine_global->bg_handle, 9, tds_texture_cache_get(tc_handle, "res/sprites/bg_smallisland_640x640.png", 640, 640, 1, 1), 1, 0);
+	tds_bg_push(tds_engine_global->bg_handle, 3, tds_texture_cache_get(tc_handle, "res/sprites/bg_largeisland_640x640.png", 640, 640, 1, 1), 1, 0);
+	tds_bg_push(tds_engine_global->bg_handle, 5, tds_texture_cache_get(tc_handle, "res/sprites/bg_ocean_640x640.png", 640, 640, 1, 1), 1, 0);
+	tds_bg_push(tds_engine_global->bg_handle, 7, tds_texture_cache_get(tc_handle, "res/sprites/bg_smallisland_640x640.png", 640, 640, 1, 1), 1, 0);
+	tds_bg_push(tds_engine_global->bg_handle, 9, tds_texture_cache_get(tc_handle, "res/sprites/bg_oceanlower_640x640.png", 640, 640, 1, 1), 1, 0);
 
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }
@@ -128,6 +128,7 @@ void _load_block_types(struct tds_block_map* block_map_handle, struct tds_textur
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_017_lslope_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_LTSLOPE | TDS_BLOCK_TYPE_SOLID, 17);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_018_rcorner_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 18);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_019_lcorner_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 19);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_020_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 20);
 }
 
 char* _get_level_load(int index) {
