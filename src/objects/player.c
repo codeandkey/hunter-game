@@ -54,6 +54,9 @@ void obj_player_update(struct tds_object* ptr) {
 
 	float movement_axis = tds_input_map_get_axis(tds_engine_global->input_map_handle, move_key_low, move_key_high, move_axis);
 
+	ptr->cbox_width = 0.3f;
+	ptr->cbox_height = 0.9f;
+
 	if (movement_axis <= -HUNTER_PLAYER_MOVE_DEADZONE) {
 		data->movement_direction = -1;
 		data->direction = -1;
@@ -84,7 +87,7 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->yspeed += HUNTER_PLAYER_GRAVITY;
 
 	/* Movement is addressed in a very special way which allows it to be smooth: we only act on XY collisions if X and Y both fail. */
-	int collision_x = 0, collision_y = 0, collision_xy = 0, collision_slope = 0;
+	int collision_x = 0, collision_y = 0, collision_xy = 0;
 
 	/* We will offset the player's position to test collisions. */
 
@@ -120,21 +123,45 @@ void obj_player_update(struct tds_object* ptr) {
 	}
 
 	ptr->x = orig_x;
-	ptr->y = orig_y; /* We reset the player's position before calculating autolift. This makes necessary teleportation easier. */
+	ptr->y = orig_y;
 
 	float slope_x, slope_y, slope_w, slope_h;
-	collision_slope = tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0);
+	data->collision_slope = tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0);
+	data->should_correct = 0;
 
-	if (collision_x) {
-		ptr->xspeed = 0.0f;
+	if (data->collision_slope) {
+		if (ptr->x >= slope_x - slope_w / 2.0f && ptr->x <= slope_x + slope_w / 2.0f) {
+			if (ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f && ptr->y - ptr->cbox_height / 2.0f <= slope_y + slope_h / 2.0f) {
+				data->should_correct = 1;
+			}
+
+			data->should_correct = 1;
+		}
 	}
 
-	if (collision_y) {
+	if (data->should_correct) {
+		if (data->collision_slope & TDS_BLOCK_TYPE_RTSLOPE) {
+			ptr->y = (1.0f - ((ptr->x - (slope_x - slope_w / 2.0f)) / slope_w)) * slope_h + slope_y - slope_h / 2.0f + ptr->cbox_height / 2.0f;
+		}
+
+		if (data->collision_slope & TDS_BLOCK_TYPE_LTSLOPE) {
+			ptr->y = ((ptr->x - (slope_x - slope_w / 2.0f)) / slope_w) * slope_h + slope_y - slope_h / 2.0f + ptr->cbox_height / 2.0f;
+		}
+
 		ptr->yspeed = 0.0f;
-	}
+		data->can_jump = 1;
+	} else {
+		if (collision_x) {
+			ptr->xspeed = 0.0f;
+		}
 
-	if (collision_xy && !collision_x && !collision_y) {
-		ptr->xspeed = ptr->yspeed = 0.0f;
+		if (collision_y) {
+			ptr->yspeed = 0.0f;
+		}
+
+		if (collision_xy && !collision_x && !collision_y) {
+			ptr->xspeed = ptr->yspeed = 0.0f;
+		}
 	}
 
 	/* State transfers : We act on the player hit state. */
@@ -219,6 +246,13 @@ void obj_player_draw(struct tds_object* ptr) {
 			}
 		}
 	}
+
+	char buf[32];
+	snprintf(buf, sizeof buf / sizeof *buf, "slope correction : %d", data->should_correct);
+	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.9f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
+
+	snprintf(buf, sizeof buf / sizeof *buf, "slope collision : %d", data->collision_slope);
+	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.8f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
 }
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
