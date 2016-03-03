@@ -130,12 +130,19 @@ void obj_player_update(struct tds_object* ptr) {
 	if ((slope_flags = tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0))) {
 		/* Potential slope intersection. We don't ect until we're sure. */
 
+		float slope_l = slope_x - slope_w / 2.0f, slope_r = slope_l + slope_w, slope_b = slope_y - slope_h / 2.0f, slope_t = slope_b + slope_h;
+
+		data->csx = slope_x;
+		data->csy = slope_y;
+		data->csw = slope_w;
+		data->csh = slope_h;
+
 		if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE) {
 			/* TODO the same thing with LTSLOPE */
 		}
 
 		if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE) {
-			float ty = ((ptr->x + ptr->xspeed + ptr->cbox_width / 2.0f - (slope_x - slope_w / 2.0f)) / slope_w) * slope_h + (slope_y - slope_h / 2.0f);
+			float ty = (((ptr->x + ptr->cbox_width / 2.0f) - slope_l) / slope_w) * slope_h + slope_b;
 
 			if (ptr->y - ptr->cbox_height / 2.0f + ptr->yspeed < ty) {
 				ptr->yspeed = 0.0f;
@@ -257,6 +264,15 @@ void obj_player_draw(struct tds_object* ptr) {
 
 	snprintf(buf, sizeof buf / sizeof *buf, "slope collision : %d", data->collision_slope);
 	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.8f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
+
+	if (data->collision_slope) {
+		tds_overlay_render_line(tds_engine_global->overlay_handle, ptr->x - ptr->cbox_width / 2.0f, ptr->y - ptr->cbox_height / 2.0f, ptr->x + ptr->cbox_width / 2.0f, ptr->y - ptr->cbox_height / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, ptr->x - ptr->cbox_width / 2.0f, data->should_correct, ptr->x + ptr->cbox_width / 2.0f, data->should_correct, 1.0f, TDS_OVERLAY_WORLDSPACE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy + data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy + data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy - data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy - data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx + data->csw / 2.0f, data->csy - data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy + data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy + data->csh / 2.0f, data->csx - data->csw / 2.0f, data->csy - data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
+	}
 }
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
