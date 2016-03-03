@@ -97,6 +97,7 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->y = orig_y;
 
 	float cx_x = 0.0f, cx_y = 0.0f, cx_w = 0.0f, cx_h = 0.0f;
+	float cy_x = 0.0f, cy_y = 0.0f, cy_w = 0.0f, cy_h = 0.0f;
 
 	int slopes = TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_LTSLOPE;
 
@@ -107,7 +108,7 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->x = orig_x;
 	ptr->y = orig_y + ptr->yspeed;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
+	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &cy_x, &cy_y, &cy_w, &cy_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		collision_y = 1;
 
 		data->can_jump = (ptr->yspeed < 0.0f);
@@ -122,47 +123,50 @@ void obj_player_update(struct tds_object* ptr) {
 		collision_xy = 1;
 	}
 
-	ptr->x = orig_x;
-	ptr->y = orig_y;
-
 	float slope_x, slope_y, slope_w, slope_h;
-	data->collision_slope = tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0);
+	int slope_flags = 0;
 	data->should_correct = 0;
 
-	if (data->collision_slope) {
-		if (ptr->x >= slope_x - slope_w / 2.0f && ptr->x <= slope_x + slope_w / 2.0f) {
-			if (ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f && ptr->y - ptr->cbox_height / 2.0f <= slope_y + slope_h / 2.0f) {
-				data->should_correct = 1;
+	if ((slope_flags = tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0))) {
+		/* Potential slope intersection. We don't ect until we're sure. */
+
+		if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE) {
+			/* TODO the same thing with LTSLOPE */
+		}
+
+		if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE) {
+			float ty = ((ptr->x + ptr->xspeed + ptr->cbox_width / 2.0f - (slope_x - slope_w / 2.0f)) / slope_w) * slope_h + (slope_y - slope_h / 2.0f);
+
+			if (ptr->y - ptr->cbox_height / 2.0f + ptr->yspeed < ty) {
+				ptr->yspeed = 0.0f;
+				ptr->y = orig_y = ty + ptr->cbox_height / 2.0f;
+				data->should_correct = ty + ptr->cbox_height / 2.0f;
 			}
-
-			data->should_correct = 1;
 		}
 	}
 
-	if (data->should_correct) {
-		if (data->collision_slope & TDS_BLOCK_TYPE_RTSLOPE) {
-			ptr->y = (1.0f - ((ptr->x - (slope_x - slope_w / 2.0f)) / slope_w)) * slope_h + slope_y - slope_h / 2.0f + ptr->cbox_height / 2.0f;
+	data->collision_slope = slope_flags;
+
+	if (collision_x) {
+		if (ptr->xspeed > 0.0f) {
+			ptr->x = cx_x - cx_w / 2.0f - ptr->cbox_width / 2.0f;
+		} else {
+			ptr->x = cx_x + cx_w / 2.0f + ptr->cbox_width / 2.0f;
 		}
 
-		if (data->collision_slope & TDS_BLOCK_TYPE_LTSLOPE) {
-			ptr->y = ((ptr->x - (slope_x - slope_w / 2.0f)) / slope_w) * slope_h + slope_y - slope_h / 2.0f + ptr->cbox_height / 2.0f;
-		}
+		ptr->xspeed = 0.0f;
+	}
 
+	if (collision_y) {
 		ptr->yspeed = 0.0f;
-		data->can_jump = 1;
-	} else {
-		if (collision_x) {
-			ptr->xspeed = 0.0f;
-		}
-
-		if (collision_y) {
-			ptr->yspeed = 0.0f;
-		}
-
-		if (collision_xy && !collision_x && !collision_y) {
-			ptr->xspeed = ptr->yspeed = 0.0f;
-		}
 	}
+
+	if (collision_xy && !collision_x && !collision_y) {
+		ptr->xspeed = ptr->yspeed = 0.0f;
+	}
+
+	ptr->x = orig_x;
+	ptr->y = orig_y;
 
 	/* State transfers : We act on the player hit state. */
 	if (data->can_jump) {
@@ -248,7 +252,7 @@ void obj_player_draw(struct tds_object* ptr) {
 	}
 
 	char buf[32];
-	snprintf(buf, sizeof buf / sizeof *buf, "slope correction : %d", data->should_correct);
+	snprintf(buf, sizeof buf / sizeof *buf, "slope correction : %f", data->should_correct);
 	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.9f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
 
 	snprintf(buf, sizeof buf / sizeof *buf, "slope collision : %d", data->collision_slope);

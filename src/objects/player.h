@@ -27,5 +27,5 @@ struct obj_player_data {
 	int state_hit, state_hit_hurt;
 	tds_clock_point timer_hit_recover, timer_hit_flash;
 	int hit_flash, look_up;
-	int should_correct, collision_slope;
+	float should_correct, collision_slope;
 };
