@@ -137,17 +137,25 @@ void obj_player_update(struct tds_object* ptr) {
 		data->csw = slope_w;
 		data->csh = slope_h;
 
-		if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE) {
-			/* TODO the same thing with LTSLOPE */
-		}
+		if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE && ptr->x - ptr->cbox_width / 2.0f >= slope_l - 0.03f && ptr->x - ptr->cbox_width / 2.0f <= slope_r + 0.03f) {
+			float ty = (1.0f - (((ptr->x - ptr->cbox_width / 2.0f) - slope_l) / slope_w)) * slope_h + slope_b;
 
-		if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE) {
-			float ty = (((ptr->x + ptr->cbox_width / 2.0f) - slope_l) / slope_w) * slope_h + slope_b;
-
-			if (ptr->y - ptr->cbox_height / 2.0f + ptr->yspeed < ty) {
+			if (ptr->y - ptr->cbox_height / 2.0f < ty) {
 				ptr->yspeed = 0.0f;
 				ptr->y = orig_y = ty + ptr->cbox_height / 2.0f;
 				data->should_correct = ty + ptr->cbox_height / 2.0f;
+				data->can_jump = 1;
+			}
+		}
+
+		if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE && ptr->x + ptr->cbox_width / 2.0f >= slope_l - 0.03f && ptr->x + ptr->cbox_width / 2.0f <= slope_r + 0.03f) {
+			float ty = (((ptr->x + ptr->cbox_width / 2.0f) - slope_l) / slope_w) * slope_h + slope_b;
+
+			if (ptr->y - ptr->cbox_height / 2.0f < ty) {
+				ptr->yspeed = 0.0f;
+				ptr->y = orig_y = ty + ptr->cbox_height / 2.0f;
+				data->should_correct = ty + ptr->cbox_height / 2.0f;
+				data->can_jump = 1;
 			}
 		}
 	}
