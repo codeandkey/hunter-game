@@ -101,14 +101,14 @@ void obj_player_update(struct tds_object* ptr) {
 
 	int slopes = TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_LTSLOPE;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &cx_x, &cx_y, &cx_w, &cx_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
+	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &cx_x, &cx_y, &cx_w, &cx_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		collision_x = 1;
 	}
 
 	ptr->x = orig_x;
 	ptr->y = orig_y + ptr->yspeed;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &cy_x, &cy_y, &cy_w, &cy_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
+	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &cy_x, &cy_y, &cy_w, &cy_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		collision_y = 1;
 
 		data->can_jump = (ptr->yspeed < 0.0f);
@@ -119,7 +119,7 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->x = orig_x + ptr->xspeed;
 	ptr->y = orig_y + ptr->yspeed;
 
-	if (tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, NULL, NULL, NULL, NULL, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
+	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, NULL, NULL, NULL, NULL, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		collision_xy = 1;
 	}
 
@@ -127,7 +127,7 @@ void obj_player_update(struct tds_object* ptr) {
 	int slope_flags = 0;
 	data->should_correct = 0;
 
-	if ((slope_flags = tds_world_get_overlap_fast(tds_engine_global->world_handle, ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0))) {
+	if ((slope_flags = tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0))) {
 		/* Potential slope intersection. We don't ect until we're sure. */
 
 		float slope_l = slope_x - slope_w / 2.0f, slope_r = slope_l + slope_w, slope_b = slope_y - slope_h / 2.0f, slope_t = slope_b + slope_h;
@@ -162,13 +162,10 @@ void obj_player_update(struct tds_object* ptr) {
 
 	data->collision_slope = slope_flags;
 
-	if (collision_x) {
-		if (ptr->xspeed > 0.0f) {
-			ptr->x = cx_x - cx_w / 2.0f - ptr->cbox_width / 2.0f;
-		} else {
-			ptr->x = cx_x + cx_w / 2.0f + ptr->cbox_width / 2.0f;
-		}
+	ptr->x = orig_x;
+	ptr->y = orig_y;
 
+	if (collision_x) {
 		ptr->xspeed = 0.0f;
 	}
 
@@ -179,9 +176,6 @@ void obj_player_update(struct tds_object* ptr) {
 	if (collision_xy && !collision_x && !collision_y) {
 		ptr->xspeed = ptr->yspeed = 0.0f;
 	}
-
-	ptr->x = orig_x;
-	ptr->y = orig_y;
 
 	/* State transfers : We act on the player hit state. */
 	if (data->can_jump) {
