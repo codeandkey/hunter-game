@@ -268,12 +268,12 @@ void obj_player_draw(struct tds_object* ptr) {
 	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.8f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
 
 	if (data->collision_slope) {
-		tds_overlay_render_line(tds_engine_global->overlay_handle, ptr->x - ptr->cbox_width / 2.0f, ptr->y - ptr->cbox_height / 2.0f, ptr->x + ptr->cbox_width / 2.0f, ptr->y - ptr->cbox_height / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, ptr->x - ptr->cbox_width / 2.0f, data->should_correct, ptr->x + ptr->cbox_width / 2.0f, data->should_correct, 1.0f, TDS_OVERLAY_WORLDSPACE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy + data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy + data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy - data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy - data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx + data->csw / 2.0f, data->csy - data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy + data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy + data->csh / 2.0f, data->csx - data->csw / 2.0f, data->csy - data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, ptr->x - ptr->cbox_width / 2.0f, ptr->y - ptr->cbox_height / 2.0f, ptr->x + ptr->cbox_width / 2.0f, ptr->y - ptr->cbox_height / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, ptr->x - ptr->cbox_width / 2.0f, data->should_correct, ptr->x + ptr->cbox_width / 2.0f, data->should_correct, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy + data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy + data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy - data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy - data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx + data->csw / 2.0f, data->csy - data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy + data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
+		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy + data->csh / 2.0f, data->csx - data->csw / 2.0f, data->csy - data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
 	}
 }
 
