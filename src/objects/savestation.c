@@ -57,7 +57,7 @@ void obj_savestation_draw(struct tds_object* ptr) {
 
 	float glow_mod = ((sin(data->dt_glow) + 1.0f) / 2.0f) * 0.01f;
 
-	struct tds_render_light lt_glow = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.0f, 0.01f + glow_mod, 0.02f + glow_mod * 2.0f, 25.0f, NULL};
+	struct tds_render_light lt_glow = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.0f, 0.01f + glow_mod, 0.02f + glow_mod * 2.0f, 10.0f, NULL};
 	tds_render_submit_light(tds_engine_global->render_handle, lt_glow);
 }
 
