@@ -8,6 +8,8 @@
 
 #include "../save.h"
 
+#include <stdio.h>
+
 struct tds_object_type obj_player_type = {
 	.type_name = "obj_player",
 	.default_sprite = "spr_player_idle_right",
