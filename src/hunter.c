@@ -20,10 +20,10 @@ static char* _get_level_load(int index);
 
 int main(int argc, char** argv) {
 	struct tds_engine_desc desc = {0};
-	struct tds_config* game_config = tds_config_create(HUNTER_CONFIG_FILENAME);
+	struct tds_script* game_config = tds_script_create(HUNTER_CONFIG_FILENAME);
 
-	int save_index = tds_config_get_int(game_config, "save");
-	tds_config_free(game_config);
+	int save_index = tds_script_get_int(game_config, "save", 0);
+	tds_script_free(game_config);
 
 	char* map_filename = _get_level_load(save_index);
 
