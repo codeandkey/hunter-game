@@ -20,8 +20,11 @@ struct tds_object_type obj_attractor_type = {
 void obj_attractor_init(struct tds_object* ptr) {
 	struct obj_attractor_data* data = (struct obj_attractor_data*) ptr->object_data;
 
-	data->dist = *(tds_object_get_fpart(ptr, HUNTER_ATTRACTOR_INDEX_DIST));
-	data->factor = *(tds_object_get_fpart(ptr, HUNTER_ATTRACTOR_INDEX_FACTOR));
+	float* dist = tds_object_get_fpart(ptr, HUNTER_ATTRACTOR_INDEX_DIST);
+	float* factor = tds_object_get_fpart(ptr, HUNTER_ATTRACTOR_INDEX_FACTOR);
+
+	data->dist = dist ? *dist : 5.0f;
+	data->factor = factor ? *factor : 0.5f;
 }
 
 void obj_attractor_destroy(struct tds_object* ptr) {
