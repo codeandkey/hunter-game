@@ -10,9 +10,9 @@ solution "hunter-game"
 		configuration "debug"
 			flags { "Symbols" }
 			links { "tds_debug" }
-			targetname "hunter-game"
+			targetname "hunter-game-debug"
 
 		configuration "release"
 			flags { "Optimize" }
 			links { "tds" }
-			targetname "hunter-game-debug"
+			targetname "hunter-game"
