@@ -1,3 +1,9 @@
 save/**
-tds.cfg
-hunter.cfg
+tds.lua
+hunter.lua
+Makefile
+hunter-game.make
+*.trace
+obj/**
+hunter-game
+hunter-game-debug
