@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 	struct tds_engine_desc desc = {0};
 	struct tds_script* game_config = tds_script_create(HUNTER_CONFIG_FILENAME);
 
-	int save_index = tds_script_get_int(game_config, "save", 0);
+	int save_index = tds_script_get_var_int(game_config, "save", 0);
 	tds_script_free(game_config);
 
 	char* map_filename = _get_level_load(save_index);
