@@ -2,6 +2,11 @@
 #include <tds/object.h>
 #include <tds/clock.h>
 
+/*
+ * obj_savestation
+ * i0 : savestation save index (unique ID for respawn)
+ */
+
 #define HUNTER_SAVESTATION_INDEX_ID 0
 
 struct tds_object_type obj_savestation_type;

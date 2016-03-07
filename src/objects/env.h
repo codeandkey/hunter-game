@@ -3,6 +3,11 @@
 #include <tds/object.h>
 #include <tds/clock.h>
 
+/*
+ * env
+ * s0: text to display on init
+ */
+
 #define HUNTER_ENV_INDEX_WNAME 0
 
 #define HUNTER_ENV_WNAME_INTERVAL 100.0f

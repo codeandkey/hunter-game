@@ -3,6 +3,16 @@
 #include <tds/object.h>
 #include <tds/clock.h>
 
+/*
+ * obj_light_dir
+ * f0: direction normal X
+ * f1: direction normal Y
+ * f2: color R
+ * f3: color G
+ * f4: color B
+ * f5: flicker intensity
+ */
+
 #define HUNTER_LIGHT_DIR_INDEX_DX 0
 #define HUNTER_LIGHT_DIR_INDEX_DY 1
 #define HUNTER_LIGHT_DIR_INDEX_R 2

@@ -1,6 +1,12 @@
 #pragma once
 #include <tds/object.h>
 
+/*
+ * obj_attractor
+ * f0: distance to start pulling camera (in world units)
+ * f1: camera pull factor (between 0 and 1, increase for stronger pull)
+ */
+
 #define HUNTER_ATTRACTOR_INDEX_DIST 0
 #define HUNTER_ATTRACTOR_INDEX_FACTOR 1
 

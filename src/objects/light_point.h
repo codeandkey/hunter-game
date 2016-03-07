@@ -3,6 +3,15 @@
 #include <tds/object.h>
 #include <tds/clock.h>
 
+/*
+ * obj_light_point
+ * f0: color R
+ * f1: color G
+ * f2: color B
+ * f3: shine radius in world units
+ * f4: flicker intensity
+ */
+
 #define HUNTER_LIGHT_POINT_INDEX_R 0
 #define HUNTER_LIGHT_POINT_INDEX_G 1
 #define HUNTER_LIGHT_POINT_INDEX_B 2
