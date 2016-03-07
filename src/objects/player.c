@@ -277,6 +277,9 @@ void obj_player_draw(struct tds_object* ptr) {
 		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx + data->csw / 2.0f, data->csy - data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy + data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
 		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy + data->csh / 2.0f, data->csx - data->csw / 2.0f, data->csy - data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
 	}
+
+	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.5f, 0.5f, 0.5f, 2.0f, NULL};
+	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
