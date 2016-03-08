@@ -61,6 +61,8 @@ int main(int argc, char** argv) {
 
 void _load_sounds(struct tds_sound_cache* sndc_handle) {
 	tds_logf(TDS_LOG_MESSAGE, "Loading sounds.\n");
+
+	tds_sound_cache_add(sndc_handle, "bg_rain", tds_sound_buffer_create("res/sounds/bg_rain.ogg"));
 }
 
 void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache* tc_handle) {
@@ -101,6 +103,7 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_light_dir", &obj_light_dir_type);
 	tds_object_type_cache_add(otc_handle, "obj_light_point", &obj_light_point_type);
 	tds_object_type_cache_add(otc_handle, "obj_attractor", &obj_attractor_type);
+	tds_object_type_cache_add(otc_handle, "obj_rain", &obj_rain_type);
 }
 
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {

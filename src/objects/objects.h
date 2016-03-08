@@ -11,3 +11,4 @@
 #include "world_day.h"
 #include "world_night.h"
 #include "attractor.h"
+#include "rain.h"
