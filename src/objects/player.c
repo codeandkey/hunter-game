@@ -40,6 +40,7 @@ void obj_player_init(struct tds_object* ptr) {
 	data->spawn_y = ptr->y;
 
 	data->state_hit = data->state_hit_hurt = 0;
+	data->collision_x = data->collision_y = data->collision_xy = 0;
 }
 
 void obj_player_destroy(struct tds_object* ptr) {
@@ -69,6 +70,8 @@ void obj_player_update(struct tds_object* ptr) {
 		data->movement_direction = 0;
 	}
 
+	data->collision_x = data->collision_y = data->collision_xy = 0;
+
 	/* We will first change the player's x and y speeds as necessary. */
 	if (!data->state_hit_hurt) {
 		ptr->xspeed += data->movement_direction * HUNTER_PLAYER_MOVE_ACCEL;
@@ -88,9 +91,6 @@ void obj_player_update(struct tds_object* ptr) {
 
 	ptr->yspeed += HUNTER_PLAYER_GRAVITY;
 
-	/* Movement is addressed in a very special way which allows it to be smooth: we only act on XY collisions if X and Y both fail. */
-	int collision_x = 0, collision_y = 0, collision_xy = 0;
-
 	/* We will offset the player's position to test collisions. */
 
 	float orig_x = ptr->x, orig_y = ptr->y;
@@ -104,14 +104,14 @@ void obj_player_update(struct tds_object* ptr) {
 	int slopes = TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_LTSLOPE;
 
 	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &cx_x, &cx_y, &cx_w, &cx_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
-		collision_x = 1;
+		data->collision_x = 1;
 	}
 
 	ptr->x = orig_x;
 	ptr->y = orig_y + ptr->yspeed;
 
 	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &cy_x, &cy_y, &cy_w, &cy_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
-		collision_y = 1;
+		data->collision_y = 1;
 
 		data->can_jump = (ptr->yspeed < 0.0f);
 	} else {
@@ -122,7 +122,7 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->y = orig_y + ptr->yspeed;
 
 	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, NULL, NULL, NULL, NULL, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
-		collision_xy = 1;
+		data->collision_xy = 1;
 	}
 
 	float slope_x, slope_y, slope_w, slope_h;
@@ -139,8 +139,11 @@ void obj_player_update(struct tds_object* ptr) {
 		data->csw = slope_w;
 		data->csh = slope_h;
 
-		if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE && ptr->x - ptr->cbox_width / 2.0f >= slope_l - 0.03f && ptr->x - ptr->cbox_width / 2.0f <= slope_r + 0.03f) {
+		if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE && ptr->x - ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x - ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
 			float ty = (1.0f - (((ptr->x - ptr->cbox_width / 2.0f) - slope_l) / slope_w)) * slope_h + slope_b;
+
+			ty += HUNTER_PLAYER_SLOPE_CORRECT_OFFSET;
+			ty = fmin(ty, slope_y + slope_h / 2.0f);
 
 			if (ptr->y - ptr->cbox_height / 2.0f < ty) {
 				ptr->yspeed = 0.0f;
@@ -150,8 +153,11 @@ void obj_player_update(struct tds_object* ptr) {
 			}
 		}
 
-		if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE && ptr->x + ptr->cbox_width / 2.0f >= slope_l - 0.03f && ptr->x + ptr->cbox_width / 2.0f <= slope_r + 0.03f) {
+		if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE && ptr->x + ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x + ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
 			float ty = (((ptr->x + ptr->cbox_width / 2.0f) - slope_l) / slope_w) * slope_h + slope_b;
+
+			ty += HUNTER_PLAYER_SLOPE_CORRECT_OFFSET;
+			ty = fmin(ty, slope_y + slope_h / 2.0f);
 
 			if (ptr->y - ptr->cbox_height / 2.0f < ty) {
 				ptr->yspeed = 0.0f;
@@ -167,15 +173,15 @@ void obj_player_update(struct tds_object* ptr) {
 	ptr->x = orig_x;
 	ptr->y = orig_y;
 
-	if (collision_x) {
+	if (data->collision_x) {
 		ptr->xspeed = 0.0f;
 	}
 
-	if (collision_y) {
+	if (data->collision_y) {
 		ptr->yspeed = 0.0f;
 	}
 
-	if (collision_xy && !collision_x && !collision_y) {
+	if (data->collision_xy && !data->collision_x && !data->collision_y) {
 		ptr->xspeed = ptr->yspeed = 0.0f;
 	}
 
@@ -269,16 +275,16 @@ void obj_player_draw(struct tds_object* ptr) {
 	snprintf(buf, sizeof buf / sizeof *buf, "slope collision : %d", data->collision_slope);
 	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.8f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
 
-	if (data->collision_slope) {
-		tds_overlay_render_line(tds_engine_global->overlay_handle, ptr->x - ptr->cbox_width / 2.0f, ptr->y - ptr->cbox_height / 2.0f, ptr->x + ptr->cbox_width / 2.0f, ptr->y - ptr->cbox_height / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, ptr->x - ptr->cbox_width / 2.0f, data->should_correct, ptr->x + ptr->cbox_width / 2.0f, data->should_correct, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy + data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy + data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy - data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy - data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx + data->csw / 2.0f, data->csy - data->csh / 2.0f, data->csx + data->csw / 2.0f, data->csy + data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
-		tds_overlay_render_line(tds_engine_global->overlay_handle, data->csx - data->csw / 2.0f, data->csy + data->csh / 2.0f, data->csx - data->csw / 2.0f, data->csy - data->csh / 2.0f, 1.0f, TDS_OVERLAY_WORLDSPACE | TDS_OVERLAY_USE_HIDDENSCALE);
-	}
+	snprintf(buf, sizeof buf / sizeof *buf, "colX : %d", data->collision_x);
+	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.7f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
 
-	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.5f, 0.5f, 0.5f, 2.0f, NULL};
+	snprintf(buf, sizeof buf / sizeof *buf, "colY : %d", data->collision_y);
+	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.6f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
+
+	snprintf(buf, sizeof buf / sizeof *buf, "colXY : %d", data->collision_xy);
+	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.5f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
+
+	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.1f, 0.1f, 0.1f, 2.0f, NULL};
 	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }
 

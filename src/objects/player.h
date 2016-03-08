@@ -11,7 +11,8 @@
 #define HUNTER_PLAYER_HIT_RECOVERY 3000.0f
 #define HUNTER_PLAYER_HIT_VEL 0.08f
 #define HUNTER_PLAYER_HIT_FLASH 333.0f
-#define HUNTER_PLAYER_AUTOLIFT_DIST 1.0f
+#define HUNTER_PLAYER_SLOPE_PADDING 0.03f
+#define HUNTER_PLAYER_SLOPE_CORRECT_OFFSET 1.0f 
 
 struct tds_object_type obj_player_type;
 
@@ -29,4 +30,5 @@ struct obj_player_data {
 	int hit_flash, look_up;
 	float csx, csy, csw, csh;
 	float should_correct, collision_slope;
+	int collision_x, collision_y, collision_xy;
 };

@@ -5,9 +5,12 @@
 
 #define EFFECT_RAIN_DROPWIDTH 0.005f
 #define EFFECT_RAIN_DROPHEIGHT 2.0f
-#define EFFECT_RAIN_DROPCOUNT 100
-#define EFFECT_RAIN_SPEED 3.0f
+#define EFFECT_RAIN_DROPCOUNT 200
+#define EFFECT_RAIN_SPEED 0.2f
 #define EFFECT_RAIN_INTERVAL 14
+#define EFFECT_RAIN_INTERVAL_VARIANCE 5
+#define EFFECT_RAIN_ALPHA 0.1f
+#define EFFECT_RAIN_ALPHA_VARIANCE 0.2f
 
 extern struct tds_effect_type effect_rain_type;
 
@@ -18,5 +21,5 @@ void effect_rain_render(struct tds_effect_particle_state* state);
 
 struct effect_rain_data {
 	tds_clock_point interval;
-	int on_screen;
+	int on_screen, variance;
 };
