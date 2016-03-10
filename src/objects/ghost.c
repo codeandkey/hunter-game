@@ -73,7 +73,7 @@ void obj_ghost_draw(struct tds_object* ptr) {
 		tds_object_set_sprite(ptr, tds_sprite_cache_get(ptr->smgr, "spr_ghost_left"));
 	}
 
-	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.05f, 0.0f, 0.1f, 4.0f, NULL};
+	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.25f, 0.0f, 0.5f, 4.0f, NULL};
 	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }
 
