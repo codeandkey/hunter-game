@@ -93,7 +93,6 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_logf(TDS_LOG_MESSAGE, "Loading object types.\n");
 
-	tds_object_type_cache_add(otc_handle, "system", &obj_system_type);
 	tds_object_type_cache_add(otc_handle, "env", &obj_env_type);
 	tds_object_type_cache_add(otc_handle, "world_day", &obj_world_day_type);
 	tds_object_type_cache_add(otc_handle, "world_night", &obj_world_night_type);
