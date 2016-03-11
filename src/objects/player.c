@@ -142,13 +142,15 @@ void obj_player_update(struct tds_object* ptr) {
 		if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE && ptr->x - ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x - ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
 			float ty = (1.0f - (((ptr->x - ptr->cbox_width / 2.0f) - slope_l) / slope_w)) * slope_h + slope_b;
 
-			ty += HUNTER_PLAYER_SLOPE_CORRECT_OFFSET;
 			ty = fmin(ty, slope_y + slope_h / 2.0f);
 
-			if (ptr->y - ptr->cbox_height / 2.0f < ty) {
-				ptr->yspeed = 0.0f;
-				ptr->y = orig_y = ty + ptr->cbox_height / 2.0f;
-				data->should_correct = ty + ptr->cbox_height / 2.0f;
+			if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
+				if (ptr->xspeed < 0) {
+					ptr->yspeed = -ptr->xspeed;
+				} else {
+					ptr->yspeed = 0.0f;
+				}
+
 				data->can_jump = 1;
 			}
 		}
@@ -156,13 +158,15 @@ void obj_player_update(struct tds_object* ptr) {
 		if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE && ptr->x + ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x + ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
 			float ty = (((ptr->x + ptr->cbox_width / 2.0f) - slope_l) / slope_w) * slope_h + slope_b;
 
-			ty += HUNTER_PLAYER_SLOPE_CORRECT_OFFSET;
 			ty = fmin(ty, slope_y + slope_h / 2.0f);
 
-			if (ptr->y - ptr->cbox_height / 2.0f < ty) {
-				ptr->yspeed = 0.0f;
-				ptr->y = orig_y = ty + ptr->cbox_height / 2.0f;
-				data->should_correct = ty + ptr->cbox_height / 2.0f;
+			if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
+				if (ptr->xspeed > 0) {
+					ptr->yspeed = ptr->xspeed;
+				} else {
+					ptr->yspeed = 0.0f;
+				}
+
 				data->can_jump = 1;
 			}
 		}

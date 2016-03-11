@@ -128,6 +128,9 @@ void _load_block_types(struct tds_block_map* block_map_handle, struct tds_textur
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_018_rcorner_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 18);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_019_lcorner_grass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 19);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_020_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 20);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_021_lstairs_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_LTSLOPE | TDS_BLOCK_TYPE_SOLID, 21);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_022_rstairs_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_SOLID, 22);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_023_platform_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 23);
 }
 
 char* _get_level_load(int index) {
