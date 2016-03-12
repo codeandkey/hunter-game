@@ -41,6 +41,7 @@ void obj_player_init(struct tds_object* ptr) {
 
 	data->state_hit = data->state_hit_hurt = 0;
 	data->collision_x = data->collision_y = data->collision_xy = 0;
+	data->collision_slope = 0;
 }
 
 void obj_player_destroy(struct tds_object* ptr) {
@@ -128,6 +129,7 @@ void obj_player_update(struct tds_object* ptr) {
 	float slope_x, slope_y, slope_w, slope_h;
 	int slope_flags = 0;
 	data->should_correct = 0;
+	data->collision_slope = 0;
 
 	if ((slope_flags = tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0))) {
 		/* Potential slope intersection. We don't ect until we're sure. */
@@ -143,10 +145,12 @@ void obj_player_update(struct tds_object* ptr) {
 			float ty = (1.0f - (((ptr->x - ptr->cbox_width / 2.0f) - slope_l) / slope_w)) * slope_h + slope_b;
 
 			ty = fmin(ty, slope_y + slope_h / 2.0f);
+			data->should_correct = ty;
 
 			if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
 				if (ptr->xspeed < 0) {
 					ptr->yspeed = -ptr->xspeed;
+					data->collision_slope = 1;
 				} else {
 					ptr->yspeed = 0.0f;
 				}
@@ -160,9 +164,12 @@ void obj_player_update(struct tds_object* ptr) {
 
 			ty = fmin(ty, slope_y + slope_h / 2.0f);
 
+			data->should_correct = ty;
+
 			if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
 				if (ptr->xspeed > 0) {
 					ptr->yspeed = ptr->xspeed;
+					data->collision_slope = 1;
 				} else {
 					ptr->yspeed = 0.0f;
 				}
@@ -172,8 +179,6 @@ void obj_player_update(struct tds_object* ptr) {
 		}
 	}
 
-	data->collision_slope = slope_flags;
-
 	ptr->x = orig_x;
 	ptr->y = orig_y;
 
@@ -181,7 +186,7 @@ void obj_player_update(struct tds_object* ptr) {
 		ptr->xspeed = 0.0f;
 	}
 
-	if (data->collision_y) {
+	if (data->collision_y && !data->collision_slope) {
 		ptr->yspeed = 0.0f;
 	}
 
@@ -272,8 +277,8 @@ void obj_player_draw(struct tds_object* ptr) {
 		}
 	}
 
-	char buf[32];
-	snprintf(buf, sizeof buf / sizeof *buf, "slope correction : %f", data->should_correct);
+	char buf[64];
+	snprintf(buf, sizeof buf / sizeof *buf, "slope correction : %f [%f]", data->should_correct, ptr->y - ptr->cbox_height / 2.0f);
 	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.9f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
 
 	snprintf(buf, sizeof buf / sizeof *buf, "slope collision : %d", data->collision_slope);
