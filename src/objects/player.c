@@ -320,7 +320,7 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 	case TDS_MSG_KEY_PRESSED:
 		key = *((int*) param);
 		if (data->can_jump && key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP)) {
-			ptr->yspeed += HUNTER_PLAYER_JUMP;
+			ptr->yspeed = HUNTER_PLAYER_JUMP;
 			data->can_jump = 0;
 		}
 		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_RESET)) {
