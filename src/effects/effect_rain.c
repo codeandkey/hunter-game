@@ -68,7 +68,7 @@ void effect_rain_update(struct tds_effect_particle_state* state) {
 
 		state->part_buf[data->on_screen].a = ((rand() % precision) / (float) precision) * EFFECT_RAIN_ALPHA_VARIANCE + EFFECT_RAIN_ALPHA;
 		state->part_buf[data->on_screen].x = ((rand() % precision) / (float) precision) * camera_width + camera_left;
-		state->part_buf[data->on_screen].y = camera_bottom + camera_height;
+		state->part_buf[data->on_screen].y = camera_bottom + camera_height + EFFECT_RAIN_DROPHEIGHT / 2.0f;
 
 		data->on_screen++;
 	}

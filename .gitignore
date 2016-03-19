@@ -1,4 +1,4 @@
-save/**
+save/*
 tds.lua
 hunter.lua
 Makefile

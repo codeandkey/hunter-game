@@ -277,22 +277,6 @@ void obj_player_draw(struct tds_object* ptr) {
 		}
 	}
 
-	char buf[64];
-	snprintf(buf, sizeof buf / sizeof *buf, "slope correction : %f [%f]", data->should_correct, ptr->y - ptr->cbox_height / 2.0f);
-	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.9f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
-
-	snprintf(buf, sizeof buf / sizeof *buf, "slope collision : %d", data->collision_slope);
-	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.8f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
-
-	snprintf(buf, sizeof buf / sizeof *buf, "colX : %d", data->collision_x);
-	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.7f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
-
-	snprintf(buf, sizeof buf / sizeof *buf, "colY : %d", data->collision_y);
-	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.6f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
-
-	snprintf(buf, sizeof buf / sizeof *buf, "colXY : %d", data->collision_xy);
-	tds_overlay_render_text(tds_engine_global->overlay_handle, -0.9f, 0.9f, 0.5f, -0.9f, 10.0f, buf, sizeof buf / sizeof *buf, TDS_OVERLAY_REL_SCREENSPACE);
-
 	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.1f, 0.1f, 0.1f, 2.0f, NULL};
 	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }

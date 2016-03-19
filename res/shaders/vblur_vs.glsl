@@ -14,18 +14,20 @@ void main(void) {
 
 	/* Precompute the texture coordinates for the blur; this greatly increases shader performance */
 
-	p_texcoord_blur[0] = p_texcoord + vec2(0.0f, -0.014f);
-	p_texcoord_blur[1] = p_texcoord + vec2(0.0f, -0.012f);
-	p_texcoord_blur[2] = p_texcoord + vec2(0.0f, -0.010f);
-	p_texcoord_blur[3] = p_texcoord + vec2(0.0f, -0.008f);
-	p_texcoord_blur[4] = p_texcoord + vec2(0.0f, -0.006f);
-	p_texcoord_blur[5] = p_texcoord + vec2(0.0f, -0.004f);
-	p_texcoord_blur[6] = p_texcoord + vec2(0.0f, -0.002f);
-	p_texcoord_blur[7] = p_texcoord + vec2(0.0f, 0.002f);
-	p_texcoord_blur[8] = p_texcoord + vec2(0.0f, 0.004f);
-	p_texcoord_blur[9] = p_texcoord + vec2(0.0f, 0.006f);
-	p_texcoord_blur[10] = p_texcoord + vec2(0.0f, 0.008f);
-	p_texcoord_blur[11] = p_texcoord + vec2(0.0f, 0.010f);
-	p_texcoord_blur[12] = p_texcoord + vec2(0.0f, 0.012f);
-	p_texcoord_blur[13] = p_texcoord + vec2(0.0f, 0.014f);
+	const float factor = 2.0f;
+
+	p_texcoord_blur[0] = p_texcoord + vec2(0.0f, -0.014f * factor);
+	p_texcoord_blur[1] = p_texcoord + vec2(0.0f, -0.012f * factor);
+	p_texcoord_blur[2] = p_texcoord + vec2(0.0f, -0.010f * factor);
+	p_texcoord_blur[3] = p_texcoord + vec2(0.0f, -0.008f * factor);
+	p_texcoord_blur[4] = p_texcoord + vec2(0.0f, -0.006f * factor);
+	p_texcoord_blur[5] = p_texcoord + vec2(0.0f, -0.004f * factor);
+	p_texcoord_blur[6] = p_texcoord + vec2(0.0f, -0.002f * factor);
+	p_texcoord_blur[7] = p_texcoord + vec2(0.0f, 0.002f * factor);
+	p_texcoord_blur[8] = p_texcoord + vec2(0.0f, 0.004f * factor);
+	p_texcoord_blur[9] = p_texcoord + vec2(0.0f, 0.006f * factor);
+	p_texcoord_blur[10] = p_texcoord + vec2(0.0f, 0.008f * factor);
+	p_texcoord_blur[11] = p_texcoord + vec2(0.0f, 0.010f * factor);
+	p_texcoord_blur[12] = p_texcoord + vec2(0.0f, 0.012f * factor);
+	p_texcoord_blur[13] = p_texcoord + vec2(0.0f, 0.014f * factor);
 }
