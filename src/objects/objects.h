@@ -11,3 +11,5 @@
 #include "world_night.h"
 #include "attractor.h"
 #include "rain.h"
+#include "fade_in.h"
+#include "text.h"

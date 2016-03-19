@@ -55,11 +55,6 @@ void obj_env_draw(struct tds_object* ptr) {
 			}
 		}
 
-		/* -- Update when overlay replaced with tds_text
-		tds_overlay_set_color(tds_engine_global->overlay_handle, 1.0f, 1.0f, 1.0f, data->wname_alpha);
-		tds_overlay_render_text(tds_engine_global->overlay_handle, -1.0f, 1.0f, 1.0f, 0.0f, 14.0f, data->wname, data->wname_pos + 1, TDS_OVERLAY_REL_SCREENSPACE | TDS_OVERLAY_HCENTER | TDS_OVERLAY_VCENTER);
-		*/ 
-
 		tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_REL_SCREENSPACE);
 		tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 1.0f, 1.0f, data->wname_alpha);
 
