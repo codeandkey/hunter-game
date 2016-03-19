@@ -24,9 +24,6 @@ struct tds_object_type obj_fade_in_type = {
 void obj_fade_in_init(struct tds_object* ptr) {
 	struct obj_fade_in_data* data = (struct obj_fade_in_data*) ptr->object_data;
 
-	/* The purpose of this object is to do everything necessary to set up the "night" environment.
-	 * We add some backgrounds and set the ambient light level. */
-
 	data->factor = 0.0f;
 	data->target_factor = 1.0f;
 	data->anim_factor = HUNTER_FADEIN_ANIM_FACTOR;

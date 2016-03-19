@@ -103,6 +103,8 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_light_point", &obj_light_point_type);
 	tds_object_type_cache_add(otc_handle, "obj_attractor", &obj_attractor_type);
 	tds_object_type_cache_add(otc_handle, "obj_rain", &obj_rain_type);
+	tds_object_type_cache_add(otc_handle, "obj_text", &obj_text_type);
+	tds_object_type_cache_add(otc_handle, "obj_fade_in", &obj_fade_in_type);
 }
 
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {
