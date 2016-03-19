@@ -15,6 +15,7 @@ static void _load_sounds(struct tds_sound_cache* sndc_handle);
 static void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache* tc_handle);
 static void _load_object_types(struct tds_object_type_cache* otc_handle);
 static void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle);
+static void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle);
 
 static char* _get_level_load(int index);
 
@@ -47,6 +48,7 @@ int main(int argc, char** argv) {
 	desc.func_load_sprites = _load_sprites;
 	desc.func_load_object_types = _load_object_types;
 	desc.func_load_block_map = _load_block_types;
+	desc.func_load_fonts = _load_fonts;
 
 	struct tds_engine* engine_handle = tds_engine_create(desc);
 	tds_logf(TDS_LOG_MESSAGE, "Starting engine.\n");
@@ -133,6 +135,10 @@ void _load_block_types(struct tds_block_map* block_map_handle, struct tds_textur
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_021_lstairs_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_LTSLOPE | TDS_BLOCK_TYPE_SOLID, 21);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_022_rstairs_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_SOLID, 22);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_023_platform_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 23);
+}
+
+void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle) {
+	tds_font_cache_add(fc_handle, "debug", tds_font_create(ft_handle, "res/fonts/debug.ttf", 30));
 }
 
 char* _get_level_load(int index) {
