@@ -9,6 +9,9 @@
  */
 
 #define HUNTER_ENV_INDEX_WNAME 0
+#define HUNTER_ENV_INDEX_FONT  1
+
+#define HUNTER_ENV_FONT_DEFAULT "debug"
 
 #define HUNTER_ENV_WNAME_INTERVAL 100.0f
 #define HUNTER_ENV_WNAME_WAIT 2000.0f
@@ -27,4 +30,5 @@ struct obj_env_data {
 	int wname_pos;
 	tds_clock_point wname_alpha_timer, wname_interval_timer, wname_wait_timer;
 	float wname_alpha;
+	struct tds_font* render_font;
 };

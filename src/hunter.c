@@ -139,6 +139,7 @@ void _load_block_types(struct tds_block_map* block_map_handle, struct tds_textur
 
 void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle) {
 	tds_font_cache_add(fc_handle, "debug", tds_font_create(ft_handle, "res/fonts/debug.ttf", 30));
+	tds_font_cache_add(fc_handle, "game", tds_font_create(ft_handle, "res/fonts/game.ttf", 25));
 }
 
 char* _get_level_load(int index) {

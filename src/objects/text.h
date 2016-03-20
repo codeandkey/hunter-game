@@ -6,16 +6,22 @@
  * a static text object in the world -- good for labeling
  *
  * s0: string up to TDS_PARAM_VALSIZE (usually 32) characters in length : the text to display (left-aligned)
- * i1: boolean value (0 or 1) 0 -> display text in world space, is affected by lighting and fadein/fadeout, 1 -> display text in overlay space, not affected by lights or fades
+ * s1: font name
+ * f2: fade distance
+ * i3: boolean value (0 or 1) 0 -> display text in world space, is affected by lighting and fadein/fadeout, 1 -> display text in overlay space, not affected by lights or fades
  * f2-f5: floating-point values for RGBA text color, each component between 0.0f and 1.0f
  */
 
 #define HUNTER_TEXT_INDEX_BUFFER 0
-#define HUNTER_TEXT_INDEX_OVERLAY 1
-#define HUNTER_TEXT_INDEX_R 2
-#define HUNTER_TEXT_INDEX_G 3
-#define HUNTER_TEXT_INDEX_B 4
-#define HUNTER_TEXT_INDEX_A 5
+#define HUNTER_TEXT_INDEX_FONT 1
+#define HUNTER_TEXT_INDEX_FADE 2
+#define HUNTER_TEXT_INDEX_OVERLAY 3
+#define HUNTER_TEXT_INDEX_R 4
+#define HUNTER_TEXT_INDEX_G 5
+#define HUNTER_TEXT_INDEX_B 6
+#define HUNTER_TEXT_INDEX_A 7
+
+#define HUNTER_TEXT_FONT_DEFAULT "debug"
 
 struct tds_object_type obj_text_type;
 
@@ -30,4 +36,7 @@ struct obj_text_data {
 	int text_len;
 	int overlay;
 	float r, g, b, a;
+	float fade;
+	struct tds_font* font;
+	struct tds_object* player;
 };

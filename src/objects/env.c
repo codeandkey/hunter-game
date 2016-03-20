@@ -26,6 +26,14 @@ void obj_env_init(struct tds_object* ptr) {
 	data->wname_alpha = 1.0f;
 	data->wname_interval_timer = tds_clock_get_point();
 	data->wname_wait_timer = tds_clock_get_point();
+
+	const char* font = tds_object_get_spart(ptr, HUNTER_ENV_INDEX_FONT);
+
+	if (!font) {
+		font = HUNTER_ENV_FONT_DEFAULT;
+	}
+
+	data->render_font = tds_font_cache_get(tds_engine_global->fc_handle, font);
 }
 
 void obj_env_destroy(struct tds_object* ptr) {
@@ -58,6 +66,6 @@ void obj_env_draw(struct tds_object* ptr) {
 		tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_REL_SCREENSPACE);
 		tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 1.0f, 1.0f, data->wname_alpha);
 
-		tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, tds_engine_global->font_debug, data->wname, data->wname_pos + 1, -0.9f, -0.9f);
+		tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, data->render_font, data->wname, data->wname_pos + 1, -0.9f, -0.9f);
 	}
 }
