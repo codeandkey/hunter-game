@@ -12,4 +12,5 @@
 #include "attractor.h"
 #include "rain.h"
 #include "fade_in.h"
+#include "fade_transition.h"
 #include "text.h"

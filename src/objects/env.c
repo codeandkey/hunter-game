@@ -43,7 +43,7 @@ void obj_env_destroy(struct tds_object* ptr) {
 void obj_env_update(struct tds_object* ptr) {
 	struct obj_env_data* data = (struct obj_env_data*) ptr->object_data;
 
-	if (data->wname && data->wname_pos == strlen(data->wname) - 1 && tds_clock_get_ms(data->wname_alpha_timer) >= HUNTER_ENV_WNAME_ALPHA_TIME) {
+	if (data->wname && data->wname_pos == strlen(data->wname) - 1 && tds_clock_get_ms(data->wname_alpha_timer) >= HUNTER_ENV_WNAME_ALPHA_TIME && data->wname_enable) {
 		data->wname_alpha -= HUNTER_ENV_WNAME_ALPHA_DECAY;
 	}
 }
