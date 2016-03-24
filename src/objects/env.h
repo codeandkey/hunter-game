@@ -24,11 +24,13 @@ void obj_env_update(struct tds_object* ptr);
 void obj_env_draw(struct tds_object* ptr);
 void obj_env_init(struct tds_object* ptr);
 void obj_env_destroy(struct tds_object* ptr);
+void obj_env_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param);
 
 struct obj_env_data {
 	char* wname;
 	int wname_pos;
 	tds_clock_point wname_alpha_timer, wname_interval_timer, wname_wait_timer;
+	int wname_enable;
 	float wname_alpha;
 	struct tds_font* render_font;
 };
