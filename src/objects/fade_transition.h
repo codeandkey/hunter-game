@@ -7,7 +7,8 @@
 #define HUNTER_FADET_SLOPE_DEFAULT 0.001f
 
 #define HUNTER_FADET_INDEX_DEST  0
-#define HUNTER_FADET_INDEX_SLOPE 1
+#define HUNTER_FADET_INDEX_SAVEID 1
+#define HUNTER_FADET_INDEX_SLOPE 2
 
 struct tds_object_type obj_fade_transition_type;
 
@@ -21,6 +22,6 @@ struct obj_fade_transition_data {
 	float slope, fade_factor;
 	char* dest_world;
 	tds_clock_point start_point;
-	int activated;
+	int activated, saveid;
 	struct tds_object* player;
 };

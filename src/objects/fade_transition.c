@@ -28,6 +28,15 @@ void obj_fade_transition_init(struct tds_object* ptr) {
 	data->fade_factor = 1.0f;
 	data->activated = 0;
 
+	int* saveid = tds_object_get_ipart(ptr, HUNTER_FADET_INDEX_SAVEID);
+
+	if (saveid) {
+		data->saveid = *saveid;
+	} else {
+		tds_logf(TDS_LOG_WARNING, "No saveID passed to fade_transition!\n");
+		data->saveid = 0;
+	}
+
 	float* slope = tds_object_get_fpart(ptr, HUNTER_FADET_INDEX_SLOPE);
 
 	if (slope) {
@@ -72,6 +81,8 @@ void obj_fade_transition_update(struct tds_object* ptr) {
 
 		if (data->fade_factor < 0.0f) {
 			tds_logf(TDS_LOG_DEBUG, "triggering world load, slope %f, factor %f, dest [%s]\n", data->slope, data->fade_factor, data->dest_world);
+			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_SPAWN_ID, &data->saveid, sizeof data->saveid);
+			tds_savestate_write(tds_engine_global->savestate_handle);
 			tds_engine_request_load(tds_engine_global, data->dest_world);
 		}
 	}
