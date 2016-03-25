@@ -5,11 +5,14 @@
 
 /*
  * env
- * s0: text to display on init
+ * s0: string database groupname for text to display on world ready
+ * i1: string database group offset
+ * s2: font index
  */
 
-#define HUNTER_ENV_INDEX_WNAME 0
-#define HUNTER_ENV_INDEX_FONT  1
+#define HUNTER_ENV_INDEX_WNAME_SID 0
+#define HUNTER_ENV_INDEX_WNAME_SID_INDEX 1
+#define HUNTER_ENV_INDEX_FONT  2
 
 #define HUNTER_ENV_FONT_DEFAULT "debug"
 
@@ -27,8 +30,8 @@ void obj_env_destroy(struct tds_object* ptr);
 void obj_env_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param);
 
 struct obj_env_data {
-	char* wname;
 	int wname_pos;
+	struct tds_string* str;
 	tds_clock_point wname_alpha_timer, wname_interval_timer, wname_wait_timer;
 	int wname_enable;
 	float wname_alpha;

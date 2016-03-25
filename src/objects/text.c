@@ -21,16 +21,19 @@ struct tds_object_type obj_text_type = {
 void obj_text_init(struct tds_object* ptr) {
 	struct obj_text_data* data = (struct obj_text_data*) ptr->object_data;
 
-	data->text = tds_object_get_spart(ptr, HUNTER_TEXT_INDEX_BUFFER);
+	char* sid = tds_object_get_spart(ptr, HUNTER_TEXT_INDEX_SID);
+	int* s_index = tds_object_get_ipart(ptr, HUNTER_TEXT_INDEX_SID_INDEX);
 
-	if (!data->text) {
-		data->text = (char*) "unset";
+	int sid_len = strlen(sid);
+
+	if (sid_len > TDS_PARAM_VALSIZE) {
+		sid_len = TDS_PARAM_VALSIZE;
 	}
 
-	data->text_len = strlen(data->text);
-
-	if (data->text_len > TDS_PARAM_VALSIZE) {
-		data->text_len = TDS_PARAM_VALSIZE;
+	if (sid) {
+		data->str = tds_stringdb_get(tds_engine_global->stringdb_handle, sid, sid_len, s_index ? *s_index : 0);
+	} else {
+		data->str = NULL;
 	}
 
 	data->r = data->g = data->b = data->a = 1.0f;
@@ -115,10 +118,12 @@ void obj_text_draw(struct tds_object* ptr) {
 		flat = tds_engine_global->render_flat_overlay_handle;
 	}
 
-	tds_render_flat_set_mode(flat, TDS_RENDER_COORD_WORLDSPACE);
-	tds_render_flat_set_color(flat, data->r, data->g, data->b, data->a * fade_factor);
+	if (data->str) {
+		tds_render_flat_set_mode(flat, TDS_RENDER_COORD_WORLDSPACE);
+		tds_render_flat_set_color(flat, data->r, data->g, data->b, data->a * fade_factor);
 
-	tds_render_flat_text(flat, data->font, data->text, data->text_len, ptr->x, ptr->y);
+		tds_render_flat_text(flat, data->font, data->str->data, data->str->len, ptr->x, ptr->y, TDS_RENDER_LALIGN);
+	}
 }
 
 void obj_text_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {

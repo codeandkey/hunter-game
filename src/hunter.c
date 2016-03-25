@@ -6,7 +6,10 @@
 
 #include "save.h"
 
-#define HUNTER_CONFIG_FILENAME "hunter.cfg"
+#define HUNTER_CONFIG_FILENAME "hunter.lua"
+#define TDS_CONFIG_FILENAME "tds.lua"
+
+#define DEFAULT_STRINGDB_FILENAME "english"
 
 #include <string.h>
 #include <unistd.h>
@@ -24,7 +27,6 @@ int main(int argc, char** argv) {
 	struct tds_script* game_config = tds_script_create(HUNTER_CONFIG_FILENAME);
 
 	int save_index = tds_script_get_var_int(game_config, "save", 0);
-	tds_script_free(game_config);
 
 	char* map_filename = _get_level_load(save_index);
 
@@ -38,8 +40,9 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	desc.config_filename = "tds.cfg";
+	desc.config_filename = TDS_CONFIG_FILENAME;
 	desc.map_filename = map_filename;
+	desc.stringdb_filename = tds_script_get_var_string(game_config, "stringdb", DEFAULT_STRINGDB_FILENAME);
 	desc.save_index = save_index;
 	desc.game_input = hunter_get_game_input();
 	desc.game_input_size = hunter_get_game_input_size();
@@ -56,6 +59,7 @@ int main(int argc, char** argv) {
 	tds_engine_free(engine_handle);
 
 	tds_free(map_filename);
+	tds_script_free(game_config);
 	tds_memcheck();
 
 	return 0;
