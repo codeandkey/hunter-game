@@ -11,7 +11,7 @@ uniform vec2 light_dir;
 void main() {
 	/* Attributes are smuggled through vertex information. (segment normal through texcoord) */
 
-	if (dot(p_texcoord[0], light_dir) < 0.0) {
+	if (dot(p_texcoord[0], light_dir) >= 0.0) {
 		return;
 	}
 
