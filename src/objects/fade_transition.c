@@ -82,6 +82,7 @@ void obj_fade_transition_update(struct tds_object* ptr) {
 		if (data->fade_factor < 0.0f) {
 			tds_logf(TDS_LOG_DEBUG, "triggering world load, slope %f, factor %f, dest [%s]\n", data->slope, data->fade_factor, data->dest_world);
 			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_SPAWN_ID, &data->saveid, sizeof data->saveid);
+			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_WORLD_NAME, data->dest_world, strlen(data->dest_world));
 			tds_savestate_write(tds_engine_global->savestate_handle);
 			tds_engine_request_load(tds_engine_global, data->dest_world);
 		}

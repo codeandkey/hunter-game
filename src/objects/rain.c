@@ -21,6 +21,8 @@ struct tds_object_type obj_rain_type = {
 	.save = 1,
 };
 
+/* TODO add BGM index checking / switching */
+
 void obj_rain_init(struct tds_object* ptr) {
 	/* The only purpose of this object is to push rain to the effect tracker. */
 

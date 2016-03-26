@@ -45,6 +45,7 @@ void obj_savestation_update(struct tds_object* ptr) {
 	if (id && ((sid && *sid != *id) || !sid)) {
 		if (tds_collision_get_overlap(ptr, player)) {
 			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_SPAWN_ID, id, sizeof *id);
+			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_WORLD_NAME, tds_engine_global->state.mapname, strlen(tds_engine_global->state.mapname));
 			tds_savestate_write(tds_engine_global->savestate_handle);
 		}
 	}

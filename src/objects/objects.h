@@ -15,3 +15,6 @@
 #include "fade_transition.h"
 #include "text.h"
 #include "spawn.h"
+#include "bgm.h"
+#include "trigger_soundoff.h"
+#include "trigger_soundon.h"

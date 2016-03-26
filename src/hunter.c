@@ -69,6 +69,7 @@ void _load_sounds(struct tds_sound_cache* sndc_handle) {
 	tds_logf(TDS_LOG_MESSAGE, "Loading sounds.\n");
 
 	tds_sound_cache_add(sndc_handle, "bg_rain", tds_sound_buffer_create("res/sounds/bg_rain.ogg"));
+	tds_sound_cache_add(sndc_handle, "bg_abyss", tds_sound_buffer_create("res/sounds/bg_abyss.ogg"));
 }
 
 void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache* tc_handle) {
@@ -113,6 +114,9 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_fade_in", &obj_fade_in_type);
 	tds_object_type_cache_add(otc_handle, "obj_fade_transition", &obj_fade_transition_type);
 	tds_object_type_cache_add(otc_handle, "obj_spawn", &obj_spawn_type);
+	tds_object_type_cache_add(otc_handle, "obj_bgm", &obj_bgm_type);
+	tds_object_type_cache_add(otc_handle, "obj_trigger_soundoff", &obj_trigger_soundoff_type);
+	tds_object_type_cache_add(otc_handle, "obj_trigger_soundon", &obj_trigger_soundon_type);
 }
 
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {
@@ -141,11 +145,14 @@ void _load_block_types(struct tds_block_map* block_map_handle, struct tds_textur
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_021_lstairs_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_LTSLOPE | TDS_BLOCK_TYPE_SOLID, 21);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_022_rstairs_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_SOLID, 22);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_023_platform_stone.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 23);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_024_dirt_bg.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_NOLIGHT, 24);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_025_stone_bg.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_NOLIGHT, 25);
 }
 
 void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle) {
 	tds_font_cache_add(fc_handle, "debug", tds_font_create(ft_handle, "res/fonts/debug.ttf", 30));
 	tds_font_cache_add(fc_handle, "game", tds_font_create(ft_handle, "res/fonts/game.ttf", 25));
+	tds_font_cache_add(fc_handle, "env", tds_font_create(ft_handle, "res/fonts/env.ttf", 40));
 }
 
 char* _get_level_load(int index) {

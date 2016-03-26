@@ -42,6 +42,8 @@ void obj_player_init(struct tds_object* ptr) {
 	data->state_hit = data->state_hit_hurt = 0;
 	data->collision_x = data->collision_y = data->collision_xy = 0;
 	data->collision_slope = 0;
+
+	ptr->layer = 10;
 }
 
 void obj_player_destroy(struct tds_object* ptr) {
