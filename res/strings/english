@@ -1,0 +1,20 @@
+! -- env entries --
+@env_town
+#0
+:env_town placeholder
+@env_overworld
+#0
+:env_overworld placeholder
+@env_abyss
+#0
+:env_abyss placeholder
+@env_cave
+#0
+:env_cave placeholder
+@env_bog
+#0
+:env_bog placeholder
+@env_elevator
+#0
+:env_elevator placeholder
+! -- end env entries --
