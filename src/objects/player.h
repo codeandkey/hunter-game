@@ -14,6 +14,9 @@
 #define HUNTER_PLAYER_SLOPE_PADDING 0.01f
 #define HUNTER_PLAYER_SLOPE_CORRECT_OFFSET 0.0f 
 
+#define HUNTER_PLAYER_MIN_JUMP_ANIM_YSPEED 0.05f
+#define HUNTER_PLAYER_MAX_FALL_ANIM_YSPEED -0.05f
+
 struct tds_object_type obj_player_type;
 
 void obj_player_init(struct tds_object* ptr);
