@@ -26,7 +26,7 @@ void obj_player_draw(struct tds_object* ptr);
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param);
 
 struct obj_player_data {
-	int can_jump, direction, movement_direction;
+	int can_jump, direction, movement_direction, input_enabled;
 	float spawn_x, spawn_y;
 	int state_hit, state_hit_hurt;
 	tds_clock_point timer_hit_recover, timer_hit_flash;

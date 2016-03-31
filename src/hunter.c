@@ -10,6 +10,8 @@
 #define TDS_CONFIG_FILENAME "tds.lua"
 
 #define DEFAULT_STRINGDB_FILENAME "english"
+#define DEFAULT_DIALOG_FILENAME "seq_debug"
+#define DEFAULT_DIALOG_PORTRAIT "res/sprites/portrait_frame_128x128.png"
 
 #include <string.h>
 #include <unistd.h>
@@ -43,6 +45,9 @@ int main(int argc, char** argv) {
 	desc.config_filename = TDS_CONFIG_FILENAME;
 	desc.map_filename = map_filename;
 	desc.stringdb_filename = tds_script_get_var_string(game_config, "stringdb", DEFAULT_STRINGDB_FILENAME);
+	desc.dialog_filename = tds_script_get_var_string(game_config, "dialog", DEFAULT_DIALOG_FILENAME);
+	desc.dialog_portrait_name = tds_script_get_var_string(game_config, "dialog_portrait", DEFAULT_DIALOG_PORTRAIT);
+	desc.portrait_font_name = "game";
 	desc.save_index = save_index;
 	desc.game_input = hunter_get_game_input();
 	desc.game_input_size = hunter_get_game_input_size();
@@ -73,8 +78,6 @@ void _load_sounds(struct tds_sound_cache* sndc_handle) {
 }
 
 void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache* tc_handle) {
-	tds_sprite_cache_add(sc_handle, "font_debug", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/fonts/debug.png", 32, 32, 0, 0), 0.25f, 0.25f, 0.0f));
-
 	tds_sprite_cache_add(sc_handle, "spr_editor_cursor", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/editor_cursor.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_editor_selector", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/editor_selector.png", 64, 32, 0, 0), 2.0f, 1.0f, 0.0f));
 

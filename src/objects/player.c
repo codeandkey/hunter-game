@@ -38,6 +38,7 @@ void obj_player_init(struct tds_object* ptr) {
 	data->direction = 1;
 	data->spawn_x = ptr->x;
 	data->spawn_y = ptr->y;
+	data->input_enabled = 1;
 
 	data->state_hit = data->state_hit_hurt = 0;
 	data->collision_x = data->collision_y = data->collision_xy = 0;
@@ -59,6 +60,10 @@ void obj_player_update(struct tds_object* ptr) {
 	int key_lookup = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP);
 
 	float movement_axis = tds_input_map_get_axis(tds_engine_global->input_map_handle, move_key_low, move_key_high, move_axis);
+	
+	if (!data->input_enabled) {
+		movement_axis = 0.0f;
+	}
 
 	ptr->cbox_width = 0.3f;
 	ptr->cbox_height = 0.9f;
@@ -305,11 +310,14 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 		break;
 	case TDS_MSG_KEY_PRESSED:
 		key = *((int*) param);
-		if (data->can_jump && key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP)) {
+		if (data->can_jump && key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP) && data->input_enabled) {
 			ptr->yspeed = HUNTER_PLAYER_JUMP;
 			data->can_jump = 0;
 		}
-		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_RESET)) {
+		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP) && !data->input_enabled) {
+			tds_dialog_send_keypress(tds_engine_global->dialog_handle);
+		}
+		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_RESET) && data->input_enabled) {
 			ptr->x = data->spawn_x;
 			ptr->y = data->spawn_y;
 			ptr->xspeed = 0.0f;
@@ -326,6 +334,12 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 		} else {
 			tds_logf(TDS_LOG_DEBUG, "Player is not querying for savestations, the savestate did not respond with spawn data.\n");
 		}
+		break;
+	case TDS_MSG_DIALOG_START:
+		data->input_enabled = 0;
+		break;
+	case TDS_MSG_DIALOG_STOP:
+		data->input_enabled = 1;
 		break;
 	}
 }

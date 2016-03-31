@@ -122,7 +122,7 @@ void obj_text_draw(struct tds_object* ptr) {
 		tds_render_flat_set_mode(flat, TDS_RENDER_COORD_WORLDSPACE);
 		tds_render_flat_set_color(flat, data->r, data->g, data->b, data->a * fade_factor);
 
-		tds_render_flat_text(flat, data->font, data->str->data, data->str->len, ptr->x, ptr->y, TDS_RENDER_LALIGN);
+		tds_render_flat_text(flat, data->font, data->str->data, data->str->len, ptr->x, ptr->y, TDS_RENDER_LALIGN, data->str->formats);
 	}
 }
 

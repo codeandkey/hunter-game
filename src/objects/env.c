@@ -83,7 +83,7 @@ void obj_env_draw(struct tds_object* ptr) {
 
 		tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_REL_SCREENSPACE);
 		tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 1.0f, 1.0f, data->wname_alpha);
-		tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, data->render_font, data->str->data, data->wname_pos + 1, 0.0f, 0.8f, TDS_RENDER_CALIGN);
+		tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, data->render_font, data->str->data, data->wname_pos + 1, 0.0f, 0.8f, TDS_RENDER_CALIGN, data->str->formats);
 	}
 }
 

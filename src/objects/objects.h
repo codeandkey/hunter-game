@@ -18,3 +18,4 @@
 #include "bgm.h"
 #include "trigger_soundoff.h"
 #include "trigger_soundon.h"
+#include "trigger_dialog.h"
