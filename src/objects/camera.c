@@ -3,7 +3,7 @@
 #include <tds/tds.h>
 
 #include "../tds_game/game_input.h"
-#include "../tds_game/game_msg.h"
+#include "../msg.h"
 #include "attractor.h"
 
 struct tds_object_type obj_camera_type = {
@@ -69,13 +69,13 @@ void obj_camera_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 	struct obj_camera_data* data = (struct obj_camera_data*) ptr->object_data;
 
 	switch(msg) {
-	case TDS_GAME_MSG_CAMERA_TRACK:
+	case MSG_CAMERA_TRACK:
 		data->track = (struct tds_object*) param;
 		break;
-	case TDS_GAME_MSG_CAMERA_SHAKE:
+	case MSG_CAMERA_SHAKE:
 		data->shake = *((float*) param);
 		break;
-	case TDS_GAME_MSG_CAMERA_SIZE:
+	case MSG_CAMERA_SIZE:
 		data->size = *((float*) param);
 		break;
 	}

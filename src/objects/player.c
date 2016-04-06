@@ -4,7 +4,7 @@
 #include <tds/tds.h>
 
 #include "../tds_game/game_input.h"
-#include "../tds_game/game_msg.h"
+#include "../msg.h"
 
 #include "../save.h"
 
@@ -29,7 +29,7 @@ void obj_player_init(struct tds_object* ptr) {
 		tds_logf(TDS_LOG_WARNING, "There is already a camera which exists. This player will not create one.\n");
 	} else {
 		struct tds_object* camera = tds_object_create(&obj_camera_type, ptr->hmgr, ptr->smgr, ptr->x, ptr->y, 0.0f, NULL);
-		tds_object_msg(camera, ptr, TDS_GAME_MSG_CAMERA_TRACK, ptr);
+		tds_object_msg(camera, ptr, MSG_CAMERA_TRACK, ptr);
 	}
 
 	ptr->cbox_width = 0.3f;
@@ -295,7 +295,7 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 	int key = 0;
 
 	switch (msg) {
-	case TDS_GAME_MSG_PLAYER_HIT:
+	case MSG_PLAYER_HIT:
 		if (!data->state_hit) {
 			data->state_hit = data->state_hit_hurt = 1;
 			data->timer_hit_recover = tds_clock_get_point();
@@ -304,7 +304,7 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 			data->can_jump = 0;
 		}
 		break;
-	case TDS_GAME_MSG_SAVESTATION_START:
+	case MSG_SAVESTATION_START:
 		ptr->x = data->spawn_x = target_station->x;
 		ptr->y = data->spawn_y = target_station->y;
 		break;
@@ -315,7 +315,7 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 			data->can_jump = 0;
 		}
 		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP) && !data->input_enabled) {
-			tds_dialog_send_keypress(tds_engine_global->dialog_handle);
+			tds_engine_broadcast(tds_engine_global, MSG_DIALOG_KP, NULL);
 		}
 		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_RESET) && data->input_enabled) {
 			ptr->x = data->spawn_x;
@@ -330,15 +330,15 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 
 		if (entry.data) {
 			tds_logf(TDS_LOG_DEBUG, "Player received ready message. Querying for savestations.. Looking for spawn at ID %d\n", *((int*) entry.data));
-			tds_engine_broadcast(tds_engine_global, TDS_GAME_MSG_SAVESTATION_QUERY, entry.data);
+			tds_engine_broadcast(tds_engine_global, MSG_SAVESTATION_QUERY, entry.data);
 		} else {
 			tds_logf(TDS_LOG_DEBUG, "Player is not querying for savestations, the savestate did not respond with spawn data.\n");
 		}
 		break;
-	case TDS_MSG_DIALOG_START:
+	case MSG_DIALOG_START:
 		data->input_enabled = 0;
 		break;
-	case TDS_MSG_DIALOG_STOP:
+	case MSG_DIALOG_STOP:
 		data->input_enabled = 1;
 		break;
 	}

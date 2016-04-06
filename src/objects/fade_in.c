@@ -4,8 +4,8 @@
 #include <tds/tds.h>
 #include <tds/render.h>
 
-#include "../tds_game/game_msg.h"
 #include "../save.h"
+#include "../msg.h"
 
 #include <stdlib.h>
 
@@ -79,7 +79,7 @@ void obj_fade_in_update(struct tds_object* ptr) {
 		}
 
 		if (data->fadeout_switch) {
-			tds_engine_broadcast(tds_engine_global, TDS_GAME_MSG_WORLD_READY, NULL);
+			tds_engine_broadcast(tds_engine_global, MSG_WORLD_READY, NULL);
 			data->fadeout_switch = 0;
 		}
 	} else {

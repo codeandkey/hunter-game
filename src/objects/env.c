@@ -1,5 +1,5 @@
 #include "env.h"
-#include "../tds_game/game_msg.h"
+#include "../msg.h"
 
 #include <tds/engine.h>
 #include <tds/log.h>
@@ -91,7 +91,7 @@ void obj_env_msg(struct tds_object* ptr, struct tds_object* sender, int msg, voi
 	struct obj_env_data* data = (struct obj_env_data*) ptr->object_data;
 
 	switch (msg) {
-	case TDS_GAME_MSG_WORLD_READY:
+	case MSG_WORLD_READY:
 		data->wname_enable = 1;
 		data->wname_wait_timer = tds_clock_get_point();
 		data->wname_interval_timer = tds_clock_get_point();

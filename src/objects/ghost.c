@@ -4,7 +4,7 @@
 #include <tds/tds.h>
 
 #include "../tds_game/game_input.h"
-#include "../tds_game/game_msg.h"
+#include "../msg.h"
 
 struct tds_object_type obj_ghost_type = {
 	.type_name = "obj_ghost",
@@ -60,7 +60,7 @@ void obj_ghost_update(struct tds_object* ptr) {
 	}
 
 	if (tds_collision_get_overlap(ptr, player)) {
-		tds_object_msg(player, ptr, TDS_GAME_MSG_PLAYER_HIT, NULL);
+		tds_object_msg(player, ptr, MSG_PLAYER_HIT, NULL);
 	}
 }
 

@@ -3,7 +3,7 @@
 #include <tds/object.h>
 #include <tds/clock.h>
 
-#define HUNTER_TRIGGERSOFF_INDEX_CONTROL 0
+#define HUNTER_TRIGGERSOFF_INDEX_NAME 0
 
 struct tds_object_type obj_trigger_soundoff_type;
 
@@ -16,5 +16,5 @@ void obj_trigger_soundoff_msg(struct tds_object* ptr, struct tds_object* sender,
 struct obj_trigger_soundoff_data {
 	struct tds_object* player;
 	int activated;
-	int control_id;
+	char* name;
 };

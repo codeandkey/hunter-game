@@ -3,7 +3,6 @@
 #include <tds/tds.h>
 
 #include "../tds_game/game_input.h"
-#include "../tds_game/game_msg.h"
 
 struct tds_object_type obj_attractor_type = {
 	.type_name = "obj_attractor",

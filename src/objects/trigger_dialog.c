@@ -4,7 +4,7 @@
 #include <tds/tds.h>
 #include <tds/render.h>
 
-#include "../tds_game/game_msg.h"
+#include "../msg.h"
 #include "../save.h"
 
 #include <stdlib.h>
@@ -56,7 +56,7 @@ void obj_trigger_dialog_update(struct tds_object* ptr) {
 
 	if (tds_collision_get_overlap(ptr, data->player)) {
 		tds_logf(TDS_LOG_DEBUG, "Triggered, sending BGM stop with control index %d\n", data->control_id);
-		tds_engine_broadcast(tds_engine_global, TDS_GAME_MSG_BGM_STOP, &data->control_id);
+		tds_engine_broadcast(tds_engine_global, MSG_BGM_REQ_STOP, &data->control_id);
 		data->activated = 0;
 	}
 }

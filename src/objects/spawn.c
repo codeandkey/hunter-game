@@ -4,7 +4,7 @@
 #include <tds/tds.h>
 
 #include "../tds_game/game_input.h"
-#include "../tds_game/game_msg.h"
+#include "../msg.h"
 #include "../save.h"
 
 struct tds_object_type obj_spawn_type = {
@@ -35,11 +35,11 @@ void obj_spawn_msg(struct tds_object* ptr, struct tds_object* sender, int msg, v
 	int* id = tds_object_get_ipart(ptr, HUNTER_SPAWN_INDEX_ID), t_id = 0;
 
 	switch (msg) {
-	case TDS_GAME_MSG_SAVESTATION_QUERY:
+	case MSG_SAVESTATION_QUERY:
 		t_id = *((int*) param);
 		if (id) {
 			if (*id == t_id) {
-				tds_engine_broadcast(tds_engine_global, TDS_GAME_MSG_SAVESTATION_START, ptr);
+				tds_engine_broadcast(tds_engine_global, MSG_SAVESTATION_START, ptr);
 			}
 		}
 		break;

@@ -2,12 +2,9 @@
 #include "camera.h"
 
 #include "../effects/effect_rain.h"
+#include "../msg.h"
 
 #include <tds/tds.h>
-
-#include "../tds_game/game_msg.h"
-
-#include <stdlib.h>
 
 struct tds_object_type obj_rain_type = {
 	.type_name = "obj_rain",

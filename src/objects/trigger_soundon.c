@@ -4,7 +4,7 @@
 #include <tds/tds.h>
 #include <tds/render.h>
 
-#include "../tds_game/game_msg.h"
+#include "../msg.h"
 #include "../save.h"
 
 #include <stdlib.h>
@@ -24,14 +24,7 @@ struct tds_object_type obj_trigger_soundon_type = {
 void obj_trigger_soundon_init(struct tds_object* ptr) {
 	struct obj_trigger_soundon_data* data = (struct obj_trigger_soundon_data*) ptr->object_data;
 
-	int* cid = tds_object_get_ipart(ptr, HUNTER_TRIGGERSON_INDEX_CONTROL);
-
-	if (cid) {
-		data->control_id = *cid;
-	} else {
-		data->control_id = 0;
-	}
-
+	data->name = tds_object_get_spart(ptr, HUNTER_TRIGGERSON_INDEX_NAME);
 	data->activated = 1;
 }
 
@@ -55,8 +48,8 @@ void obj_trigger_soundon_update(struct tds_object* ptr) {
 	}
 
 	if (tds_collision_get_overlap(ptr, data->player)) {
-		tds_logf(TDS_LOG_DEBUG, "Triggered, sending BGM start with control index %d\n", data->control_id);
-		tds_engine_broadcast(tds_engine_global, TDS_GAME_MSG_BGM_START, &data->control_id);
+		tds_logf(TDS_LOG_DEBUG, "Triggered, sending BGM start for %s\n", data->name);
+		tds_engine_broadcast(tds_engine_global, MSG_BGM_REQ_START, data->name);
 		data->activated = 0;
 	}
 }
@@ -68,7 +61,7 @@ void obj_trigger_soundon_msg(struct tds_object* ptr, struct tds_object* sender, 
 	struct obj_trigger_soundon_data* data = (struct obj_trigger_soundon_data*) ptr->object_data;
 
 	switch(msg) {
-	case TDS_GAME_MSG_BGM_STOP:
+	case MSG_BGM_STOP:
 		data->activated = 1;
 		break;
 	}

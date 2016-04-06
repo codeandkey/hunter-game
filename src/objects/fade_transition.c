@@ -4,7 +4,7 @@
 #include <tds/tds.h>
 #include <tds/render.h>
 
-#include "../tds_game/game_msg.h"
+#include "../msg.h"
 #include "../save.h"
 
 #include <stdlib.h>

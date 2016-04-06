@@ -1,8 +1,8 @@
 #include <tds/tds.h>
-#include <tds/memory.h>
 
 #include "tds_game/game_input.h"
 #include "objects/objects.h"
+#include "modules/modules.h"
 
 #include "save.h"
 
@@ -21,6 +21,7 @@ static void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture
 static void _load_object_types(struct tds_object_type_cache* otc_handle);
 static void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle);
 static void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle);
+static void _load_modules(struct tds_module_container* mc_handle);
 
 static char* _get_level_load(int index);
 
@@ -45,9 +46,6 @@ int main(int argc, char** argv) {
 	desc.config_filename = TDS_CONFIG_FILENAME;
 	desc.map_filename = map_filename;
 	desc.stringdb_filename = tds_script_get_var_string(game_config, "stringdb", DEFAULT_STRINGDB_FILENAME);
-	desc.dialog_filename = tds_script_get_var_string(game_config, "dialog", DEFAULT_DIALOG_FILENAME);
-	desc.dialog_portrait_name = tds_script_get_var_string(game_config, "dialog_portrait", DEFAULT_DIALOG_PORTRAIT);
-	desc.portrait_font_name = "game";
 	desc.save_index = save_index;
 	desc.game_input = hunter_get_game_input();
 	desc.game_input_size = hunter_get_game_input_size();
@@ -57,6 +55,7 @@ int main(int argc, char** argv) {
 	desc.func_load_object_types = _load_object_types;
 	desc.func_load_block_map = _load_block_types;
 	desc.func_load_fonts = _load_fonts;
+	desc.func_load_modules = _load_modules;
 
 	struct tds_engine* engine_handle = tds_engine_create(desc);
 	tds_logf(TDS_LOG_MESSAGE, "Starting engine.\n");
@@ -117,7 +116,6 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_fade_in", &obj_fade_in_type);
 	tds_object_type_cache_add(otc_handle, "obj_fade_transition", &obj_fade_transition_type);
 	tds_object_type_cache_add(otc_handle, "obj_spawn", &obj_spawn_type);
-	tds_object_type_cache_add(otc_handle, "obj_bgm", &obj_bgm_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_soundoff", &obj_trigger_soundoff_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_soundon", &obj_trigger_soundon_type);
 }
@@ -156,6 +154,11 @@ void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle) {
 	tds_font_cache_add(fc_handle, "debug", tds_font_create(ft_handle, "res/fonts/debug.ttf", 30));
 	tds_font_cache_add(fc_handle, "game", tds_font_create(ft_handle, "res/fonts/game.ttf", 25));
 	tds_font_cache_add(fc_handle, "env", tds_font_create(ft_handle, "res/fonts/env.ttf", 40));
+}
+
+void _load_modules(struct tds_module_container* mc_handle) {
+	tds_module_container_add(mc_handle, mod_bgm_type);
+	tds_module_container_add(mc_handle, mod_dialog_type);
 }
 
 char* _get_level_load(int index) {
