@@ -14,6 +14,7 @@
 #include "fade_in.h"
 #include "fade_transition.h"
 #include "text.h"
+#include "scenery.h"
 #include "spawn.h"
 #include "trigger_soundoff.h"
 #include "trigger_soundon.h"

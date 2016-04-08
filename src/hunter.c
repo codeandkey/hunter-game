@@ -95,6 +95,7 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_ghost_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ghost_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
 	tds_sprite_cache_add(sc_handle, "spr_ghost_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ghost_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
 	tds_sprite_cache_add(sc_handle, "spr_savestation", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/save_station_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
+	tds_sprite_cache_add(sc_handle, "spr_tree", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_tree_64x64.png", 64, 64, 0, 0), 2.0f, 2.0f, 0.0f));
 
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }
@@ -119,6 +120,7 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_trigger_soundoff", &obj_trigger_soundoff_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_soundon", &obj_trigger_soundon_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_dialog", &obj_trigger_dialog_type);
+	tds_object_type_cache_add(otc_handle, "obj_scenery", &obj_scenery_type);
 }
 
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {

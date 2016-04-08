@@ -74,7 +74,7 @@ void mod_dialog_init(void* data) {
 			new_entry->texture_portrait = tds_texture_cache_get(tds_engine_global->tc_handle, texture_name, -1, -1, 0, 0);
 			new_entry->next = NULL;
 
-			tds_logf(TDS_LOG_DEBUG, "Added entry to sequence %s with texture %s\n", cur_sequence->name, texture_name);
+			tds_logf(TDS_LOG_DEBUG, "Added entry to sequence %s with texture %s [%p]\n", cur_sequence->name, texture_name, new_entry->texture_portrait);
 
 			if (!cur_sequence->head) {
 				cur_sequence->head = new_entry;
@@ -142,6 +142,8 @@ void mod_dialog_send_keypress(struct mod_dialog* ptr) {
 	}
 
 	if (ptr->cur_entry_pos == ptr->cur_entry->dialog_string->len) {
+		tds_logf(TDS_LOG_DEBUG, "advancing dialog seq entry from texture [%p]\n", ptr->cur_entry->texture_portrait);
+
 		ptr->cur_entry = ptr->cur_entry->next;
 		ptr->cur_entry_pos = 0;
 		ptr->cp = tds_clock_get_point();
