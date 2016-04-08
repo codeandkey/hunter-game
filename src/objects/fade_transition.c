@@ -24,8 +24,6 @@ struct tds_object_type obj_fade_transition_type = {
 void obj_fade_transition_init(struct tds_object* ptr) {
 	struct obj_fade_transition_data* data = (struct obj_fade_transition_data*) ptr->object_data;
 
-	data->slope = HUNTER_FADET_SLOPE_DEFAULT;
-	data->fade_factor = 1.0f;
 	data->activated = 0;
 
 	int* saveid = tds_object_get_ipart(ptr, HUNTER_FADET_INDEX_SAVEID);
@@ -37,19 +35,11 @@ void obj_fade_transition_init(struct tds_object* ptr) {
 		data->saveid = 0;
 	}
 
-	float* slope = tds_object_get_fpart(ptr, HUNTER_FADET_INDEX_SLOPE);
-
-	if (slope) {
-		data->slope = *slope;
-	}
-
 	data->dest_world = tds_object_get_spart(ptr, HUNTER_FADET_INDEX_DEST);
 
 	if (!data->dest_world) {
 		tds_logf(TDS_LOG_WARNING, "No destination world set for fade transition. This trigger will be ignored.\n");
 	}
-
-	data->start_point = tds_clock_get_point();
 }
 
 void obj_fade_transition_destroy(struct tds_object* ptr) {
@@ -72,30 +62,29 @@ void obj_fade_transition_update(struct tds_object* ptr) {
 	}
 
 	if (!data->activated && tds_collision_get_overlap(data->player, ptr)) {
-		data->activated = 1;
-		data->start_point = tds_clock_get_point();
+		tds_engine_broadcast(tds_engine_global, MSG_FADE_REQ_BLACK, ptr);
 	}
+}
 
-	if (data->activated) {
-		data->fade_factor = 1.0f - tds_clock_get_ms(data->start_point) * data->slope;
+void obj_fade_transition_draw(struct tds_object* ptr) {}
 
-		if (data->fade_factor < 0.0f) {
-			tds_logf(TDS_LOG_DEBUG, "triggering world load, slope %f, factor %f, dest [%s]\n", data->slope, data->fade_factor, data->dest_world);
+void obj_fade_transition_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
+	struct obj_fade_transition_data* data = (struct obj_fade_transition_data*) ptr->object_data;
+
+	switch (msg) {
+	case MSG_FADE_BLACK:
+		if (param == ptr) { /* We called the fade and it completed. */
+			tds_logf(TDS_LOG_DEBUG, "triggering world load, dest [%s]\n", data->dest_world);
 			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_SPAWN_ID, &data->saveid, sizeof data->saveid);
 			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_WORLD_NAME, data->dest_world, strlen(data->dest_world));
 			tds_savestate_write(tds_engine_global->savestate_handle);
 			tds_engine_request_load(tds_engine_global, data->dest_world);
 		}
+		break;
+	case MSG_FADE_START_BLACK:
+		if (param == ptr) {
+			data->activated = 1;
+		}
+		break;
 	}
-}
-
-void obj_fade_transition_draw(struct tds_object* ptr) {
-	struct obj_fade_transition_data* data = (struct obj_fade_transition_data*) ptr->object_data;
-
-	if (data->activated) {
-		tds_render_set_fade_factor(tds_engine_global->render_handle, data->fade_factor);
-	}
-}
-
-void obj_fade_transition_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
 }

@@ -283,9 +283,6 @@ void obj_player_draw(struct tds_object* ptr) {
 			}
 		}
 	}
-
-	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.1f, 0.1f, 0.1f, 2.0f, NULL};
-	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
@@ -322,6 +319,9 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 			ptr->y = data->spawn_y;
 			ptr->xspeed = 0.0f;
 			ptr->yspeed = 0.0f;
+		}
+		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP)) {
+			tds_engine_broadcast(tds_engine_global, MSG_PLAYER_ACTION, ptr);
 		}
 		break;
 	case TDS_MSG_MAP_READY:

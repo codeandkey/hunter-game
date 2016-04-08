@@ -74,6 +74,8 @@ void mod_dialog_init(void* data) {
 			new_entry->texture_portrait = tds_texture_cache_get(tds_engine_global->tc_handle, texture_name, -1, -1, 0, 0);
 			new_entry->next = NULL;
 
+			tds_logf(TDS_LOG_DEBUG, "Added entry to sequence %s with texture %s\n", cur_sequence->name, texture_name);
+
 			if (!cur_sequence->head) {
 				cur_sequence->head = new_entry;
 			}
@@ -84,6 +86,8 @@ void mod_dialog_init(void* data) {
 
 			cur_sequence->tail = new_entry;
 		}
+
+		memset(buf, 0, sizeof buf / sizeof *buf);
 	}
 }
 
@@ -139,6 +143,8 @@ void mod_dialog_send_keypress(struct mod_dialog* ptr) {
 
 	if (ptr->cur_entry_pos == ptr->cur_entry->dialog_string->len) {
 		ptr->cur_entry = ptr->cur_entry->next;
+		ptr->cur_entry_pos = 0;
+		ptr->cp = tds_clock_get_point();
 
 		if (!ptr->cur_entry) {
 			tds_engine_broadcast(tds_engine_global, MSG_DIALOG_STOP, ptr->cur_sequence->name);
@@ -165,21 +171,32 @@ void mod_dialog_draw(void* data) {
 		ptr->cur_entry_pos = ptr->cur_entry->dialog_string->len;
 	}
 
-	tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_REL_SCREENSPACE);
-	tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 1.0f, 1.0f, 1.0f);
-	tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, ptr->font, ptr->cur_entry->dialog_string->data, ptr->cur_entry_pos, -0.9f, 0.9f, TDS_RENDER_LALIGN, ptr->cur_entry->dialog_string->formats);
+	struct tds_display_desc desc = tds_engine_global->display_handle->desc;
 
-	tds_logf(TDS_LOG_DEBUG, "rendering dialog text [%.*s]\n", ptr->cur_entry_pos, ptr->cur_entry->dialog_string->data);
+	tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_SCREENSPACE);
+	tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 0.0f, 0.0f, 0.0f, 1.0f);
+	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, 0, desc.width, 0, MOD_DIALOG_SIZE_PX, NULL);
+	tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 1.0f, 1.0f, 1.0f);
+	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, 0, MOD_DIALOG_SIZE_PX, 0, MOD_DIALOG_SIZE_PX, ptr->cur_entry->texture_portrait);
+	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, 0, MOD_DIALOG_SIZE_PX, 0, MOD_DIALOG_SIZE_PX, ptr->portrait_frame);
+	tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, ptr->font, ptr->cur_entry->dialog_string->data, ptr->cur_entry_pos, MOD_DIALOG_SIZE_PX + MOD_DIALOG_TEXT_PADDING_PX, MOD_DIALOG_SIZE_PX / 2, TDS_RENDER_LALIGN, ptr->cur_entry->dialog_string->formats);
 }
 
 void mod_dialog_msg(void* data, int msg, void* param) {
+	struct mod_dialog* ptr = (struct mod_dialog*) data;
+
 	switch (msg) {
 	case MSG_DIALOG_KP:
-		mod_dialog_send_keypress((struct mod_dialog*) data);
+		mod_dialog_send_keypress(ptr);
 		break;
 	case MSG_DIALOG_REQ_START:
+		if (!ptr->cur_entry) {
+			mod_dialog_start_sequence(ptr, (char*) param);
+		}
 		break;
 	case MSG_DIALOG_REQ_STOP:
+		ptr->cur_entry = NULL;
+		tds_engine_broadcast(tds_engine_global, MSG_DIALOG_STOP, NULL);
 		break;
 	}
 }

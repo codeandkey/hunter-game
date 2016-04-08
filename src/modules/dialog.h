@@ -22,8 +22,11 @@
 
 #define MOD_DIALOG_CHAR_INTERVAL 30
 
+#define MOD_DIALOG_SIZE_PX 100
+#define MOD_DIALOG_TEXT_PADDING_PX 50
+
 #define MOD_DIALOG_PORTRAIT_FRAME "res/sprites/portrait_frame_128x128.png"
-#define MOD_DIALOG_FONT           "game"
+#define MOD_DIALOG_FONT           "dialog"
 #define MOD_DIALOG_SEQFILE        "res/seq/debug"
 
 struct mod_dialog_seq_entry {

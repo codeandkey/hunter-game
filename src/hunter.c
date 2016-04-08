@@ -113,11 +113,12 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_attractor", &obj_attractor_type);
 	tds_object_type_cache_add(otc_handle, "obj_rain", &obj_rain_type);
 	tds_object_type_cache_add(otc_handle, "obj_text", &obj_text_type);
-	tds_object_type_cache_add(otc_handle, "obj_fade_in", &obj_fade_in_type);
 	tds_object_type_cache_add(otc_handle, "obj_fade_transition", &obj_fade_transition_type);
+	tds_object_type_cache_add(otc_handle, "obj_fade_in", &obj_fade_in_type);
 	tds_object_type_cache_add(otc_handle, "obj_spawn", &obj_spawn_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_soundoff", &obj_trigger_soundoff_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_soundon", &obj_trigger_soundon_type);
+	tds_object_type_cache_add(otc_handle, "obj_trigger_dialog", &obj_trigger_dialog_type);
 }
 
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {
@@ -154,11 +155,14 @@ void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle) {
 	tds_font_cache_add(fc_handle, "debug", tds_font_create(ft_handle, "res/fonts/debug.ttf", 30));
 	tds_font_cache_add(fc_handle, "game", tds_font_create(ft_handle, "res/fonts/game.ttf", 25));
 	tds_font_cache_add(fc_handle, "env", tds_font_create(ft_handle, "res/fonts/env.ttf", 40));
+	tds_font_cache_add(fc_handle, "dialog", tds_font_create(ft_handle, "res/fonts/dialog.ttf", 45));
+	tds_font_cache_add(fc_handle, "fade", tds_font_create(ft_handle, "res/fonts/fade.ttf", 25));
 }
 
 void _load_modules(struct tds_module_container* mc_handle) {
 	tds_module_container_add(mc_handle, mod_bgm_type);
 	tds_module_container_add(mc_handle, mod_dialog_type);
+	tds_module_container_add(mc_handle, mod_fade_type);
 }
 
 char* _get_level_load(int index) {

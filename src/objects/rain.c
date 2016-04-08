@@ -22,9 +22,6 @@ void obj_rain_init(struct tds_object* ptr) {
 	struct obj_rain_data* data = (struct obj_rain_data*) ptr->object_data;
 
 	tds_effect_push(tds_engine_global->effect_handle, &effect_rain_type);
-	tds_sound_source_load_buffer(ptr->snd_src, tds_sound_cache_get(tds_engine_global->sndc_handle, "bg_rain"));
-	ptr->snd_loop = 1;
-	tds_sound_source_play(ptr->snd_src);
 
 	data->start_point = tds_clock_get_point();
 	data->ms_interval = HUNTER_RAIN_LIGHTNING_MS_MIN + rand() % HUNTER_RAIN_LIGHTNING_MS_VAR;
