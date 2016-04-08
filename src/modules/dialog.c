@@ -142,8 +142,6 @@ void mod_dialog_send_keypress(struct mod_dialog* ptr) {
 	}
 
 	if (ptr->cur_entry_pos == ptr->cur_entry->dialog_string->len) {
-		tds_logf(TDS_LOG_DEBUG, "advancing dialog seq entry from texture [%p]\n", ptr->cur_entry->texture_portrait);
-
 		ptr->cur_entry = ptr->cur_entry->next;
 		ptr->cur_entry_pos = 0;
 		ptr->cp = tds_clock_get_point();
