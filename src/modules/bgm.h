@@ -7,7 +7,7 @@
 #define MOD_BGM_STATE_PLAYING 2
 #define MOD_BGM_STATE_FADINGOUT 3
 
-#define MOD_BGM_VOLUME_SLOPE 0.005f
+#define MOD_BGM_VOLUME_SLOPE 0.002f
 
 struct mod_bgm_entry {
 	char* name;
