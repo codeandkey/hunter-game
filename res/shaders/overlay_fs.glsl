@@ -22,9 +22,9 @@ void main(void) {
 	vec4 src = texture2D(tds_texture, p_texcoord) * tds_color;
 	vec4 dst = texture2D(tds_texture2, p_texcoord);
 
-	color.r = overlay(dst.r, src.r);
-	color.g = overlay(dst.g, src.g);
-	color.b = overlay(dst.b, src.b);
+	color.r = overlay(src.r, dst.r);
+	color.g = overlay(src.g, dst.g);
+	color.b = overlay(src.b, dst.b);
 
 	color.a = tds_color.a;
 }
