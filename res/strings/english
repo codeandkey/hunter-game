@@ -7,7 +7,7 @@
 :env_overworld placeholder
 @env_abyss
 #0
-:env_abyss placeholder
+:env_abyss ^s11shaky placeholder^e ^cFF0000^w777777text!^e
 @env_cave
 #0
 :env_cave placeholder
@@ -18,3 +18,16 @@
 #0
 :env_elevator placeholder
 ! -- end env entries --
+@fadein_overworld
+#0
+:fadein_overworld
+@fadein_abyss
+#0
+:fadein_abyss
+@player_tree
+#0
+:Wow! This is a ^c005500tree!
+#1
+:^w666666No it isn't.
+#2
+:I guess that isn't a ^c005500tree^cFFFFFF after all!
