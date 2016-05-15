@@ -30,6 +30,7 @@ void obj_scenery_init(struct tds_object* ptr) {
 
 	if (spr) {
 		tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, spr));
+		tds_object_anim_start(ptr);
 	}
 
 	data->name = tds_object_get_spart(ptr, HUNTER_SCENERY_INDEX_SEQUENCE);
@@ -69,7 +70,7 @@ void obj_scenery_update(struct tds_object* ptr) {
 	}
 
 	if (tds_collision_get_overlap(ptr, data->player) && !data->use) {
-		if (data->activated) {
+		if (data->activated && data->name) {
 			tds_logf(TDS_LOG_DEBUG, "Triggered, sending dialog seq for %s\n", data->name);
 			tds_engine_broadcast(tds_engine_global, MSG_DIALOG_REQ_START, data->name);
 			/* We don't deactivate here. We wait for confirmation from the dialog module. */
@@ -89,13 +90,13 @@ void obj_scenery_msg(struct tds_object* ptr, struct tds_object* sender, int msg,
 
 	switch(msg) {
 	case MSG_DIALOG_START:
-		if (!strcmp((char*) param, data->name)) {
+		if (data->name && !strcmp((char*) param, data->name)) {
 			/* Our dialog sequence started. Disable! */
 			data->activated = 0;
 		}
 		break;
 	case MSG_PLAYER_ACTION:
-		if (data->use && data->player && data->activated && tds_collision_get_overlap(ptr, data->player)) {
+		if (data->use && data->player && data->activated && data->name && tds_collision_get_overlap(ptr, data->player)) {
 			tds_engine_broadcast(tds_engine_global, MSG_DIALOG_REQ_START, data->name);
 		}
 		break;
