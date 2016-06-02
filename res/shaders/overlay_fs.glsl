@@ -18,6 +18,10 @@ float overlay(float b, float a) {
 	}
 }
 
+float pegtop(float src, float dst) {
+	return (1 - 2 * src) * pow(dst, 2) + 2 * src * dst;
+}
+
 void main(void) {
 	vec4 src = texture2D(tds_texture, p_texcoord) * tds_color;
 	vec4 dst = texture2D(tds_texture2, p_texcoord);
@@ -25,6 +29,12 @@ void main(void) {
 	color.r = overlay(src.r, dst.r);
 	color.g = overlay(src.g, dst.g);
 	color.b = overlay(src.b, dst.b);
+
+	/*
+	color.r = pegtop(src.r, dst.r);
+	color.g = pegtop(src.g, dst.g);
+	color.b = pegtop(src.b, dst.b);
+	*/
 
 	color.a = tds_color.a;
 }
