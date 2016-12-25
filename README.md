@@ -21,7 +21,12 @@ hunter.lua contains the local game configuration:
 
 tds.lua contains the engine configuration:
 	`width` is an integer variable designating the width of the target display [default: 640]
+
 	`height` is an integer variable designating the height of the target display [default: 480]
+
 	`fullscreen` is a boolean variable designating whether the game should be fullscreen [default: false]
+
 	`verticalsync` is an integer variable designating the vertical sync interval (1 -> normal vsync, 2 -> vsync at 1/2 FPS, etc) [default: 0]
+
 	`msaa` is an integer variable designating the number of samples for MSAA [default: 0]
+
