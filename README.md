@@ -1,8 +1,8 @@
 # hunter-game
-This beautful Markdown README does not mean anything yet.
-This game is in development and is barely playable.
 
-hunter-game uses tds-engine, which can be found on my GitHub profile.
+hunter-game is a work-in-progress adventure game and demonstration of tds-engine.
+
+hunter-game was written alongside [tds-engine](http://github.com/molecuul/tds-engine)
 
 ## compile
 
