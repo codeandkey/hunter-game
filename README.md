@@ -17,9 +17,11 @@ Execute `make config=release` to compile the game in release mode.
 hunter uses Lua for configuration.
 
 hunter.lua contains the local game configuration:
+
 	`save` is an integer variable designating the save index to use.
 
 tds.lua contains the engine configuration:
+
 	`width` is an integer variable designating the width of the target display [default: 640]
 
 	`height` is an integer variable designating the height of the target display [default: 480]
