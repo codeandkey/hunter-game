@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 struct tds_object_type obj_world_night_type = {
-	.type_name = "obj_world_night",
+	.type_name = "world_night",
 	.default_sprite = NULL,
 	.data_size = sizeof(struct obj_world_night_data),
 	.func_init = obj_world_night_init,
