@@ -1,5 +1,5 @@
 solution "hunter-game"
-	configurations { "debug", "release" }
+	configurations { "release", "debug" }
 
 	project "hunter-game"
 		kind "WindowedApp"
