@@ -1,2 +1,4 @@
 @test_dialog_first
 :env_overworld:0:res/sprites/portrait_player_128x128.png
+@abyss_tree
+:env_abyss:0:res/sprites/scene_tree_64x64.png
