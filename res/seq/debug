@@ -16,7 +16,7 @@
 @sign_2
 :sign_2:0:res/sprites/scene_sign_32x32.png: :
 :sign_2:1:res/sprites/scene_sign_32x32.png: :
-:sign_2:3:res/sprites/scene_sign_32x32.png: :
+:sign_2:2:res/sprites/scene_sign_32x32.png: :
 @sign_3
 :sign_3:0:res/sprites/scene_sign_32x32.png: :
 :sign_3:1:res/sprites/scene_sign_32x32.png: :
