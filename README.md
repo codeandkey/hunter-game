@@ -31,4 +31,3 @@ tds.lua contains the engine configuration:
 	`verticalsync` is an integer variable designating the vertical sync interval (1 -> normal vsync, 2 -> vsync at 1/2 FPS, etc) [default: 0]
 
 	`msaa` is an integer variable designating the number of samples for MSAA [default: 0]
-

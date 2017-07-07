@@ -1,12 +1,11 @@
 @test_dialog_first
-:env_overworld:0:res/sprites/portrait_player_128x128.png
+:env_overworld:0:res/sprites/portrait_player_128x128.png: :
 @abyss_tree
-:player_tree:0:res/sprites/portrait_player_128x128.png
-:player_tree:1:res/sprites/scene_tree_64x64.png
-:player_tree:2:res/sprites/portrait_player_128x128.png
+:player_tree:0:res/sprites/portrait_player_128x128.png: :
+:player_tree:1:res/sprites/scene_tree_64x64.png: :
+:player_tree:2:res/sprites/portrait_player_128x128.png: :
 @random_dude
-:abyss_dude:0:res/sprites/randomdude_32x32.png
-:abyss_dude:1:res/sprites/portrait_player_128x128.png
-:abyss_dude:2:res/sprites/randomdude_32x32.png
-:abyss_dude:3:res/sprites/portrait_player_128x128.png
-
+:abyss_dude:0:res/sprites/randomdude_32x32.png: :
+:abyss_dude:1:res/sprites/portrait_player_128x128.png: :
+:abyss_dude:2:res/sprites/randomdude_32x32.png: :
+:abyss_dude:3:res/sprites/portrait_player_128x128.png: :
