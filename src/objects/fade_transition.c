@@ -78,6 +78,7 @@ void obj_fade_transition_msg(struct tds_object* ptr, struct tds_object* sender, 
 			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_SPAWN_ID, &data->saveid, sizeof data->saveid);
 			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_WORLD_NAME, data->dest_world, strlen(data->dest_world));
 			tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_SAVE_ALL, NULL); /* save elevator states */
+			tds_engine_broadcast(tds_engine_global, MSG_COINPILE_SAVE_ALL, NULL); /* save coinpile states */
 			tds_savestate_write(tds_engine_global->savestate_handle);
 			tds_engine_request_load(tds_engine_global, data->dest_world);
 		}

@@ -69,5 +69,5 @@ enum hunter_msg {
 	MSG_ELEVATOR_SAVE_ALL, /* saves states of all live elevators */
 
 	/* coinpile */
-	MSG_COINPILE_SAVE,
+	MSG_COINPILE_SAVE_ALL,
 };
