@@ -21,6 +21,7 @@ void mod_dialog_init(void* data) {
 	ptr->cp = tds_clock_get_point();
 	ptr->cur_entry_pos = 0;
 	ptr->font = tds_font_cache_get(tds_engine_global->fc_handle, MOD_DIALOG_FONT);
+	ptr->font_small = tds_font_cache_get(tds_engine_global->fc_handle, MOD_DIALOG_SMALLFONT);
 
 	/* Now, we load in the sequences file. */
 
@@ -62,15 +63,23 @@ void mod_dialog_init(void* data) {
 
 			struct mod_dialog_seq_entry* new_entry = tds_malloc(sizeof *new_entry);
 
-			char* stringdb_index = strtok(buf + 1, ":"), *stringdb_offset = strtok(NULL, ":"), *texture_name = strtok(NULL, ":"), *saveptr = NULL;
+			char* stringdb_index = strtok(buf + 1, ":"), *stringdb_offset = strtok(NULL, ":"), *texture_name = strtok(NULL, ":"), *header_name = strtok(NULL, ":"), *saveptr = NULL;
 
-			if (!stringdb_index || !stringdb_offset || !texture_name) {
+			if (!stringdb_index || !stringdb_offset || !texture_name || !header_name) {
+				tds_free(new_entry);
 				tds_logf(TDS_LOG_WARNING, "Invalid format near [%s], ignoring entry\n", buf);
 				continue;
 			}
 
 			int stringdb_offset_val = strtol(stringdb_offset, &saveptr, 10);
 			new_entry->dialog_string = tds_stringdb_get(tds_engine_global->stringdb_handle, stringdb_index, strlen(stringdb_index), stringdb_offset_val);
+
+			if (strlen(header_name)) {
+				new_entry->header_string = tds_stringdb_get(tds_engine_global->stringdb_handle, header_name, strlen(header_name), 0);
+			} else {
+				new_entry->header_string = NULL;
+			}
+
 			new_entry->texture_portrait = tds_texture_cache_get(tds_engine_global->tc_handle, texture_name, -1, -1, 0, 0);
 			new_entry->next = NULL;
 
@@ -179,7 +188,8 @@ void mod_dialog_draw(void* data) {
 	tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 1.0f, 1.0f, 1.0f);
 	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, 0, MOD_DIALOG_SIZE_PX, 0, MOD_DIALOG_SIZE_PX, ptr->cur_entry->texture_portrait);
 	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, 0, MOD_DIALOG_SIZE_PX, 0, MOD_DIALOG_SIZE_PX, ptr->portrait_frame);
-	tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, ptr->font, ptr->cur_entry->dialog_string->data, ptr->cur_entry_pos, MOD_DIALOG_SIZE_PX + MOD_DIALOG_TEXT_PADDING_PX, MOD_DIALOG_SIZE_PX / 2, TDS_RENDER_LALIGN, ptr->cur_entry->dialog_string->formats);
+	tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, ptr->font, ptr->cur_entry->dialog_string->data, ptr->cur_entry_pos, MOD_DIALOG_SIZE_PX + MOD_DIALOG_TEXT_PADDING_PX + MOD_DIALOG_EXTRA_PADDING, MOD_DIALOG_SIZE_PX / 2, TDS_RENDER_LALIGN, ptr->cur_entry->dialog_string->formats);
+	tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, ptr->font, ptr->cur_entry->header_string->data, ptr->cur_entry->header_string->len, MOD_DIALOG_SIZE_PX + MOD_DIALOG_TEXT_PADDING_PX + MOD_DIALOG_EXTRA_PADDING / 2, MOD_DIALOG_SIZE_PX / 2, TDS_RENDER_CALIGN, ptr->cur_entry->header_string->formats);
 }
 
 void mod_dialog_msg(void* data, int msg, void* param) {

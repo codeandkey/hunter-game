@@ -164,6 +164,7 @@ void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle) {
 	tds_font_cache_add(fc_handle, "game", tds_font_create(ft_handle, "res/fonts/game.ttf", 25));
 	tds_font_cache_add(fc_handle, "env", tds_font_create(ft_handle, "res/fonts/env.ttf", 40));
 	tds_font_cache_add(fc_handle, "dialog", tds_font_create(ft_handle, "res/fonts/dialog.ttf", 45));
+	tds_font_cache_add(fc_handle, "dialogheader", tds_font_create(ft_handle, "res/fonts/dialog.ttf", 15));
 	tds_font_cache_add(fc_handle, "fade", tds_font_create(ft_handle, "res/fonts/fade.ttf", 25));
 }
 
