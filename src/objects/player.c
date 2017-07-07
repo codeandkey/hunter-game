@@ -187,7 +187,7 @@ void obj_player_update(struct tds_object* ptr) {
 	}
 
 	/* now, test for potential early slope collisions and allow the player to jump before he normally would */
-	if (ptr->yspeed <= 0.0f && !data->can_jump) {
+	if (!data->can_jump) {
 		/* test if we're falling towards a slope */
 		ptr->y -= HUNTER_PLAYER_EARLY_SLOPE_REJUMP;
 

@@ -13,7 +13,7 @@
 #define HUNTER_PLAYER_HIT_FLASH 333.0f
 #define HUNTER_PLAYER_SLOPE_PADDING 0.01f
 #define HUNTER_PLAYER_SLOPE_CORRECT_OFFSET 0.0f 
-#define HUNTER_PLAYER_EARLY_SLOPE_REJUMP 0.3f /* distance to enable jump at when moving down and hitting a slope */
+#define HUNTER_PLAYER_EARLY_SLOPE_REJUMP 0.1f /* distance to enable jump at when moving down and hitting a slope */
 
 #define HUNTER_PLAYER_MIN_JUMP_ANIM_YSPEED 0.05f
 #define HUNTER_PLAYER_MAX_FALL_ANIM_YSPEED -0.05f
