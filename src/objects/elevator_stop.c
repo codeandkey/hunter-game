@@ -87,19 +87,13 @@ void obj_elevator_stop_msg(struct tds_object* ptr, struct tds_object* sender, in
 	int target_index;
 
 	switch (msg) {
-	case MSG_ELEVATOR_LOCK_STOP:
-		target_index = *((int*) param);
-		if (target_index == data->index) {
-			data->enabled = 0;
-		}
-		break;
-	case MSG_ELEVATOR_UNLOCK_STOP:
-		target_index = *((int*) param);
-		if (target_index == data->index) {
-			data->enabled = 1;
-		}
-		break;
 	case MSG_ELEVATOR_STOP_ACK:
 		if (param == ptr) data->stop_broadcast = 1;
+		break;
+	case MSG_ELEVATOR_START_SEQ:
+		if (param == ptr) data->enabled = 0;
+	case MSG_ELEVATOR_STOP_SEQ:
+		if (param == ptr) data->enabled = 1;
+		break;
 	}
 }

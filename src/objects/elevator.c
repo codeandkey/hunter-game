@@ -31,6 +31,11 @@ void obj_elevator_init(struct tds_object* ptr) {
 	data->index_stop1 = *tds_object_get_ipart(ptr, HUNTER_ELEVATOR_INDEX_STOP1);
 	data->index_stop2 = *tds_object_get_ipart(ptr, HUNTER_ELEVATOR_INDEX_STOP2);
 
+	int* save = tds_object_get_ipart(ptr, HUNTER_ELEVATOR_INDEX_SAVE);
+
+	data->save = -1;
+	if (save) data->save = *save;
+
 	data->stop1 = NULL; /* we have to wait for the stops to initialize before we can use anything */
 	data->stop2 = NULL;
 
@@ -69,6 +74,11 @@ void obj_elevator_update(struct tds_object* ptr) {
 				data->state++;
 				data->rest_timer = tds_clock_get_point();
 				ptr->yspeed = 0.0f;
+
+				/* lock the appropriate doors */
+
+				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_LOCK_STOP, data->at_stop1 ? &data->index_stop1 : &data->index_stop2);
+				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_UNLOCK_STOP, data->at_stop1 ? &data->index_stop2 : &data->index_stop1);
 			}
 		}
 		break;
@@ -79,11 +89,6 @@ void obj_elevator_update(struct tds_object* ptr) {
 
 			data->at_stop1 = !data->at_stop1;
 			data->state++;
-
-			/* lock the appropriate doors */
-
-			tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_LOCK_STOP, data->at_stop1 ? &data->index_stop2 : &data->index_stop1);
-			tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_UNLOCK_STOP, data->at_stop1 ? &data->index_stop1 : &data->index_stop2);
 
 			struct tds_engine_object_list exit_list = tds_engine_get_object_list_by_type(tds_engine_global, "obj_elevator_exit");
 			struct tds_object* target_exit = NULL;
@@ -153,26 +158,44 @@ void obj_elevator_msg(struct tds_object* ptr, struct tds_object* sender, int msg
 
 			data->at_stop1 = (stop1_dist < stop2_dist);
 
+			/* quickly check if we have a savestate and load it up */
+			if (data->save >= 0) {
+				struct tds_savestate_entry e = tds_savestate_get(tds_engine_global->savestate_handle, HUNTER_SAVE_ELEV_OFFSET + data->save);
+
+				if (e.data) {
+					data->at_stop1 = *((int*) e.data);
+				}
+			}
+
 			if (data->at_stop1) {
 				ptr->x = data->stop1->x;
 				ptr->y = data->stop1->y - data->stop1->cbox_height / 2.0f - ptr->cbox_height / 2.0f;
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_LOCK_STOP, &data->index_stop2);
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_UNLOCK_STOP, &data->index_stop1);
+				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_STOP_SEQ, data->stop1);
 			} else {
 				ptr->x = data->stop2->x;
 				ptr->y = data->stop2->y - data->stop2->cbox_height / 2.0f - ptr->cbox_height / 2.0f;
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_LOCK_STOP, &data->index_stop1);
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_UNLOCK_STOP, &data->index_stop2);
+				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_STOP_SEQ, data->stop2);
 			}
 		}
 	}
 		break;
 	case MSG_ELEVATOR_START_SEQ:
 		/* player just touched a live stop. teleport the player to the elevator and start the move sequence. */
-		data->rest_timer = tds_clock_get_point();
-		data->state = HUNTER_ELEVATOR_STATE_PREMOVE;
+		if (param == data->stop1 || param == data->stop2) {
+			data->rest_timer = tds_clock_get_point();
+			data->state = HUNTER_ELEVATOR_STATE_PREMOVE;
+		}
 		break;
 	case MSG_ELEVATOR_STOP_SEQ:
+		break;
+	case MSG_ELEVATOR_SAVE_ALL:
+		if (data->save >= 0) {
+			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_ELEV_OFFSET + data->save, &data->at_stop1, sizeof data->at_stop1);
+		}
 		break;
 	}
 }

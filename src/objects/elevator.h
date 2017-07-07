@@ -5,6 +5,7 @@
 
 #define HUNTER_ELEVATOR_INDEX_STOP1 0 /* string: global object id of the first stop location */
 #define HUNTER_ELEVATOR_INDEX_STOP2 1 /* string: ^ for the second stop */
+#define HUNTER_ELEVATOR_INDEX_SAVE 2  /* savestate index for saving states */
 
 #define HUNTER_ELEVATOR_STATE_PREMOVE 0
 #define HUNTER_ELEVATOR_STATE_MOVE 1
@@ -31,7 +32,7 @@ void obj_elevator_msg(struct tds_object* ptr, struct tds_object* sender, int msg
 
 struct obj_elevator_data {
 	struct tds_object* player;
-	int index_stop1, index_stop2, at_stop1, state;
+	int index_stop1, index_stop2, at_stop1, state, save;
 	struct tds_object* stop1, *stop2;
 	tds_clock_point rest_timer;
 };
