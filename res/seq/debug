@@ -32,3 +32,7 @@
 :sign_6:0:res/sprites/scene_sign_32x32.png: :
 :sign_6:1:res/sprites/scene_sign_32x32.png: :
 :sign_6:2:res/sprites/scene_sign_32x32.png: :
+@secret_randomdude
+:secret_randomdude:0:res/sprites/randomdude_32x32.png: :
+:secret_randomdude:1:res/sprites/randomdude_32x32.png: :
+:secret_randomdude:2:res/sprites/randomdude_32x32.png: :
