@@ -187,9 +187,9 @@ void obj_player_update(struct tds_object* ptr) {
 	}
 
 	/* now, test for potential early slope collisions and allow the player to jump before he normally would */
-	if (ptr->yspeed < 0.0f) {
-		ptr->y -= HUNTER_PLAYER_EARLY_SLOPE_REJUMP;
+	if (ptr->yspeed <= 0.0f && !data->can_jump) {
 		/* test if we're falling towards a slope */
+		ptr->y -= HUNTER_PLAYER_EARLY_SLOPE_REJUMP;
 
 		if ((slope_flags = tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0))) {
 			/* Potential slope intersection. We don't ect until we're sure. */
@@ -200,13 +200,15 @@ void obj_player_update(struct tds_object* ptr) {
 			data->csy = slope_y;
 			data->csw = slope_w;
 			data->csh = slope_h;
+
+			data->can_jump = 1;
 	
 			if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE && ptr->x - ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x - ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
 				float ty = (1.0f - (((ptr->x - ptr->cbox_width / 2.0f) - slope_l) / slope_w)) * slope_h + slope_b;
 	
 				ty = fmin(ty, slope_y + slope_h / 2.0f);
 	
-				if (ptr->y - ptr->cbox_height / 2.0f <= ty && ptr->xspeed > 0.0f) {
+				if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
 					data->can_jump = 1;
 				}
 			}
@@ -216,7 +218,7 @@ void obj_player_update(struct tds_object* ptr) {
 	
 				ty = fmin(ty, slope_y + slope_h / 2.0f);
 	
-				if (ptr->y - ptr->cbox_height / 2.0f <= ty && ptr->xspeed < 0.0f) {
+				if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
 					data->can_jump = 1;
 				}
 			}
@@ -320,6 +322,18 @@ void obj_player_draw(struct tds_object* ptr) {
 			}
 		}
 	}
+
+	tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_WORLDSPACE);
+	if (data->can_jump) {
+		if (!ptr->yspeed) {
+			tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 0.0f, 1.0f, 0.0f, 0.5f);
+		} else {
+			tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 0.0f, 1.0f, 1.0f, 0.5f);
+		}
+	} else {
+		tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 0.0f, 0.0f, 0.5f);
+	}
+	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, ptr->x + ptr->xspeed - ptr->cbox_width / 2.0f, ptr->x + ptr->xspeed + ptr->cbox_width / 2.0f, ptr->y + ptr->yspeed - HUNTER_PLAYER_EARLY_SLOPE_REJUMP + ptr->cbox_height / 2.0f, ptr->y + ptr->yspeed - HUNTER_PLAYER_EARLY_SLOPE_REJUMP - ptr->cbox_height / 2.0f, NULL);
 }
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
