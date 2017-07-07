@@ -1,5 +1,7 @@
 # hunter-game
 
+![cover](https://github.com/molecuul/hunter-game/raw/master/res/cover.png)
+
 hunter-game is a work-in-progress adventure game and demonstration of tds-engine.
 
 hunter-game was written alongside [tds-engine](http://github.com/molecuul/tds-engine)
