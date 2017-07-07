@@ -28,7 +28,7 @@ void obj_world_night_init(struct tds_object* ptr) {
 	tds_bg_push(tds_engine_global->bg_handle, 0, tds_texture_cache_get(tds_engine_global->tc_handle, "res/sprites/bg_night_colored_640x640.png", 640, 640, 1, 1), 0, 0);
 	tds_bg_push(tds_engine_global->bg_handle, 1, tds_texture_cache_get(tds_engine_global->tc_handle, "res/sprites/bg_night_stars_640x640.png", 640, 640, 1, 1), 1, 0);
 
-	tds_render_set_ambient_brightness(tds_engine_global->render_handle, 0.1f);
+	tds_render_set_ambient_brightness(tds_engine_global->render_handle, 0.4f);
 }
 
 void obj_world_night_destroy(struct tds_object* ptr) {

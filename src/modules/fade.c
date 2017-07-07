@@ -15,7 +15,7 @@ void mod_fade_init(void* data) {
 
 	ptr->fade = 0.0f;
 	ptr->text_fade = 0.0f;
-	ptr->state = MOD_FADE_STATE_BLACK;
+	ptr->state = MOD_FADE_STATE_TO_NONE;
 	ptr->resp_object = NULL;
 
 	ptr->display_font = tds_font_cache_get(tds_engine_global->fc_handle, MOD_FADE_FONT);
@@ -73,8 +73,9 @@ void mod_fade_update(void* data) {
 void mod_fade_draw(void* data) {
 	struct mod_fade* ptr = (struct mod_fade*) data;
 
-	tds_render_set_fade_factor(tds_engine_global->render_handle, ptr->fade);
 	tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_REL_SCREENSPACE);
+	tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 0.0f, 0.0f, 0.0, 1.0f - ptr->fade);
+	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, -1.0f, 1.0f, 1.0f, -1.0f, NULL);
 	tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 1.0f, 1.0f, ptr->text_fade);
 
 	if (ptr->display_text) {
@@ -88,21 +89,17 @@ void mod_fade_msg(void* data, int msg, void* param) {
 	switch (msg) {
 	case MSG_FADE_REQ_BLACK:
 		ptr->resp_object = (struct tds_object*) param;
-		if (ptr->state == MOD_FADE_STATE_NONE) {
-			ptr->resp_object = (struct tds_object*) param;
-			ptr->state = MOD_FADE_STATE_TO_BLACK;
-			tds_engine_broadcast(tds_engine_global, MSG_FADE_START_BLACK, param);
-		}
+		ptr->resp_object = (struct tds_object*) param;
+		ptr->state = MOD_FADE_STATE_TO_BLACK;
+		tds_engine_broadcast(tds_engine_global, MSG_FADE_START_BLACK, param);
 		break;
 	case MSG_FADE_REQ_NONE:
-		if (ptr->state == MOD_FADE_STATE_BLACK) {
-			ptr->resp_object = (struct tds_object*) param;
-			ptr->state = MOD_FADE_STATE_TO_NONE;
-			tds_engine_broadcast(tds_engine_global, MSG_FADE_START_NONE, param);
+		ptr->resp_object = (struct tds_object*) param;
+		ptr->state = MOD_FADE_STATE_TO_NONE;
+		tds_engine_broadcast(tds_engine_global, MSG_FADE_START_NONE, param);
 
-			if (ptr->display_text) {
-				ptr->cp = tds_clock_get_point();
-			}
+		if (ptr->display_text) {
+			ptr->cp = tds_clock_get_point();
 		}
 		break;
 	case MSG_FADE_REQ_TEXT:
