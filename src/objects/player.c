@@ -186,6 +186,43 @@ void obj_player_update(struct tds_object* ptr) {
 		}
 	}
 
+	/* now, test for potential early slope collisions and allow the player to jump before he normally would */
+	if (ptr->yspeed < 0.0f) {
+		ptr->y -= HUNTER_PLAYER_EARLY_SLOPE_REJUMP;
+		/* test if we're falling towards a slope */
+
+		if ((slope_flags = tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0))) {
+			/* Potential slope intersection. We don't ect until we're sure. */
+	
+			float slope_l = slope_x - slope_w / 2.0f, slope_r = slope_l + slope_w, slope_b = slope_y - slope_h / 2.0f, slope_t = slope_b + slope_h;
+	
+			data->csx = slope_x;
+			data->csy = slope_y;
+			data->csw = slope_w;
+			data->csh = slope_h;
+	
+			if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE && ptr->x - ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x - ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
+				float ty = (1.0f - (((ptr->x - ptr->cbox_width / 2.0f) - slope_l) / slope_w)) * slope_h + slope_b;
+	
+				ty = fmin(ty, slope_y + slope_h / 2.0f);
+	
+				if (ptr->y - ptr->cbox_height / 2.0f <= ty && ptr->xspeed > 0.0f) {
+					data->can_jump = 1;
+				}
+			}
+	
+			if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE && ptr->x + ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x + ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
+				float ty = (((ptr->x + ptr->cbox_width / 2.0f) - slope_l) / slope_w) * slope_h + slope_b;
+	
+				ty = fmin(ty, slope_y + slope_h / 2.0f);
+	
+				if (ptr->y - ptr->cbox_height / 2.0f <= ty && ptr->xspeed < 0.0f) {
+					data->can_jump = 1;
+				}
+			}
+		}
+	}
+
 	ptr->x = orig_x;
 	ptr->y = orig_y;
 
