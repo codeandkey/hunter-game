@@ -323,6 +323,8 @@ void obj_player_draw(struct tds_object* ptr) {
 		}
 	}
 
+	/* debug cbox drawing */
+	/*
 	tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_WORLDSPACE);
 	if (data->can_jump) {
 		if (!ptr->yspeed) {
@@ -334,6 +336,7 @@ void obj_player_draw(struct tds_object* ptr) {
 		tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 0.0f, 0.0f, 0.5f);
 	}
 	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, ptr->x + ptr->xspeed - ptr->cbox_width / 2.0f, ptr->x + ptr->xspeed + ptr->cbox_width / 2.0f, ptr->y + ptr->yspeed - HUNTER_PLAYER_EARLY_SLOPE_REJUMP + ptr->cbox_height / 2.0f, ptr->y + ptr->yspeed - HUNTER_PLAYER_EARLY_SLOPE_REJUMP - ptr->cbox_height / 2.0f, NULL);
+	*/
 }
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
