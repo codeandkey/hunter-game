@@ -1,4 +1,5 @@
 #include "player.h"
+#include "player_camera.h"
 #include "camera.h"
 
 #include <tds/tds.h>
@@ -25,12 +26,7 @@ struct tds_object_type obj_player_type = {
 void obj_player_init(struct tds_object* ptr) {
 	struct obj_player_data* data = (struct obj_player_data*) ptr->object_data;
 
-	if (tds_engine_get_object_by_type(tds_engine_global, "obj_camera")) {
-		tds_logf(TDS_LOG_WARNING, "There is already a camera which exists. This player will not create one.\n");
-	} else {
-		struct tds_object* camera = tds_object_create(&obj_camera_type, ptr->hmgr, ptr->smgr, ptr->x, ptr->y, 0.0f, NULL);
-		tds_object_msg(camera, ptr, MSG_CAMERA_TRACK, ptr);
-	}
+	struct tds_object* pc = tds_object_create(&obj_player_camera_type, ptr->hmgr, ptr->smgr, ptr->x, ptr->y, 0.0f, NULL);
 
 	ptr->cbox_width = 0.3f;
 	ptr->cbox_height = 0.9f;
@@ -264,7 +260,7 @@ void obj_player_update(struct tds_object* ptr) {
 		ptr->a = 1.0f;
 	}
 
-	if (data->can_jump) {
+	if (data->can_jump && !data->movement_direction) {
 		data->look_up = tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0);
 	} else {
 		data->look_up = 0;

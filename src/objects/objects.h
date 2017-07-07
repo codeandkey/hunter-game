@@ -20,3 +20,4 @@
 #include "trigger_soundon.h"
 #include "trigger_dialog.h"
 #include "bullet_bolt.h"
+#include "player_camera.h"

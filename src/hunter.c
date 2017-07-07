@@ -127,6 +127,7 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_trigger_soundon", &obj_trigger_soundon_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_dialog", &obj_trigger_dialog_type);
 	tds_object_type_cache_add(otc_handle, "obj_scenery", &obj_scenery_type);
+	tds_object_type_cache_add(otc_handle, "obj_player_camera", &obj_player_camera_type);
 }
 
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {
