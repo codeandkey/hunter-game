@@ -100,6 +100,7 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_torch_unlit", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_torch_unlit_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_torch_lit", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_torch_lit_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 50.0f));
 	tds_sprite_cache_add(sc_handle, "spr_randomdude", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/randomdude_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_sign", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_sign_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }

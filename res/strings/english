@@ -40,3 +40,36 @@
 :^c440000^s44What?
 #3
 :^w666666...
+@sign_1
+#0
+:Don't jump into this pit. You'll probably just die.
+#1
+:That guy has been standing there all day. What's his problem?
+#2
+:You should go fight him or something.
+@sign_2
+#0
+:That's him there.
+#1
+:I'm not saying you should kill him..
+#2
+:..but maybe push him into that pit I told you about that kills people.
+@sign_3
+#0
+:Looks dangerous. Try jumping over them?
+#1
+:Or you can jump in them. I really don't care.
+@sign_4
+#0
+:There's nothing over here. Go away.
+@sign_5
+#0
+:I hope you're happy.
+#1
+:Now we're both trapped.
+#2
+:It's a shame neither of us can press ^c00AAAAQ^cFFFFFF.
+#3
+:At least we have each other.
+#4
+:You're a good friend, you know?

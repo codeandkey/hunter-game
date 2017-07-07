@@ -9,3 +9,22 @@
 :abyss_dude:1:res/sprites/portrait_player_128x128.png: :
 :abyss_dude:2:res/sprites/randomdude_32x32.png: :
 :abyss_dude:3:res/sprites/portrait_player_128x128.png: :
+@sign_1
+:sign_1:0:res/sprites/scene_sign_32x32.png: :
+:sign_1:1:res/sprites/scene_sign_32x32.png: :
+:sign_1:2:res/sprites/scene_sign_32x32.png: :
+@sign_2
+:sign_2:0:res/sprites/scene_sign_32x32.png: :
+:sign_2:1:res/sprites/scene_sign_32x32.png: :
+:sign_2:3:res/sprites/scene_sign_32x32.png: :
+@sign_3
+:sign_3:0:res/sprites/scene_sign_32x32.png: :
+:sign_3:1:res/sprites/scene_sign_32x32.png: :
+@sign_4
+:sign_4:0:res/sprites/scene_sign_32x32.png: :
+@sign_5
+:sign_5:0:res/sprites/scene_sign_32x32.png: :
+:sign_5:1:res/sprites/scene_sign_32x32.png: :
+:sign_5:2:res/sprites/scene_sign_32x32.png: :
+:sign_5:3:res/sprites/scene_sign_32x32.png: :
+:sign_5:4:res/sprites/scene_sign_32x32.png: :

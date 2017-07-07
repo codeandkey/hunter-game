@@ -29,7 +29,7 @@ void obj_world_day_init(struct tds_object* ptr) {
 	tds_bg_push(tds_engine_global->bg_handle, 7, tds_texture_cache_get(tds_engine_global->tc_handle, "res/sprites/bg_smallisland_640x640.png", 640, 640, 1, 1), 1, 0);
 	tds_bg_push(tds_engine_global->bg_handle, 9, tds_texture_cache_get(tds_engine_global->tc_handle, "res/sprites/bg_oceanlower_640x640.png", 640, 640, 1, 1), 1, 0);
 
-	tds_render_set_ambient_brightness(tds_engine_global->render_handle, 1.0f);
+	tds_render_set_ambient_brightness(tds_engine_global->render_handle, 0.5f);
 }
 
 void obj_world_day_destroy(struct tds_object* ptr) {
