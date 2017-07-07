@@ -21,3 +21,7 @@
 #include "trigger_dialog.h"
 #include "bullet_bolt.h"
 #include "player_camera.h"
+#include "elevator.h"
+#include "elevator_exit.h"
+#include "elevator_stop.h"
+#include "elevator_door.h"

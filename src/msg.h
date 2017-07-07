@@ -57,4 +57,13 @@ enum hunter_msg {
 	MSG_FADE_NONE, /* sent when fade has completed to none */
 	MSG_FADE_START_NONE, /* sent when each state has started to change */
 	MSG_FADE_START_BLACK,
+
+	/* elevator messages */
+
+	MSG_ELEVATOR_STOP_BROADCAST, /* param: pointer to stop */
+	MSG_ELEVATOR_STOP_ACK, /* param: ptr to stop, acknowledge linking */
+	MSG_ELEVATOR_START_SEQ, /* param: ptr to stop: player just got on an elevator */
+	MSG_ELEVATOR_STOP_SEQ, /* param: ptr to stop: player just got off an elevator */
+	MSG_ELEVATOR_LOCK_STOP, /* param: index of the stop which needs to lock down */
+	MSG_ELEVATOR_UNLOCK_STOP, /* param: index of the stop which needs to lock down */
 };

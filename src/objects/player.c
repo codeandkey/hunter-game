@@ -1,5 +1,6 @@
 #include "player.h"
 #include "player_camera.h"
+#include "elevator_door.h"
 #include "camera.h"
 
 #include <tds/tds.h>
@@ -56,10 +57,6 @@ void obj_player_update(struct tds_object* ptr) {
 	int key_lookup = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP);
 
 	float movement_axis = tds_input_map_get_axis(tds_engine_global->input_map_handle, move_key_low, move_key_high, move_axis);
-	
-	if (!data->input_enabled) {
-		movement_axis = 0.0f;
-	}
 
 	ptr->cbox_width = 0.3f;
 	ptr->cbox_height = 0.9f;
@@ -71,6 +68,10 @@ void obj_player_update(struct tds_object* ptr) {
 		data->movement_direction = 1;
 		data->direction = 1;
 	} else {
+		data->movement_direction = 0;
+	}
+
+	if (!data->input_enabled) {
 		data->movement_direction = 0;
 	}
 
@@ -109,6 +110,15 @@ void obj_player_update(struct tds_object* ptr) {
 
 	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &cx_x, &cx_y, &cx_w, &cx_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		data->collision_x = 1;
+	}
+
+	struct tds_engine_object_list edoor_list = tds_engine_get_object_list_by_type(tds_engine_global, "obj_elevator_door");
+	for (int i = 0; i < edoor_list.size; ++i) {
+		struct obj_elevator_door_data* edoor_data = (struct obj_elevator_door_data*) edoor_list.buffer[i]->object_data;
+
+		if (!edoor_data->opened && tds_collision_get_overlap(ptr, edoor_list.buffer[i])) {
+			data->collision_x = 1;
+		}
 	}
 
 	ptr->x = orig_x;
@@ -268,6 +278,12 @@ void obj_player_update(struct tds_object* ptr) {
 
 		data->look_up = tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0) && tds_clock_get_ms(data->lookup_cp) > HUNTER_PLAYER_LOOKUP_DELAY;
 	}
+
+	if (data->in_elevator) {
+		data->can_jump = 1;
+		ptr->xspeed = 0.0f;
+		ptr->yspeed = 0.0f;
+	}
 }
 
 void obj_player_draw(struct tds_object* ptr) {
@@ -396,6 +412,14 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 		data->input_enabled = 0;
 		break;
 	case MSG_DIALOG_STOP:
+		data->input_enabled = 1;
+		break;
+	case MSG_ELEVATOR_START_SEQ:
+		data->in_elevator = 1;
+		data->input_enabled = 0;
+		break;
+	case MSG_ELEVATOR_STOP_SEQ:
+		data->in_elevator = 0;
 		data->input_enabled = 1;
 		break;
 	}

@@ -101,6 +101,11 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_torch_lit", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_torch_lit_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 50.0f));
 	tds_sprite_cache_add(sc_handle, "spr_randomdude", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/randomdude_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_sign", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_sign_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_idle", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_idle_64x64.png", 64, 64, 0, 0), 2.0f, 2.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_door_opened", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_opened_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_door_closed", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_closed_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_door_open", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_open_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_door_close", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_close_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
 
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }
@@ -128,6 +133,10 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_trigger_dialog", &obj_trigger_dialog_type);
 	tds_object_type_cache_add(otc_handle, "obj_scenery", &obj_scenery_type);
 	tds_object_type_cache_add(otc_handle, "obj_player_camera", &obj_player_camera_type);
+	tds_object_type_cache_add(otc_handle, "obj_elevator", &obj_elevator_type);
+	tds_object_type_cache_add(otc_handle, "obj_elevator_stop", &obj_elevator_stop_type);
+	tds_object_type_cache_add(otc_handle, "obj_elevator_exit", &obj_elevator_exit_type);
+	tds_object_type_cache_add(otc_handle, "obj_elevator_door", &obj_elevator_door_type);
 }
 
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {
