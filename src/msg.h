@@ -67,4 +67,7 @@ enum hunter_msg {
 	MSG_ELEVATOR_LOCK_STOP, /* param: index of the stop which needs to lock down */
 	MSG_ELEVATOR_UNLOCK_STOP, /* param: index of the stop which needs to lock down */
 	MSG_ELEVATOR_SAVE_ALL, /* saves states of all live elevators */
+
+	/* coinpile */
+	MSG_COINPILE_SAVE,
 };

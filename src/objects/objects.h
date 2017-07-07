@@ -25,3 +25,4 @@
 #include "elevator_exit.h"
 #include "elevator_stop.h"
 #include "elevator_door.h"
+#include "coinpile.h"

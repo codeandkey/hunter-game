@@ -74,6 +74,9 @@ void _load_sounds(struct tds_sound_cache* sndc_handle) {
 
 	tds_sound_cache_add(sndc_handle, "bg_rain", tds_sound_buffer_create("res/sounds/bg_rain.ogg"));
 	tds_sound_cache_add(sndc_handle, "bg_abyss", tds_sound_buffer_create("res/sounds/bg_abyss.ogg"));
+	tds_sound_cache_add(sndc_handle, "bg_secret", tds_sound_buffer_create("res/sounds/bg_secret.ogg"));
+
+	tds_sound_cache_add(sndc_handle, "fx_coin", tds_sound_buffer_create("res/sounds/fx_coin.ogg"));
 }
 
 void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache* tc_handle) {
@@ -106,6 +109,7 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_elevator_door_closed", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_closed_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_elevator_door_open", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_open_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
 	tds_sprite_cache_add(sc_handle, "spr_elevator_door_close", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_close_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_coinpile", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_coinpile_16x16.png", 16, 16, 0, 0), 0.5f, 0.5f, 100.0f));
 
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }
@@ -137,6 +141,7 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_elevator_stop", &obj_elevator_stop_type);
 	tds_object_type_cache_add(otc_handle, "obj_elevator_exit", &obj_elevator_exit_type);
 	tds_object_type_cache_add(otc_handle, "obj_elevator_door", &obj_elevator_door_type);
+	tds_object_type_cache_add(otc_handle, "obj_coinpile", &obj_coinpile_type);
 }
 
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {
@@ -178,6 +183,7 @@ void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle) {
 	tds_font_cache_add(fc_handle, "dialog", tds_font_create(ft_handle, "res/fonts/dialog.ttf", 45));
 	tds_font_cache_add(fc_handle, "dialogheader", tds_font_create(ft_handle, "res/fonts/dialog.ttf", 15));
 	tds_font_cache_add(fc_handle, "fade", tds_font_create(ft_handle, "res/fonts/fade.ttf", 25));
+	tds_font_cache_add(fc_handle, "font_tiny", tds_font_create(ft_handle, "res/fonts/dialog.ttf", 25));
 }
 
 void _load_modules(struct tds_module_container* mc_handle) {
