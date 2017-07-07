@@ -260,10 +260,13 @@ void obj_player_update(struct tds_object* ptr) {
 		ptr->a = 1.0f;
 	}
 
-	if (data->can_jump && !data->movement_direction) {
-		data->look_up = tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0);
-	} else {
-		data->look_up = 0;
+	if (data->pre_look_up) {
+		if (!tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0)) {
+			data->pre_look_up = 0;
+			data->look_up = 0;
+		}
+
+		data->look_up = tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0) && tds_clock_get_ms(data->lookup_cp) > HUNTER_PLAYER_LOOKUP_DELAY;
 	}
 }
 
@@ -289,7 +292,7 @@ void obj_player_draw(struct tds_object* ptr) {
 				tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_walk_left"));
 			}
 		} else {
-			if (data->look_up) {
+			if (data->pre_look_up) {
 				if (data->direction > 0) {
 					tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_look_up_right"));
 				} else {
@@ -372,6 +375,10 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 		}
 		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP)) {
 			tds_engine_broadcast(tds_engine_global, MSG_PLAYER_ACTION, ptr);
+			if (!data->movement_direction && data->can_jump) {
+				data->pre_look_up = 1;
+				data->lookup_cp = tds_clock_get_point();
+			}
 		}
 		break;
 	case TDS_MSG_MAP_READY:
