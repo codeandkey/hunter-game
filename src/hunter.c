@@ -75,6 +75,7 @@ void _load_sounds(struct tds_sound_cache* sndc_handle) {
 	tds_sound_cache_add(sndc_handle, "bg_rain", tds_sound_buffer_create("res/sounds/bg_rain.ogg"));
 	tds_sound_cache_add(sndc_handle, "bg_abyss", tds_sound_buffer_create("res/sounds/bg_abyss.ogg"));
 	tds_sound_cache_add(sndc_handle, "bg_secret", tds_sound_buffer_create("res/sounds/bg_secret.ogg"));
+	tds_sound_cache_add(sndc_handle, "bg_mist", tds_sound_buffer_create("res/sounds/bg_mist.ogg"));
 
 	tds_sound_cache_add(sndc_handle, "fx_coin", tds_sound_buffer_create("res/sounds/fx_coin.ogg"));
 }
@@ -120,6 +121,7 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "env", &obj_env_type);
 	tds_object_type_cache_add(otc_handle, "world_day", &obj_world_day_type);
 	tds_object_type_cache_add(otc_handle, "world_night", &obj_world_night_type);
+	tds_object_type_cache_add(otc_handle, "world_mistlake", &obj_world_mistlake_type);
 	tds_object_type_cache_add(otc_handle, "obj_player", &obj_player_type);
 	tds_object_type_cache_add(otc_handle, "obj_ghost", &obj_ghost_type);
 	tds_object_type_cache_add(otc_handle, "obj_savestation", &obj_savestation_type);

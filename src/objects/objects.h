@@ -9,6 +9,7 @@
 #include "env.h"
 #include "world_day.h"
 #include "world_night.h"
+#include "world_mistlake.h"
 #include "attractor.h"
 #include "rain.h"
 #include "fade_in.h"
