@@ -20,6 +20,8 @@
 @sign_3
 :sign_3:0:res/sprites/scene_sign_32x32.png: :
 :sign_3:1:res/sprites/scene_sign_32x32.png: :
+:sign_3:2:res/sprites/scene_sign_32x32.png: :
+:sign_3:3:res/sprites/scene_sign_32x32.png: :
 @sign_4
 :sign_4:0:res/sprites/scene_sign_32x32.png: :
 @sign_5
@@ -32,6 +34,10 @@
 :sign_6:0:res/sprites/scene_sign_32x32.png: :
 :sign_6:1:res/sprites/scene_sign_32x32.png: :
 :sign_6:2:res/sprites/scene_sign_32x32.png: :
+@sign_7
+:sign_7:0:res/sprites/scene_sign_32x32.png: :
+:sign_7:1:res/sprites/scene_sign_32x32.png: :
+:sign_7:2:res/sprites/scene_sign_32x32.png: :
 @secret_randomdude
 :secret_randomdude:0:res/sprites/randomdude_32x32.png: :
 :secret_randomdude:1:res/sprites/randomdude_32x32.png: :

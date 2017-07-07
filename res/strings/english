@@ -59,6 +59,10 @@
 :Looks dangerous. Try jumping over them?
 #1
 :Or you can jump in them. I really don't care.
+#2
+:I heard there's a ^c003366secret^cFFFFFF at the bottom of one of them.
+#3
+:I wonder if anyone's seen it already.
 @sign_4
 #0
 :There's nothing over here. Go away.
@@ -80,6 +84,13 @@
 :You'll have to find another way around.
 #2
 :What is that thing? It looks like some kind of ^c008888hook^cFFFFFF.
+@sign_7
+#0
+:I wouldn't jump down there.
+#1
+:This one really will kill you.
+#2
+:I guess I can't stop you though.
 @secret_randomdude
 #0
 :Need across? Ha ha.
