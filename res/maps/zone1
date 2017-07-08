@@ -2123,6 +2123,7 @@
   <object id="27" name="spawn" type="obj_spawn" x="7360" y="8176" width="32" height="32">
    <properties>
     <property name="i0" value="2"/>
+    <property name="i1" value="1"/>
    </properties>
   </object>
   <object id="28" name="fade_transition" type="obj_fade_transition" x="7200" y="8608" width="64" height="16">
@@ -2134,6 +2135,7 @@
   <object id="30" name="spawn" type="obj_spawn" x="6912" y="7488" width="32" height="32">
    <properties>
     <property name="i0" value="0"/>
+    <property name="i1" value="-1"/>
    </properties>
   </object>
   <object id="31" name="fade_transition" type="obj_fade_transition" x="9232" y="7600" width="16" height="128">
@@ -2145,6 +2147,7 @@
   <object id="32" name="spawn" type="obj_spawn" x="9120" y="7648" width="32" height="32">
    <properties>
     <property name="i0" value="3"/>
+    <property name="i1" value="-1"/>
    </properties>
   </object>
   <object id="33" name="sign7" type="obj_scenery" x="6671" y="7505" width="32" height="32">
