@@ -4,6 +4,7 @@ hunter.lua
 Makefile
 hunter-game.make
 *.trace
+*.swp
 obj/**
 hunter-game
 hunter-game-debug
