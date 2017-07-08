@@ -20,5 +20,5 @@ void obj_spawn_draw(struct tds_object* ptr);
 void obj_spawn_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param);
 
 struct obj_spawn_data {
-	int dir;
+	int id, dir;
 };

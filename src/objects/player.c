@@ -380,7 +380,7 @@ void obj_player_draw(struct tds_object* ptr) {
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
 	struct obj_player_data* data = (struct obj_player_data*) ptr->object_data;
-	struct tds_object* target_station = (struct tds_object*) param;
+	struct msg_savestation_ready* msg_station = (struct msg_savestation_ready*) param;
 	struct tds_savestate_entry entry;
 	int key = 0;
 
@@ -395,9 +395,10 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 		}
 		break;
 	case MSG_SAVESTATION_START:
-		ptr->x = data->spawn_x = target_station->x;
-		ptr->y = data->spawn_y = target_station->y;
-		data->direction = *((int*) param);
+		tds_logf(TDS_LOG_MESSAGE, "Received savestation ack, spawning in\n");
+		ptr->x = data->spawn_x = msg_station->ptr->x;
+		ptr->y = data->spawn_y = msg_station->ptr->y;
+		data->direction = msg_station->direction;
 		break;
 	case TDS_MSG_KEY_PRESSED:
 		key = *((int*) param);

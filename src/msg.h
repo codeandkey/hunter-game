@@ -76,3 +76,8 @@ enum hunter_msg {
 
 	MSG_LADDER_ACK,
 };
+
+struct msg_savestation_ready {
+	struct tds_object* ptr;
+	int direction;
+};
