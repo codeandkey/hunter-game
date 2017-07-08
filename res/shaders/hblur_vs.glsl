@@ -13,7 +13,7 @@ void main(void) {
 	p_texcoord = v_texcoord;
 
 	/* Precompute the texture coordinates for the blur; this greatly increases shader performance */
-	const float factor = 2.0f;
+	const float factor = 1.0f;
 
 	p_texcoord_blur[0] = p_texcoord + vec2(factor * -0.014f, 0.0f);
 	p_texcoord_blur[1] = p_texcoord + vec2(factor * -0.012f, 0.0f);
