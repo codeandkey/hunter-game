@@ -2017,7 +2017,7 @@
   <object id="1" name="player" type="obj_player" x="6949" y="7494" width="13" height="23"/>
   <object id="2" name="world_day" type="world_day" x="7424" y="7696" width="16" height="16">
    <properties>
-    <property name="f0" value="0.9"/>
+    <property name="f0" value="0.4"/>
    </properties>
   </object>
   <object id="4" name="random_dude" type="obj_scenery" x="7968" y="7920" width="32" height="32">

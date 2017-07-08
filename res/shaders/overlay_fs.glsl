@@ -1,6 +1,9 @@
 #version 330
 
 // overlay blending because it's better
+// we dont want to illuminate dark surfaces but we do want to add to light surfaces
+// so, multiplicative will fix the former
+// we can use an extra offset to help the latter
 
 in vec2 p_texcoord;
 
@@ -26,7 +29,7 @@ void main(void) {
 	vec4 dst = texture2D(tds_texture, p_texcoord) * tds_color;
 	vec4 src = texture2D(tds_texture2, p_texcoord);
 
-	color = dst * src;
+	color = dst * (src * 3.0f); // allow src to overflow (hdr?)
 	color.a = 1;
 	return;
 

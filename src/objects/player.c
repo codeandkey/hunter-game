@@ -386,6 +386,20 @@ void obj_player_draw(struct tds_object* ptr) {
 	}
 	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, ptr->x + ptr->xspeed - ptr->cbox_width / 2.0f, ptr->x + ptr->xspeed + ptr->cbox_width / 2.0f, ptr->y + ptr->yspeed - HUNTER_PLAYER_EARLY_SLOPE_REJUMP + ptr->cbox_height / 2.0f, ptr->y + ptr->yspeed - HUNTER_PLAYER_EARLY_SLOPE_REJUMP - ptr->cbox_height / 2.0f, NULL);
 	*/
+
+	struct tds_render_light lt;
+
+	lt.type = TDS_RENDER_LIGHT_POINT;
+	lt.x = ptr->x;
+	lt.y = ptr->y;
+	lt.r = 0.01f;
+	lt.g = 0.03f;
+	lt.b = 0.01f;
+	lt.dist = 5.0f;
+
+	if (tds_engine_global->render_handle->ambient_r < HUNTER_PLAYER_AMBIENT_GLOW) {
+		tds_render_submit_light(tds_engine_global->render_handle, lt); /* slight player glow */
+	}
 }
 
 void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
