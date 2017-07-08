@@ -397,7 +397,7 @@ void obj_player_draw(struct tds_object* ptr) {
 	lt.b = 0.01f;
 	lt.dist = 5.0f;
 
-	if (tds_engine_global->render_handle->ambient_r < HUNTER_PLAYER_AMBIENT_GLOW) {
+	if (tds_engine_global->render_handle->ambient_r + tds_engine_global->render_handle->ambient_g + tds_engine_global->render_handle->ambient_b < HUNTER_PLAYER_AMBIENT_GLOW) {
 		tds_render_submit_light(tds_engine_global->render_handle, lt); /* slight player glow */
 	}
 }
