@@ -2,6 +2,8 @@
 
 #include <tds/object.h>
 
+#define HUNTER_WORLD_DAY_INDEX_AMBIENT 0 /* float : ambient light */
+
 struct tds_object_type obj_world_day_type;
 
 void obj_world_day_init(struct tds_object* ptr);
