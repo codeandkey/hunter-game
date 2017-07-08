@@ -397,6 +397,7 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 	case MSG_SAVESTATION_START:
 		ptr->x = data->spawn_x = target_station->x;
 		ptr->y = data->spawn_y = target_station->y;
+		data->direction = *((int*) param);
 		break;
 	case TDS_MSG_KEY_PRESSED:
 		key = *((int*) param);

@@ -20,6 +20,12 @@ struct tds_object_type obj_spawn_type = {
 };
 
 void obj_spawn_init(struct tds_object* ptr) {
+	struct obj_spawn_data* data = (struct obj_spawn_data*) ptr->object_data;
+
+	int* dir = tds_object_get_ipart(ptr, HUNTER_SPAWN_INDEX_DIR);
+
+	data->dir = 1;
+	if (dir) data->dir = *dir;
 }
 
 void obj_spawn_destroy(struct tds_object* ptr) {
@@ -33,13 +39,14 @@ void obj_spawn_draw(struct tds_object* ptr) {
 
 void obj_spawn_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
 	int* id = tds_object_get_ipart(ptr, HUNTER_SPAWN_INDEX_ID), t_id = 0;
+	struct obj_spawn_data* data = (struct obj_spawn_data*) ptr->object_data;
 
 	switch (msg) {
 	case MSG_SAVESTATION_QUERY:
 		t_id = *((int*) param);
 		if (id) {
 			if (*id == t_id) {
-				tds_engine_broadcast(tds_engine_global, MSG_SAVESTATION_START, ptr);
+				tds_engine_broadcast(tds_engine_global, MSG_SAVESTATION_START, &data->dir);
 			}
 		}
 		break;
