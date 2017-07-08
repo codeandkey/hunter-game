@@ -288,7 +288,7 @@ void obj_player_update(struct tds_object* ptr) {
 	}
 
 	if (data->pre_look_up) {
-		if (!tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0)) {
+		if (!tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0) || data->on_ladder) {
 			data->pre_look_up = 0;
 			data->look_up = 0;
 		}
