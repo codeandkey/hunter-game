@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="world" tilewidth="16" tileheight="16" tilecount="29" columns="0">
+<tileset name="world" tilewidth="16" tileheight="16" tilecount="30" columns="0">
  <tile id="0">
   <image width="16" height="16" source="../sprites/world_001_grass.png"/>
  </tile>
@@ -82,9 +82,12 @@
   <image width="16" height="16" source="../sprites/world_027_tree_bg.png"/>
  </tile>
  <tile id="27">
-  <image width="16" height="16" source="../sprites/world_028_rslope.png"/>
+  <image width="16" height="16" source="../sprites/world_028_dirt_rslope.png"/>
  </tile>
  <tile id="28">
-  <image width="16" height="16" source="../sprites/world_029_lslope.png"/>
+  <image width="16" height="16" source="../sprites/world_029_dirt_lslope.png"/>
+ </tile>
+ <tile id="29">
+  <image width="16" height="16" source="../sprites/world_030_ladder_wooden.png"/>
  </tile>
 </tileset>

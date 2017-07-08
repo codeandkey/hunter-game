@@ -362,6 +362,16 @@ void obj_player_draw(struct tds_object* ptr) {
 		}
 	}
 
+	if (data->on_ladder) {
+		if (ptr->yspeed > 0.0f) {
+			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_ladder_up"));
+		} else if (ptr->yspeed < 0.0f) {
+			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_ladder_down"));
+		} else {
+			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_ladder_idle"));
+		}
+	}
+
 	/* debug cbox drawing */
 	/*
 	tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_WORLDSPACE);

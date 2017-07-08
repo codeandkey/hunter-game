@@ -118,7 +118,6 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_coinpile", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_coinpile_16x16.png", 16, 16, 0, 0), 0.5f, 0.5f, 100.0f));
 	tds_sprite_cache_add(sc_handle, "spr_button_off", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_button_off_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
 	tds_sprite_cache_add(sc_handle, "spr_button_on", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_button_on_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_ladder_wooden", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ladder_wooden_16x16.png", 16, 16, 0, 1), 0.5f, 0.5f, 0.0f));
 
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }
@@ -187,7 +186,8 @@ void _load_block_types(struct tds_block_map* block_map_handle, struct tds_textur
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_026_glass.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID | TDS_BLOCK_TYPE_NOLIGHT, 26);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_027_tree_bg.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_SOLID, 27);
 	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_028_dirt_rslope.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_SOLID, 28);
-	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_029_dirt_rslope.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_LTSLOPE | TDS_BLOCK_TYPE_SOLID, 28);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_029_dirt_lslope.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_LTSLOPE | TDS_BLOCK_TYPE_SOLID, 29);
+	tds_block_map_add(block_map_handle, tds_texture_cache_get(tc_handle, "res/sprites/world_030_ladder_wooden.png", 16, 16, 1, 0), TDS_BLOCK_TYPE_NOLIGHT, 30);
 }
 
 void _load_fonts(struct tds_font_cache* fc_handle, struct tds_ft* ft_handle) {

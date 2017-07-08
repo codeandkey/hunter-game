@@ -14,7 +14,7 @@
 
 struct tds_object_type obj_ladder_type = {
 	.type_name = "obj_ladder",
-	.default_sprite = "spr_ladder_wooden",
+	.default_sprite = NULL,
 	.data_size = sizeof(struct obj_ladder_data),
 	.func_init = obj_ladder_init,
 	.func_destroy = obj_ladder_destroy,
@@ -26,15 +26,6 @@ struct tds_object_type obj_ladder_type = {
 
 void obj_ladder_init(struct tds_object* ptr) {
 	struct obj_ladder_data* data = (struct obj_ladder_data*) ptr->object_data;
-
-	ptr->cbox_width = 0.5f;
-	ptr->cbox_height  = 10.0f;
-
-	char* spr = tds_object_get_spart(ptr, HUNTER_LADDER_INDEX_SPR);
-
-	if (spr) {
-		tds_object_set_sprite(ptr, tds_sprite_cache_get(ptr->smgr, spr));
-	}
 }
 
 void obj_ladder_destroy(struct tds_object* ptr) {
@@ -43,10 +34,31 @@ void obj_ladder_destroy(struct tds_object* ptr) {
 
 void obj_ladder_update(struct tds_object* ptr) {
 	struct obj_ladder_data* data = (struct obj_ladder_data*) ptr->object_data;
+
+	if (!data->player) {
+		data->player = tds_engine_get_object_by_type(tds_engine_global, "obj_player");
+	}
+
+	if (!data->player) return;
+
+	struct obj_player_data* pdata = (struct obj_player_data*) data->player->object_data;
+
+	if (pdata->on_ladder) {
+		if (!tds_collision_get_overlap(ptr, data->player)) {
+			pdata->on_ladder = 0;
+		}
+	}
 }
 
 void obj_ladder_draw(struct tds_object* ptr) {
 	struct obj_ladder_data* data = (struct obj_ladder_data*) ptr->object_data;
+
+	/* debug cbox */
+	/*
+	tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_WORLDSPACE);
+	tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 0.0f, 0.0f, 0.5f);
+	tds_render_flat_quad(tds_engine_global->render_flat_overlay_handle, ptr->x - ptr->cbox_width / 2.0f, ptr->x + ptr->cbox_width / 2.0f, ptr->y + ptr->cbox_height / 2.0f, ptr->y - ptr->cbox_height / 2.0f, NULL);
+	*/
 }
 
 void obj_ladder_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {

@@ -5,8 +5,6 @@
 
 struct tds_object_type obj_ladder_type;
 
-#define HUNTER_LADDER_INDEX_SPR 0 /* string: sprite to use (should be 16x16 with vrepeat on) */
-
 void obj_ladder_init(struct tds_object* ptr);
 void obj_ladder_destroy(struct tds_object* ptr);
 void obj_ladder_update(struct tds_object* ptr);
