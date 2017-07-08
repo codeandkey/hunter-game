@@ -102,7 +102,7 @@ void obj_coinpile_msg(struct tds_object* ptr, struct tds_object* sender, int msg
 			tds_sound_source_play(data->src);
 		}
 		break;
-	case MSG_COINPILE_SAVE_ALL:
+	case MSG_WORLD_UNLOAD:
 		if (data->save >= 0) {
 			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_COINPILE_OFFSET + data->save, &data->picked, sizeof data->picked);
 		}

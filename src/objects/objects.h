@@ -28,3 +28,4 @@
 #include "elevator_door.h"
 #include "elevator_button.h"
 #include "coinpile.h"
+#include "ladder.h"

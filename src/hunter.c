@@ -97,6 +97,9 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_player_jump_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_jump_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_player_fall_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_fall_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_player_fall_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_fall_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_ladder_idle", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_ladder_idle_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_ladder_up", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_ladder_up_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_ladder_down", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_ladder_down_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
 	tds_sprite_cache_add(sc_handle, "spr_ghost_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ghost_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
 	tds_sprite_cache_add(sc_handle, "spr_ghost_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ghost_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
 	tds_sprite_cache_add(sc_handle, "spr_savestation", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/save_station_64x64.png", 64, 64, 0, 0), 2.0f, 2.0f, 150.0f));
@@ -107,6 +110,7 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_randomdude", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/randomdude_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_sign", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_sign_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_elevator_idle", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_idle_64x64.png", 64, 64, 0, 0), 2.0f, 2.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_move", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_up_64x64.png", 64, 64, 0, 0), 2.0f, 2.0f, 100.0f));
 	tds_sprite_cache_add(sc_handle, "spr_elevator_door_opened", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_opened_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_elevator_door_closed", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_closed_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
 	tds_sprite_cache_add(sc_handle, "spr_elevator_door_open", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_open_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
@@ -114,6 +118,7 @@ void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache*
 	tds_sprite_cache_add(sc_handle, "spr_coinpile", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_coinpile_16x16.png", 16, 16, 0, 0), 0.5f, 0.5f, 100.0f));
 	tds_sprite_cache_add(sc_handle, "spr_button_off", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_button_off_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
 	tds_sprite_cache_add(sc_handle, "spr_button_on", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_button_on_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_ladder_wooden", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ladder_wooden_16x16.png", 16, 16, 0, 1), 0.5f, 0.5f, 0.0f));
 
 	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
 }
@@ -148,6 +153,7 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_elevator_door", &obj_elevator_door_type);
 	tds_object_type_cache_add(otc_handle, "obj_elevator_button", &obj_elevator_button_type);
 	tds_object_type_cache_add(otc_handle, "obj_coinpile", &obj_coinpile_type);
+	tds_object_type_cache_add(otc_handle, "obj_ladder", &obj_ladder_type);
 }
 
 void _load_block_types(struct tds_block_map* block_map_handle, struct tds_texture_cache* tc_handle) {

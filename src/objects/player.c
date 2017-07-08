@@ -40,6 +40,8 @@ void obj_player_init(struct tds_object* ptr) {
 	data->state_hit = data->state_hit_hurt = 0;
 	data->collision_x = data->collision_y = data->collision_xy = 0;
 	data->collision_slope = 0;
+	data->in_elevator = 0;
+	data->on_ladder = 0;
 
 	ptr->layer = 10;
 }
@@ -53,6 +55,7 @@ void obj_player_update(struct tds_object* ptr) {
 
 	int move_key_low = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_LEFT);
 	int move_key_high = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_RIGHT);
+	int move_key_down = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_DOWN);
 	int move_axis = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_AXIS_MOVEMENT);
 	int key_lookup = tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP);
 
@@ -94,7 +97,21 @@ void obj_player_update(struct tds_object* ptr) {
 		ptr->xspeed /= HUNTER_PLAYER_MOVE_DECEL;
 	}
 
-	ptr->yspeed += HUNTER_PLAYER_GRAVITY;
+	if (!data->on_ladder) {
+		/*  to account for ladders, we just set the player's velocities according to the input and just let collisions do their thing */
+
+		ptr->yspeed += HUNTER_PLAYER_GRAVITY;
+	} else {
+		if (tds_input_map_get_key(tds_engine_global->input_map_handle, move_key_down, 0)) {
+			ptr->yspeed = -HUNTER_PLAYER_LADDER_SPEED;
+		} else if (tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0)) {
+			ptr->yspeed = HUNTER_PLAYER_LADDER_SPEED;
+		} else {
+			ptr->yspeed = 0.0f;
+		}
+
+		ptr->xspeed = 0.0f;
+	}
 
 	/* We will offset the player's position to test collisions. */
 
@@ -284,6 +301,13 @@ void obj_player_update(struct tds_object* ptr) {
 		ptr->xspeed = 0.0f;
 		ptr->yspeed = 0.0f;
 	}
+
+	if (data->on_ladder) {
+		/* make sure that the player is on the ladder and that the player can jump off */
+
+		ptr->x = data->on_ladder->x;
+		data->can_jump = 1;
+	}
 }
 
 void obj_player_draw(struct tds_object* ptr) {
@@ -377,8 +401,13 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 	case TDS_MSG_KEY_PRESSED:
 		key = *((int*) param);
 		if (data->can_jump && key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP) && data->input_enabled) {
-			ptr->yspeed = HUNTER_PLAYER_JUMP;
-			data->can_jump = 0;
+			if (data->on_ladder) {
+				data->on_ladder = NULL;
+				data->can_jump = 0;
+			} else {
+				ptr->yspeed = HUNTER_PLAYER_JUMP;
+				data->can_jump = 0;
+			}
 		}
 		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_JUMP) && !data->input_enabled) {
 			tds_engine_broadcast(tds_engine_global, MSG_DIALOG_KP, NULL);
@@ -389,7 +418,7 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 			ptr->xspeed = 0.0f;
 			ptr->yspeed = 0.0f;
 		}
-		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP)) {
+		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP) && !data->in_elevator && !data->on_ladder) {
 			tds_engine_broadcast(tds_engine_global, MSG_PLAYER_ACTION, ptr);
 			if (!data->movement_direction && data->can_jump) {
 				data->pre_look_up = 1;
@@ -421,6 +450,9 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 	case MSG_ELEVATOR_STOP_SEQ:
 		data->in_elevator = 0;
 		data->input_enabled = 1;
+		break;
+	case MSG_LADDER_ACK:
+		data->on_ladder = (struct tds_object*) param;
 		break;
 	}
 }

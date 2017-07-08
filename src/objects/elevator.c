@@ -11,8 +11,6 @@
 
 #include <stdlib.h>
 
-/* This is pretty much a complete copy of trigger_dialog, except with an index for a sprite. */
-
 struct tds_object_type obj_elevator_type = {
 	.type_name = "obj_elevator",
 	.default_sprite = "spr_elevator_idle",
@@ -124,6 +122,22 @@ void obj_elevator_update(struct tds_object* ptr) {
 }
 
 void obj_elevator_draw(struct tds_object* ptr) {
+	struct obj_elevator_data* data = (struct obj_elevator_data*) ptr->object_data;
+
+	switch (data->state) {
+	case HUNTER_ELEVATOR_STATE_IDLE:
+		tds_object_set_sprite(ptr, tds_sprite_cache_get(ptr->smgr, "spr_elevator_idle"));
+		break;
+	case HUNTER_ELEVATOR_STATE_PREMOVE:
+		tds_object_set_sprite(ptr, tds_sprite_cache_get(ptr->smgr, "spr_elevator_idle"));
+		break;
+	case HUNTER_ELEVATOR_STATE_MOVE:
+		tds_object_set_sprite(ptr, tds_sprite_cache_get(ptr->smgr, "spr_elevator_move"));
+		break;
+	case HUNTER_ELEVATOR_STATE_POSTMOVE:
+		tds_object_set_sprite(ptr, tds_sprite_cache_get(ptr->smgr, "spr_elevator_idle"));
+		break;
+	}
 }
 
 void obj_elevator_msg(struct tds_object* ptr, struct tds_object* sender, int msg, void* param) {
@@ -192,7 +206,7 @@ void obj_elevator_msg(struct tds_object* ptr, struct tds_object* sender, int msg
 		break;
 	case MSG_ELEVATOR_STOP_SEQ:
 		break;
-	case MSG_ELEVATOR_SAVE_ALL:
+	case MSG_WORLD_UNLOAD:
 		if (data->save >= 0) {
 			tds_savestate_set(tds_engine_global->savestate_handle, HUNTER_SAVE_ELEV_OFFSET + data->save, &data->at_stop1, sizeof data->at_stop1);
 		}

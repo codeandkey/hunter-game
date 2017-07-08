@@ -15,6 +15,7 @@
 #define HUNTER_PLAYER_SLOPE_CORRECT_OFFSET 0.0f 
 #define HUNTER_PLAYER_EARLY_SLOPE_REJUMP 0.1f /* distance to enable jump at when moving down and hitting a slope */
 #define HUNTER_PLAYER_LOOKUP_DELAY 500
+#define HUNTER_PLAYER_LADDER_SPEED 0.06f
 
 #define HUNTER_PLAYER_MIN_JUMP_ANIM_YSPEED 0.05f
 #define HUNTER_PLAYER_MAX_FALL_ANIM_YSPEED -0.05f
@@ -29,6 +30,7 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 
 struct obj_player_data {
 	int can_jump, direction, movement_direction, input_enabled, in_elevator;
+	struct tds_object* on_ladder; /* ptr to active ladder or NULL if off */
 	float spawn_x, spawn_y;
 	int state_hit, state_hit_hurt;
 	tds_clock_point timer_hit_recover, timer_hit_flash, lookup_cp;

@@ -66,8 +66,13 @@ enum hunter_msg {
 	MSG_ELEVATOR_STOP_SEQ, /* param: ptr to stop: player just got off an elevator */
 	MSG_ELEVATOR_LOCK_STOP, /* param: index of the stop which needs to lock down */
 	MSG_ELEVATOR_UNLOCK_STOP, /* param: index of the stop which needs to lock down */
-	MSG_ELEVATOR_SAVE_ALL, /* saves states of all live elevators */
 
-	/* coinpile */
-	MSG_COINPILE_SAVE_ALL,
+	/* global messages for map switching, should effectively replace save-all messages */
+	/* should be sent out by transition objects (such as obj_fade_transition */
+
+	MSG_WORLD_UNLOAD,
+
+	/* ladder messages for ack player actions */
+
+	MSG_LADDER_ACK,
 };
