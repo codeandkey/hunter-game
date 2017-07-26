@@ -15,7 +15,7 @@
 #define HUNTER_PLAYER_SLOPE_CORRECT_OFFSET 0.0f 
 #define HUNTER_PLAYER_EARLY_SLOPE_REJUMP 0.1f /* distance to enable jump at when moving down and hitting a slope */
 #define HUNTER_PLAYER_LOOKUP_DELAY 500
-#define HUNTER_PLAYER_LADDER_SPEED 0.03f
+#define HUNTER_PLAYER_LADDER_SPEED 0.02f
 #define HUNTER_PLAYER_AMBIENT_GLOW 0.01f /* ambient light threshold to start player glow */
 
 #define HUNTER_PLAYER_MIN_JUMP_ANIM_YSPEED 0.05f
