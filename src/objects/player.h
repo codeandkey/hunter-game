@@ -3,8 +3,8 @@
 #include <tds/clock.h>
 
 #define HUNTER_PLAYER_MOVE_DEADZONE 0.5f
-#define HUNTER_PLAYER_MOVE_MAXSPEED 0.025f
-#define HUNTER_PLAYER_MOVE_ACCEL 0.01f
+#define HUNTER_PLAYER_MOVE_MAXSPEED 0.030f
+#define HUNTER_PLAYER_MOVE_ACCEL 0.001f
 #define HUNTER_PLAYER_MOVE_DECEL 1.1f
 #define HUNTER_PLAYER_GRAVITY -0.003f
 #define HUNTER_PLAYER_JUMP 0.1f
@@ -15,7 +15,7 @@
 #define HUNTER_PLAYER_SLOPE_CORRECT_OFFSET 0.0f 
 #define HUNTER_PLAYER_EARLY_SLOPE_REJUMP 0.1f /* distance to enable jump at when moving down and hitting a slope */
 #define HUNTER_PLAYER_LOOKUP_DELAY 500
-#define HUNTER_PLAYER_LADDER_SPEED 0.02f
+#define HUNTER_PLAYER_LADDER_SPEED 0.03f
 #define HUNTER_PLAYER_AMBIENT_GLOW 0.01f /* ambient light threshold to start player glow */
 
 #define HUNTER_PLAYER_MIN_JUMP_ANIM_YSPEED 0.05f
