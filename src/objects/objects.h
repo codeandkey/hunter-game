@@ -2,7 +2,6 @@
 
 #include "player.h"
 #include "camera.h"
-#include "ghost.h"
 #include "savestation.h"
 #include "light_dir.h"
 #include "light_point.h"
@@ -20,7 +19,6 @@
 #include "trigger_soundoff.h"
 #include "trigger_soundon.h"
 #include "trigger_dialog.h"
-#include "bullet_bolt.h"
 #include "player_camera.h"
 #include "elevator.h"
 #include "elevator_exit.h"

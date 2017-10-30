@@ -23,9 +23,12 @@ void obj_camera_init(struct tds_object* ptr) {
 
 	data->track = NULL;
 	data->shake = 0.0f;
-	data->size = data->target_size = (tds_engine_global->display_handle->desc.height / 32.0f) / TDS_OBJ_CAMERA_SIZE_DIV;
+	data->size = data->target_size = (tds_engine_global->display_handle->desc.height / 2);
 
-	tds_camera_set(tds_engine_global->camera_handle, data->size, ptr->x, ptr->y);
+	ptr->cbox.x = 1; /* one-pixel abstract entity */
+	ptr->cbox.y = 1;
+
+	tds_camera_set(tds_engine_global->camera_handle, ptr->pos, data->size);
 }
 
 void obj_camera_destroy(struct tds_object* ptr) {
@@ -40,26 +43,43 @@ void obj_camera_update(struct tds_object* ptr) {
 		return;
 	}
 
-	ptr->x = (data->track->x - ptr->x) / TDS_OBJ_CAMERA_POS_FACTOR + ptr->x;
-	ptr->y = (data->track->y - ptr->y) / TDS_OBJ_CAMERA_POS_FACTOR + ptr->y;
+	ptr->pos.x = ((float) data->track->pos.x + (float) data->track->cbox.x / 2.0f - (float) ptr->pos.x) / (float) TDS_OBJ_CAMERA_POS_FACTOR + (float) ptr->pos.x;
+	ptr->pos.y = ((float) data->track->pos.y + (float) data->track->cbox.y / 2.0f - (float) ptr->pos.y) / (float) TDS_OBJ_CAMERA_POS_FACTOR + (float) ptr->pos.y;
 
-	data->size = (data->target_size - data->size) / TDS_OBJ_CAMERA_SIZE_FACTOR + data->size;
+	ptr->pos.x = data->track->pos.x;
+	ptr->pos.y = data->track->pos.y;
 
-	float final_cx = ptr->x, final_cy = ptr->y;
+	// data->size = (data->target_size - data->size) / TDS_OBJ_CAMERA_SIZE_FACTOR + data->size;
+
+	tds_bcp final_cx = ptr->pos;
 	struct tds_engine_object_list attractor_list = tds_engine_get_object_list_by_type(tds_engine_global, "obj_attractor");
 
 	for (int i = 0; i < attractor_list.size; ++i) {
-		float dist = sqrt(pow(ptr->x - attractor_list.buffer[i]->x, 2) + pow(ptr->y - attractor_list.buffer[i]->y, 2));
+		float dist = sqrt(pow(ptr->pos.x - attractor_list.buffer[i]->pos.x, 2) + pow(ptr->pos.y - attractor_list.buffer[i]->pos.y, 2));
 		struct obj_attractor_data* data = (struct obj_attractor_data*) attractor_list.buffer[i]->object_data;
 
 		if (dist < data->dist) {
 			float dist_factor = 1.0f - (dist / data->dist);
-			final_cx += dist_factor * (attractor_list.buffer[i]->x - ptr->x) * data->factor;
-			final_cy += dist_factor * (attractor_list.buffer[i]->y - ptr->y) * data->factor;
+			final_cx.x += dist_factor * (attractor_list.buffer[i]->pos.x - ptr->pos.x) * data->factor;
+			final_cx.y += dist_factor * (attractor_list.buffer[i]->pos.y - ptr->pos.y) * data->factor;
 		}
 	}
 
-	tds_camera_set(tds_engine_global->camera_handle, data->size, final_cx, final_cy);
+	tds_bcp camera_bl;
+	camera_bl.x = ptr->pos.x - tds_engine_global->camera_handle->dim.x / 2;
+	camera_bl.y = ptr->pos.y - tds_engine_global->camera_handle->dim.y / 2;
+
+	/* prevent overflow cases */
+
+	if (ptr->pos.x < tds_engine_global->camera_handle->dim.x / 2) {
+		camera_bl.x = 0;
+	}
+
+	if (ptr->pos.y < tds_engine_global->camera_handle->dim.y / 2) {
+		camera_bl.y = 0;
+	}
+
+	tds_camera_set(tds_engine_global->camera_handle, camera_bl, data->size);
 }
 
 void obj_camera_draw(struct tds_object* ptr) {

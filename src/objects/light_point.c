@@ -49,7 +49,7 @@ void obj_light_point_draw(struct tds_object* ptr) {
 
 	float flick = ((float) (rand() % 100) / 100.0f) * data->flicker;
 
-	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, data->r + flick, data->g + flick, data->b + flick, data->dist, NULL};
+	struct tds_render_light lt = {TDS_RENDER_LIGHT_POINT, ptr->pos, data->r + flick, data->g + flick, data->b + flick, data->dist, NULL};
 
 	tds_render_submit_light(tds_engine_global->render_handle, lt);
 }

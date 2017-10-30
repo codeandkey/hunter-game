@@ -53,8 +53,8 @@ void obj_elevator_update(struct tds_object* ptr) {
 	}
 
 	if (data->state != HUNTER_ELEVATOR_STATE_IDLE) {
-		data->player->x = ptr->x;
-		data->player->y = ptr->y + ptr->cbox_height / 2.0f + data->player->cbox_height / 2.0f;
+		data->player->pos = ptr->pos;
+		data->player->pos.y += ptr->cbox.y;
 	}
 
 	switch (data->state) {
@@ -65,13 +65,13 @@ void obj_elevator_update(struct tds_object* ptr) {
 		{
 			struct tds_object* src = (data->at_stop1 ? data->stop1 : data->stop2), *dst = (data->at_stop1 ? data->stop2 : data->stop1);
 
-			ptr->yspeed = HUNTER_ELEVATOR_SPEED;
-			if (dst->y < src->y) ptr->yspeed = -ptr->yspeed;
+			ptr->speed.y = HUNTER_ELEVATOR_SPEED;
+			if (dst->pos.y < src->pos.y) ptr->speed.y = ptr->speed.y;
 
-			if ((ptr->yspeed < 0.0f && ptr->y + ptr->cbox_height / 2.0f <= dst->y - dst->cbox_height / 2.0f) || (ptr->yspeed > 0.0f && ptr->y + ptr->cbox_height / 2.0f >= dst->y - dst->cbox_height / 2.0f)) {
+			if ((ptr->speed.y < 0.0f && ptr->pos.y + ptr->cbox.y <= dst->pos.y) || (ptr->speed.y > 0.0f && ptr->pos.y + ptr->cbox.y >= dst->pos.y)) {
 				data->state++;
 				data->rest_timer = tds_clock_get_point();
-				ptr->yspeed = 0.0f;
+				ptr->speed.y = 0;
 
 				/* lock the appropriate doors */
 
@@ -95,11 +95,11 @@ void obj_elevator_update(struct tds_object* ptr) {
 			for (int i = 0; i < exit_list.size; ++i) {
 				if (!target_exit) {
 					target_exit = exit_list.buffer[i];
-					target_dist = sqrt(pow(ptr->x - target_exit->x, 2) + pow(ptr->y - target_exit->y, 2));
+					target_dist = sqrt(pow(ptr->pos.x - target_exit->pos.x, 2) + pow(ptr->pos.y - target_exit->pos.y, 2));
 					continue;
 				}
 
-				float d = sqrt(pow(ptr->x - exit_list.buffer[i]->x, 2) + pow(ptr->y - exit_list.buffer[i]->y, 2));
+				float d = sqrt(pow(ptr->pos.x - exit_list.buffer[i]->pos.x, 2) + pow(ptr->pos.y - exit_list.buffer[i]->pos.y, 2));
 
 				if (d < target_dist) {
 					target_dist = d;
@@ -112,8 +112,7 @@ void obj_elevator_update(struct tds_object* ptr) {
 				return;
 			} 
 
-			data->player->x = target_exit->x;
-			data->player->y = target_exit->y;
+			data->player->pos = target_exit->pos;
 		}
 		break;
 	case HUNTER_ELEVATOR_STATE_IDLE:
@@ -167,8 +166,8 @@ void obj_elevator_msg(struct tds_object* ptr, struct tds_object* sender, int msg
 
 			/* place the elevator at the nearest stop and prepare the state */
 
-			float stop1_dist = sqrt(pow(ptr->x - data->stop1->x, 2) + pow(ptr->y - data->stop1->y, 2));
-			float stop2_dist = sqrt(pow(ptr->x - data->stop2->x, 2) + pow(ptr->y - data->stop2->y, 2));
+			float stop1_dist = sqrt(pow(ptr->pos.x - data->stop1->pos.x, 2) + pow(ptr->pos.y - data->stop1->pos.y, 2));
+			float stop2_dist = sqrt(pow(ptr->pos.x - data->stop2->pos.x, 2) + pow(ptr->pos.y - data->stop2->pos.y, 2));
 
 			data->at_stop1 = (stop1_dist < stop2_dist);
 
@@ -182,14 +181,14 @@ void obj_elevator_msg(struct tds_object* ptr, struct tds_object* sender, int msg
 			}
 
 			if (data->at_stop1) {
-				ptr->x = data->stop1->x;
-				ptr->y = data->stop1->y - data->stop1->cbox_height / 2.0f - ptr->cbox_height / 2.0f;
+				ptr->pos.x = data->stop1->pos.x;
+				ptr->pos.y = data->stop1->pos.y - ptr->cbox.y / 2;
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_LOCK_STOP, &data->index_stop2);
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_UNLOCK_STOP, &data->index_stop1);
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_STOP_SEQ, data->stop1);
 			} else {
-				ptr->x = data->stop2->x;
-				ptr->y = data->stop2->y - data->stop2->cbox_height / 2.0f - ptr->cbox_height / 2.0f;
+				ptr->pos.x = data->stop2->pos.x;
+				ptr->pos.y = data->stop2->pos.y - ptr->cbox.y / 2;
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_LOCK_STOP, &data->index_stop1);
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_UNLOCK_STOP, &data->index_stop2);
 				tds_engine_broadcast(tds_engine_global, MSG_ELEVATOR_STOP_SEQ, data->stop2);

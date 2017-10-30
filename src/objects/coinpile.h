@@ -9,7 +9,7 @@
 #define HUNTER_COINPILE_INDEX_SAVE 1
 
 #define HUNTER_COINPILE_DEFAULT_AMT 5
-#define HUNTER_COINPILE_SPEED 0.03
+#define HUNTER_COINPILE_SPEED 2
 #define HUNTER_COINPILE_ALPHA_DECAY 0.02
 #define HUNTER_COINPILE_TEXT_SPEED 0.03
 #define HUNTER_COINPILE_TEXT_ALPHA_DECAY 0.008
@@ -27,5 +27,6 @@ struct obj_coinpile_data {
 	int amt, save, picked;
 	struct tds_sound_source* src;
 	struct tds_font* font;
-	float text_a, text_y;
+	float text_a;
+	tds_bc text_y;
 };

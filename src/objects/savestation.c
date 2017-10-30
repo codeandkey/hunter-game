@@ -20,8 +20,8 @@ struct tds_object_type obj_savestation_type = {
 };
 
 void obj_savestation_init(struct tds_object* ptr) {
-	ptr->cbox_width = 1.0f;
-	ptr->cbox_height = 1.0f;
+	ptr->cbox.x = 16;
+	ptr->cbox.y = 16;
 
 	int* id = tds_object_get_ipart(ptr, HUNTER_SAVESTATION_INDEX_ID);
 	if (id) {
@@ -58,7 +58,7 @@ void obj_savestation_draw(struct tds_object* ptr) {
 
 	float glow_mod = ((sinf(data->dt_glow) + 1.0f) / 2.0f) * 0.01f;
 
-	struct tds_render_light lt_glow = {TDS_RENDER_LIGHT_POINT, ptr->x, ptr->y, 0.0f, 0.2f + glow_mod, 0.4f + glow_mod * 2.0f, 10.0f, NULL};
+	struct tds_render_light lt_glow = {TDS_RENDER_LIGHT_POINT, ptr->pos, 0.0f, 0.2f + glow_mod, 0.4f + glow_mod * 2.0f, 10.0f, NULL};
 	tds_render_submit_light(tds_engine_global->render_handle, lt_glow);
 }
 

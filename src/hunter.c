@@ -82,44 +82,41 @@ void _load_sounds(struct tds_sound_cache* sndc_handle) {
 }
 
 void _load_sprites(struct tds_sprite_cache* sc_handle, struct tds_texture_cache* tc_handle) {
-	tds_sprite_cache_add(sc_handle, "spr_editor_cursor", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/editor_cursor.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_editor_selector", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/editor_selector.png", 64, 32, 0, 0), 2.0f, 1.0f, 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_idle_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_idle_right_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_idle_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_idle_left_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_look_up_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_look_up_right_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_look_up_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_look_up_left_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_hurt_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_hurt_right_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_hurt_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_hurt_left_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_walk_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_walk_right_32x32.png", 32, 32, 0, 0), 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_walk_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_walk_left_32x32.png", 32, 32, 0, 0), 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_jump_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_jump_right_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_jump_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_jump_left_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_fall_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_fall_right_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_fall_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_fall_left_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_ladder_idle", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_ladder_idle_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_ladder_up", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_ladder_up_32x32.png", 32, 32, 0, 0), 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_player_ladder_down", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_ladder_down_32x32.png", 32, 32, 0, 0), 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_ghost_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ghost_left_32x32.png", 32, 32, 0, 0), 150.0f));
+	tds_sprite_cache_add(sc_handle, "spr_ghost_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ghost_right_32x32.png", 32, 32, 0, 0), 150.0f));
+	tds_sprite_cache_add(sc_handle, "spr_savestation", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/save_station_64x64.png", 64, 64, 0, 0), 150.0f));
+	tds_sprite_cache_add(sc_handle, "spr_tree", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_tree_64x64.png", 64, 64, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_bullet_bolt", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/bullet_bolt_32x2.png", 32, 2, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_torch_unlit", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_torch_unlit_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_torch_lit", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_torch_lit_32x32.png", 32, 32, 0, 0), 50.0f));
+	tds_sprite_cache_add(sc_handle, "spr_randomdude", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/randomdude_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_sign", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_sign_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_idle", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_idle_64x64.png", 64, 64, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_move", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_up_64x64.png", 64, 64, 0, 0), 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_door_opened", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_opened_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_door_closed", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_closed_32x32.png", 32, 32, 0, 0), 0.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_door_open", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_open_32x32.png", 32, 32, 0, 0), 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_elevator_door_close", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_close_32x32.png", 32, 32, 0, 0), 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_coinpile", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_coinpile_16x16.png", 16, 16, 0, 0), 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_button_off", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_button_off_32x32.png", 32, 32, 0, 0), 100.0f));
+	tds_sprite_cache_add(sc_handle, "spr_button_on", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_button_on_32x32.png", 32, 32, 0, 0), 100.0f));
 
-	tds_sprite_cache_add(sc_handle, "spr_player_idle_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_idle_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_idle_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_idle_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_look_up_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_look_up_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_look_up_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_look_up_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_hurt_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_hurt_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_hurt_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_hurt_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_walk_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_walk_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_walk_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_walk_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_jump_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_jump_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_jump_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_jump_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_fall_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_fall_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_fall_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_fall_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_ladder_idle", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_ladder_idle_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_ladder_up", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_ladder_up_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_player_ladder_down", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/player_ladder_down_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_ghost_left", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ghost_left_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
-	tds_sprite_cache_add(sc_handle, "spr_ghost_right", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/ghost_right_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 150.0f));
-	tds_sprite_cache_add(sc_handle, "spr_savestation", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/save_station_64x64.png", 64, 64, 0, 0), 2.0f, 2.0f, 150.0f));
-	tds_sprite_cache_add(sc_handle, "spr_tree", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_tree_64x64.png", 64, 64, 0, 0), 2.0f, 2.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_bullet_bolt", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/bullet_bolt_32x2.png", 32, 2, 0, 0), 1.0f, 0.0625f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_torch_unlit", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_torch_unlit_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_torch_lit", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_torch_lit_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 50.0f));
-	tds_sprite_cache_add(sc_handle, "spr_randomdude", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/randomdude_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_sign", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_sign_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_elevator_idle", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_idle_64x64.png", 64, 64, 0, 0), 2.0f, 2.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_elevator_move", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_up_64x64.png", 64, 64, 0, 0), 2.0f, 2.0f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_elevator_door_opened", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_opened_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_elevator_door_closed", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_closed_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 0.0f));
-	tds_sprite_cache_add(sc_handle, "spr_elevator_door_open", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_open_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_elevator_door_close", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/elevator_door_close_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_coinpile", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_coinpile_16x16.png", 16, 16, 0, 0), 0.5f, 0.5f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_button_off", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_button_off_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
-	tds_sprite_cache_add(sc_handle, "spr_button_on", tds_sprite_create(tds_texture_cache_get(tc_handle, "res/sprites/scene_button_on_32x32.png", 32, 32, 0, 0), 1.0f, 1.0f, 100.0f));
-
-	tds_logf(TDS_LOG_MESSAGE, "Loading sprites.\n");
+	tds_logf(TDS_LOG_MESSAGE, "Loaded sprites.\n");
 }
 
 void _load_object_types(struct tds_object_type_cache* otc_handle) {
@@ -130,7 +127,6 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "world_night", &obj_world_night_type);
 	tds_object_type_cache_add(otc_handle, "world_mistlake", &obj_world_mistlake_type);
 	tds_object_type_cache_add(otc_handle, "obj_player", &obj_player_type);
-	tds_object_type_cache_add(otc_handle, "obj_ghost", &obj_ghost_type);
 	tds_object_type_cache_add(otc_handle, "obj_savestation", &obj_savestation_type);
 	tds_object_type_cache_add(otc_handle, "obj_light_dir", &obj_light_dir_type);
 	tds_object_type_cache_add(otc_handle, "obj_light_point", &obj_light_point_type);
@@ -140,7 +136,6 @@ void _load_object_types(struct tds_object_type_cache* otc_handle) {
 	tds_object_type_cache_add(otc_handle, "obj_fade_transition", &obj_fade_transition_type);
 	tds_object_type_cache_add(otc_handle, "obj_fade_in", &obj_fade_in_type);
 	tds_object_type_cache_add(otc_handle, "obj_spawn", &obj_spawn_type);
-	tds_object_type_cache_add(otc_handle, "obj_bullet_bolt", &obj_bullet_bolt_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_soundoff", &obj_trigger_soundoff_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_soundon", &obj_trigger_soundon_type);
 	tds_object_type_cache_add(otc_handle, "obj_trigger_dialog", &obj_trigger_dialog_type);

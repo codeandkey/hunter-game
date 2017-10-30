@@ -30,7 +30,7 @@ void obj_elevator_button_init(struct tds_object* ptr) {
 
 	data->src = tds_sound_source_create();
 	tds_sound_source_load_buffer(data->src, tds_sound_cache_get(tds_engine_global->sndc_handle, "fx_button"));
-	tds_sound_source_set_pos(data->src, ptr->x, ptr->y);
+	tds_sound_source_set_pos(data->src, ptr->pos.x / 16.0f, ptr->pos.y / 16.0f);
 }
 
 void obj_elevator_button_destroy(struct tds_object* ptr) {

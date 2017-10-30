@@ -59,7 +59,7 @@ void mod_bgm_update(void* data) {
 			break;
 		}
 
-		tds_sound_source_set_pos(cur_entry->snd_src, cam_handle->x, cam_handle->y);
+		tds_sound_source_set_pos(cur_entry->snd_src, cam_handle->pos.x / 16.0f, cam_handle->pos.y / 16.0f);
 		tds_sound_source_set_vel(cur_entry->snd_src, 0.0f, 0.0f);
 		tds_sound_source_set_vol(cur_entry->snd_src, cur_entry->volume);
 		tds_sound_source_set_loop(cur_entry->snd_src, cur_entry->loop);

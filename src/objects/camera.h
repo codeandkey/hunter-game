@@ -1,10 +1,10 @@
 #pragma once
 #include <tds/object.h>
 
-#define TDS_OBJ_CAMERA_POS_FACTOR 4.0f
-#define TDS_OBJ_CAMERA_SIZE_FACTOR 2.0f
+#define TDS_OBJ_CAMERA_POS_FACTOR 2
+#define TDS_OBJ_CAMERA_SIZE_FACTOR 1
 
-#define TDS_OBJ_CAMERA_SIZE_DIV 3.0f
+#define TDS_OBJ_CAMERA_SIZE_DIV 1
 
 struct tds_object_type obj_camera_type;
 

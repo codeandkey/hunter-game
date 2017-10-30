@@ -104,7 +104,7 @@ void obj_text_draw(struct tds_object* ptr) {
 	if (data->fade == 0.0f) {
 		fade_factor = 1.0f;
 	} else if (data->player) {
-		float dist = sqrt(pow(data->player->x - ptr->x, 2) + pow(data->player->y - ptr->y, 2));
+		float dist = sqrt(pow(data->player->pos.x - ptr->pos.x, 2) + pow(data->player->pos.y - ptr->pos.y, 2));
 		fade_factor = 1.0f - (dist / data->fade);
 
 		if (fade_factor < 0.0f) {
@@ -122,7 +122,7 @@ void obj_text_draw(struct tds_object* ptr) {
 		tds_render_flat_set_mode(flat, TDS_RENDER_COORD_WORLDSPACE);
 		tds_render_flat_set_color(flat, data->r, data->g, data->b, data->a * fade_factor);
 
-		tds_render_flat_text(flat, data->font, data->str->data, data->str->len, ptr->x, ptr->y, TDS_RENDER_LALIGN, data->str->formats);
+		tds_render_flat_text(flat, data->font, data->str->data, data->str->len, ptr->pos.x / 16.0f, ptr->pos.y / 16.0f, TDS_RENDER_LALIGN, data->str->formats);
 	}
 }
 

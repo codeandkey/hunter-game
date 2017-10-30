@@ -51,10 +51,10 @@ void effect_rain_free(struct tds_effect_particle_state* state) {
 void effect_rain_update(struct tds_effect_particle_state* state) {
 	struct effect_rain_data* data = (struct effect_rain_data*) state->data;
 
-	float camera_width = tds_engine_global->camera_handle->width;
-	float camera_height = tds_engine_global->camera_handle->height;
-	float camera_left = tds_engine_global->camera_handle->x - camera_width / 2.0f;
-	float camera_bottom = tds_engine_global->camera_handle->y - camera_height / 2.0f;
+	float camera_width = tds_engine_global->camera_handle->dim.x / 16.0f;
+	float camera_height = tds_engine_global->camera_handle->dim.y / 16.0f;
+	float camera_left = tds_engine_global->camera_handle->pos.x / 16.0f - camera_width / 2.0f;;
+	float camera_bottom = tds_engine_global->camera_handle->pos.y / 16.0f - camera_height / 2.0f;
 
 	const int precision = 1000;
 

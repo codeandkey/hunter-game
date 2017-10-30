@@ -58,11 +58,11 @@ void obj_elevator_stop_update(struct tds_object* ptr) {
 		for (int i = 0; i < exit_list.size; ++i) {
 			if (!target_exit) {
 				target_exit = exit_list.buffer[i];
-				target_dist = sqrt(pow(ptr->x - target_exit->x, 2) + pow(ptr->y - target_exit->y, 2));
+				target_dist = sqrt(pow(ptr->pos.x - target_exit->pos.x, 2) + pow(ptr->pos.y - target_exit->pos.y, 2));
 				continue;
 			}
 
-			float d = sqrt(pow(ptr->x - exit_list.buffer[i]->x, 2) + pow(ptr->y - exit_list.buffer[i]->y, 2));
+			float d = sqrt(pow(ptr->pos.x - exit_list.buffer[i]->pos.x, 2) + pow(ptr->pos.y - exit_list.buffer[i]->pos.y, 2));
 
 			if (d < target_dist) {
 				target_dist = d;

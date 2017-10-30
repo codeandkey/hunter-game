@@ -46,7 +46,7 @@ void obj_coinpile_init(struct tds_object* ptr) {
 	}
 
 	data->src = tds_sound_source_create();
-	tds_sound_source_set_pos(data->src, ptr->x, ptr->y);
+	tds_sound_source_set_pos(data->src, ptr->pos.x / 16.0f, ptr->pos.y / 16.0f);
 	tds_sound_source_load_buffer(data->src, tds_sound_cache_get(tds_engine_global->sndc_handle, "fx_coin"));
 
 	data->font = tds_font_cache_get(tds_engine_global->fc_handle, "font_tiny");
@@ -62,7 +62,7 @@ void obj_coinpile_update(struct tds_object* ptr) {
 	struct obj_coinpile_data* data = (struct obj_coinpile_data*) ptr->object_data;
 
 	if (data->picked) {
-		ptr->yspeed = HUNTER_COINPILE_SPEED;
+		ptr->speed.y = HUNTER_COINPILE_SPEED;
 		data->text_y += HUNTER_COINPILE_TEXT_SPEED;
 		ptr->a -= HUNTER_COINPILE_ALPHA_DECAY;
 		data->text_a -= HUNTER_COINPILE_TEXT_ALPHA_DECAY;
@@ -87,7 +87,7 @@ void obj_coinpile_draw(struct tds_object* ptr) {
 	if (data->picked) {
 		tds_render_flat_set_mode(tds_engine_global->render_flat_overlay_handle, TDS_RENDER_COORD_WORLDSPACE);
 		tds_render_flat_set_color(tds_engine_global->render_flat_overlay_handle, 1.0f, 0.9f, 0.0f, data->text_a);
-		tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, data->font, buf, strlen(buf), ptr->x, data->text_y, TDS_RENDER_CALIGN, NULL);
+		tds_render_flat_text(tds_engine_global->render_flat_overlay_handle, data->font, buf, strlen(buf), ptr->pos.x / 16.0f, data->text_y / 16.0f, TDS_RENDER_CALIGN, NULL);
 	}
 }
 
@@ -98,7 +98,7 @@ void obj_coinpile_msg(struct tds_object* ptr, struct tds_object* sender, int msg
 	case MSG_PLAYER_ACTION:
 		if (data->player && !data->picked && tds_collision_get_overlap(ptr, data->player)) {
 			data->picked = 1;
-			data->text_y = ptr->y;
+			data->text_y = ptr->pos.y;
 			tds_sound_source_play(data->src);
 		}
 		break;

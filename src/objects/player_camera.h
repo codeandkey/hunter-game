@@ -2,7 +2,7 @@
 #include <tds/object.h>
 #include <tds/clock.h>
 
-#define HUNTER_PLAYER_CAMERA_LOOKUP 4.0f
+#define HUNTER_PLAYER_CAMERA_LOOKUP 64
 #define HUNTER_PLAYER_CAMERA_ANIM_FACTOR 32.0f;
 #define HUNTER_PLAYER_CAMERA_ANIM_RET_FACTOR 16.0f;
 

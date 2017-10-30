@@ -27,14 +27,13 @@ struct tds_object_type obj_player_type = {
 void obj_player_init(struct tds_object* ptr) {
 	struct obj_player_data* data = (struct obj_player_data*) ptr->object_data;
 
-	struct tds_object* pc = tds_object_create(&obj_player_camera_type, ptr->hmgr, ptr->smgr, ptr->x, ptr->y, 0.0f, NULL);
+	struct tds_object* pc = tds_object_create(&obj_player_camera_type, ptr->hmgr, ptr->smgr, ptr->pos, NULL);
 
-	ptr->cbox_width = 0.3f;
-	ptr->cbox_height = 0.9f;
+	ptr->cbox.x = 5;
+	ptr->cbox.y = 15;
 
 	data->direction = 1;
-	data->spawn_x = ptr->x;
-	data->spawn_y = ptr->y;
+	data->spawn = ptr->pos;
 	data->input_enabled = 1;
 
 	data->state_hit = data->state_hit_hurt = 0;
@@ -61,8 +60,8 @@ void obj_player_update(struct tds_object* ptr) {
 
 	float movement_axis = tds_input_map_get_axis(tds_engine_global->input_map_handle, move_key_low, move_key_high, move_axis);
 
-	ptr->cbox_width = 0.3f;
-	ptr->cbox_height = 0.9f;
+	ptr->cbox.x = 5;
+	ptr->cbox.y = 15;
 
 	if (movement_axis <= -HUNTER_PLAYER_MOVE_DEADZONE) {
 		data->movement_direction = -1;
@@ -82,50 +81,47 @@ void obj_player_update(struct tds_object* ptr) {
 
 	/* We will first change the player's x and y speeds as necessary. */
 	if (!data->state_hit_hurt) {
-		ptr->xspeed += data->movement_direction * HUNTER_PLAYER_MOVE_ACCEL;
+		ptr->speed.x += data->movement_direction * HUNTER_PLAYER_MOVE_ACCEL;
 	}
 
-	if (ptr->xspeed < -HUNTER_PLAYER_MOVE_MAXSPEED) {
-		ptr->xspeed = -HUNTER_PLAYER_MOVE_MAXSPEED;
+	if (ptr->speed.x < -HUNTER_PLAYER_MOVE_MAXSPEED) {
+		ptr->speed.x = -HUNTER_PLAYER_MOVE_MAXSPEED;
 	}
 
-	if (ptr->xspeed > HUNTER_PLAYER_MOVE_MAXSPEED) {
-		ptr->xspeed = HUNTER_PLAYER_MOVE_MAXSPEED;
+	if (ptr->speed.x > HUNTER_PLAYER_MOVE_MAXSPEED) {
+		ptr->speed.x = HUNTER_PLAYER_MOVE_MAXSPEED;
 	}
 
 	if (!data->movement_direction && !data->state_hit_hurt) {
-		ptr->xspeed /= HUNTER_PLAYER_MOVE_DECEL;
+		ptr->speed.x /= HUNTER_PLAYER_MOVE_DECEL;
 	}
 
 	if (!data->on_ladder) {
 		/*  to account for ladders, we just set the player's velocities according to the input and just let collisions do their thing */
 
-		ptr->yspeed += HUNTER_PLAYER_GRAVITY;
+		ptr->speed.y += HUNTER_PLAYER_GRAVITY;
 	} else {
 		if (tds_input_map_get_key(tds_engine_global->input_map_handle, move_key_down, 0)) {
-			ptr->yspeed = -HUNTER_PLAYER_LADDER_SPEED;
+			ptr->speed.y = -HUNTER_PLAYER_LADDER_SPEED;
 		} else if (tds_input_map_get_key(tds_engine_global->input_map_handle, key_lookup, 0)) {
-			ptr->yspeed = HUNTER_PLAYER_LADDER_SPEED;
+			ptr->speed.y = HUNTER_PLAYER_LADDER_SPEED;
 		} else {
-			ptr->yspeed = 0.0f;
+			ptr->speed.y = 0;
 		}
 
-		ptr->xspeed = 0.0f;
+		ptr->speed.x = 0;
 	}
 
 	/* We will offset the player's position to test collisions. */
 
-	float orig_x = ptr->x, orig_y = ptr->y;
+	tds_bcp orig = ptr->pos;
 
-	ptr->x = orig_x + ptr->xspeed;
-	ptr->y = orig_y;
-
-	float cx_x = 0.0f, cx_y = 0.0f, cx_w = 0.0f, cx_h = 0.0f;
-	float cy_x = 0.0f, cy_y = 0.0f, cy_w = 0.0f, cy_h = 0.0f;
+	ptr->pos = orig;
+	ptr->pos.x += ptr->speed.x;
 
 	int slopes = TDS_BLOCK_TYPE_RTSLOPE | TDS_BLOCK_TYPE_LTSLOPE;
 
-	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &cx_x, &cx_y, &cx_w, &cx_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
+	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		data->collision_x = 1;
 	}
 
@@ -138,129 +134,40 @@ void obj_player_update(struct tds_object* ptr) {
 		}
 	}
 
-	ptr->x = orig_x;
-	ptr->y = orig_y + ptr->yspeed;
+	ptr->pos = orig;
+	ptr->pos.y += ptr->speed.y;
 
-	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &cy_x, &cy_y, &cy_w, &cy_h, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
+	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		data->collision_y = 1;
 
-		data->can_jump = (ptr->yspeed < 0.0f);
+		data->can_jump = (ptr->speed.y < 0);
 	} else {
 		data->can_jump = 0;
 	}
 
-	ptr->x = orig_x + ptr->xspeed;
-	ptr->y = orig_y + ptr->yspeed;
+	ptr->pos = orig;
+	ptr->pos.x += ptr->speed.x;
+	ptr->pos.y += ptr->speed.y;
 
-	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, NULL, NULL, NULL, NULL, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
+	if (tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, TDS_BLOCK_TYPE_SOLID, TDS_BLOCK_TYPE_SOLID, slopes)) {
 		data->collision_xy = 1;
 	}
 
-	float slope_x, slope_y, slope_w, slope_h;
-	int slope_flags = 0;
 	data->should_correct = 0;
 	data->collision_slope = 0;
 
-	if ((slope_flags = tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0))) {
-		/* Potential slope intersection. We don't ect until we're sure. */
-
-		float slope_l = slope_x - slope_w / 2.0f, slope_r = slope_l + slope_w, slope_b = slope_y - slope_h / 2.0f, slope_t = slope_b + slope_h;
-
-		data->csx = slope_x;
-		data->csy = slope_y;
-		data->csw = slope_w;
-		data->csh = slope_h;
-
-		if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE && ptr->x - ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x - ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
-			float ty = (1.0f - (((ptr->x - ptr->cbox_width / 2.0f) - slope_l) / slope_w)) * slope_h + slope_b;
-
-			ty = fmin(ty, slope_y + slope_h / 2.0f);
-			data->should_correct = ty;
-
-			if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
-				if (ptr->xspeed < 0) {
-					ptr->yspeed = -ptr->xspeed;
-					data->collision_slope = 1;
-				} else {
-					ptr->yspeed = 0.0f;
-				}
-
-				data->can_jump = 1;
-			}
-		}
-
-		if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE && ptr->x + ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x + ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
-			float ty = (((ptr->x + ptr->cbox_width / 2.0f) - slope_l) / slope_w) * slope_h + slope_b;
-
-			ty = fmin(ty, slope_y + slope_h / 2.0f);
-
-			data->should_correct = ty;
-
-			if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
-				if (ptr->xspeed > 0) {
-					ptr->yspeed = ptr->xspeed;
-					data->collision_slope = 1;
-				} else {
-					ptr->yspeed = 0.0f;
-				}
-
-				data->can_jump = 1;
-			}
-		}
-	}
-
-	/* now, test for potential early slope collisions and allow the player to jump before he normally would */
-	if (!data->can_jump) {
-		/* test if we're falling towards a slope */
-		ptr->y -= HUNTER_PLAYER_EARLY_SLOPE_REJUMP;
-
-		if ((slope_flags = tds_world_get_overlap_fast(tds_engine_get_foreground_world(tds_engine_global), ptr, &slope_x, &slope_y, &slope_w, &slope_h, 0, slopes, 0))) {
-			/* Potential slope intersection. We don't ect until we're sure. */
-	
-			float slope_l = slope_x - slope_w / 2.0f, slope_r = slope_l + slope_w, slope_b = slope_y - slope_h / 2.0f, slope_t = slope_b + slope_h;
-	
-			data->csx = slope_x;
-			data->csy = slope_y;
-			data->csw = slope_w;
-			data->csh = slope_h;
-
-			data->can_jump = 1;
-	
-			if (slope_flags & TDS_BLOCK_TYPE_RTSLOPE && ptr->x - ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x - ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
-				float ty = (1.0f - (((ptr->x - ptr->cbox_width / 2.0f) - slope_l) / slope_w)) * slope_h + slope_b;
-	
-				ty = fmin(ty, slope_y + slope_h / 2.0f);
-	
-				if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
-					data->can_jump = 1;
-				}
-			}
-	
-			if (slope_flags & TDS_BLOCK_TYPE_LTSLOPE && ptr->x + ptr->cbox_width / 2.0f >= slope_l - HUNTER_PLAYER_SLOPE_PADDING && ptr->x + ptr->cbox_width / 2.0f <= slope_r + HUNTER_PLAYER_SLOPE_PADDING && ptr->y - ptr->cbox_height / 2.0f >= slope_y - slope_h / 2.0f - HUNTER_PLAYER_SLOPE_PADDING) {
-				float ty = (((ptr->x + ptr->cbox_width / 2.0f) - slope_l) / slope_w) * slope_h + slope_b;
-	
-				ty = fmin(ty, slope_y + slope_h / 2.0f);
-	
-				if (ptr->y - ptr->cbox_height / 2.0f <= ty) {
-					data->can_jump = 1;
-				}
-			}
-		}
-	}
-
-	ptr->x = orig_x;
-	ptr->y = orig_y;
+	ptr->pos = orig;
 
 	if (data->collision_x) {
-		ptr->xspeed = 0.0f;
+		ptr->speed.x = 0;
 	}
 
 	if (data->collision_y && !data->collision_slope) {
-		ptr->yspeed = 0.0f;
+		ptr->speed.y = 0;
 	}
 
 	if (data->collision_xy && !data->collision_x && !data->collision_y) {
-		ptr->xspeed = ptr->yspeed = 0.0f;
+		ptr->speed.x = ptr->speed.y = 0;
 	}
 
 	/* State transfers : We act on the player hit state. */
@@ -298,14 +205,14 @@ void obj_player_update(struct tds_object* ptr) {
 
 	if (data->in_elevator) {
 		data->can_jump = 1;
-		ptr->xspeed = 0.0f;
-		ptr->yspeed = 0.0f;
+		ptr->speed.x = 0;
+		ptr->speed.y = 0;
 	}
 
 	if (data->on_ladder) {
 		/* make sure that the player is on the ladder and that the player can jump off */
 
-		ptr->x = data->on_ladder->x;
+		ptr->pos.x = data->on_ladder->pos.x;
 		data->can_jump = 1;
 	}
 }
@@ -317,8 +224,7 @@ void obj_player_draw(struct tds_object* ptr) {
 	/* submit light data early so we can bail from state switching if we want to */
 
 	lt.type = TDS_RENDER_LIGHT_POINT;
-	lt.x = ptr->x;
-	lt.y = ptr->y;
+	lt.pos = ptr->pos;
 	lt.r = 0.01f;
 	lt.g = 0.03f;
 	lt.b = 0.01f;
@@ -340,9 +246,9 @@ void obj_player_draw(struct tds_object* ptr) {
 	}
 
 	if (data->on_ladder) {
-		if (ptr->yspeed > 0.0f) {
+		if (ptr->speed.y > 0) {
 			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_ladder_up"));
-		} else if (ptr->yspeed < 0.0f) {
+		} else if (ptr->speed.y < 0) {
 			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_ladder_down"));
 		} else {
 			tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_ladder_idle"));
@@ -375,15 +281,15 @@ void obj_player_draw(struct tds_object* ptr) {
 		}
 	} else {
 		if (data->direction > 0) {
-			if (ptr->yspeed > HUNTER_PLAYER_MIN_JUMP_ANIM_YSPEED) {
+			if (ptr->speed.y > HUNTER_PLAYER_MIN_JUMP_ANIM_YSPEED) {
 					tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_jump_right"));
-			} else if (ptr->yspeed < HUNTER_PLAYER_MAX_FALL_ANIM_YSPEED) {
+			} else if (ptr->speed.y < HUNTER_PLAYER_MAX_FALL_ANIM_YSPEED) {
 					tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_fall_right"));
 			}
 		} else {
-			if (ptr->yspeed > HUNTER_PLAYER_MIN_JUMP_ANIM_YSPEED) {
+			if (ptr->speed.y > HUNTER_PLAYER_MIN_JUMP_ANIM_YSPEED) {
 					tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_jump_left"));
-			} else if (ptr->yspeed < HUNTER_PLAYER_MAX_FALL_ANIM_YSPEED) {
+			} else if (ptr->speed.y < HUNTER_PLAYER_MAX_FALL_ANIM_YSPEED) {
 					tds_object_set_sprite(ptr, tds_sprite_cache_get(tds_engine_global->sc_handle, "spr_player_fall_left"));
 			}
 		}
@@ -416,15 +322,14 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 		if (!data->state_hit) {
 			data->state_hit = data->state_hit_hurt = 1;
 			data->timer_hit_recover = tds_clock_get_point();
-			ptr->xspeed = (data->direction > 0) ? -HUNTER_PLAYER_HIT_VEL : HUNTER_PLAYER_HIT_VEL;
-			ptr->yspeed = HUNTER_PLAYER_HIT_VEL;
+			ptr->speed.x = (data->direction > 0) ? -HUNTER_PLAYER_HIT_VEL : HUNTER_PLAYER_HIT_VEL;
+			ptr->speed.y = HUNTER_PLAYER_HIT_VEL;
 			data->can_jump = 0;
 		}
 		break;
 	case MSG_SAVESTATION_START:
 		tds_logf(TDS_LOG_MESSAGE, "Received savestation ack, spawning in\n");
-		ptr->x = data->spawn_x = msg_station->ptr->x;
-		ptr->y = data->spawn_y = msg_station->ptr->y;
+		ptr->pos = data->spawn = msg_station->ptr->pos;
 		data->direction = msg_station->direction;
 		break;
 	case TDS_MSG_KEY_PRESSED:
@@ -434,7 +339,7 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 				data->on_ladder = NULL;
 				data->can_jump = 0;
 			} else {
-				ptr->yspeed = HUNTER_PLAYER_JUMP;
+				ptr->speed.y = HUNTER_PLAYER_JUMP;
 				data->can_jump = 0;
 			}
 		}
@@ -442,10 +347,8 @@ void obj_player_msg(struct tds_object* ptr, struct tds_object* sender, int msg, 
 			tds_engine_broadcast(tds_engine_global, MSG_DIALOG_KP, NULL);
 		}
 		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_RESET) && data->input_enabled) {
-			ptr->x = data->spawn_x;
-			ptr->y = data->spawn_y;
-			ptr->xspeed = 0.0f;
-			ptr->yspeed = 0.0f;
+			ptr->pos = data->spawn;
+			ptr->speed = tds_vec2_zero;
 		}
 		if (key == tds_key_map_get(tds_engine_global->key_map_handle, TDS_GAME_INPUT_MOVE_UP) && !data->in_elevator && !data->on_ladder) {
 			tds_engine_broadcast(tds_engine_global, MSG_PLAYER_ACTION, ptr);
