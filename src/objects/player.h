@@ -4,7 +4,7 @@
 
 #define HUNTER_PLAYER_MOVE_DEADZONE 0.5f /* input controller deadzone (not really used) */
 #define HUNTER_PLAYER_MOVE_MAXSPEED 0.030f /* maximum movement xspeed */
-#define HUNTER_PLAYER_MOVE_ACCEL 0.001f /* delta xspeed for acceleration */
+#define HUNTER_PLAYER_MOVE_ACCEL 0.01f /* delta xspeed for acceleration */
 #define HUNTER_PLAYER_MOVE_DECEL 1.1f /* asymptotic deceleration division constant "(new speed) = (old speed) / (decel cst)" */
 #define HUNTER_PLAYER_GRAVITY -0.003f /* delta yspeed for gravity */
 #define HUNTER_PLAYER_JUMP 0.1f /* immediate jump yspeed */

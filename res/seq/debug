@@ -5,10 +5,14 @@
 :player_tree:1:res/sprites/scene_tree_64x64.png: :
 :player_tree:2:res/sprites/portrait_player_128x128.png: :
 @random_dude
-:abyss_dude:0:res/sprites/randomdude_32x32.png: :
+:abyss_dude:0:res/sprites/portrait_randomdude_128x128.png: :
 :abyss_dude:1:res/sprites/portrait_player_128x128.png: :
-:abyss_dude:2:res/sprites/randomdude_32x32.png: :
+:abyss_dude:2:res/sprites/portrait_randomdude_128x128.png: :
 :abyss_dude:3:res/sprites/portrait_player_128x128.png: :
+:abyss_dude:4:res/sprites/portrait_randomdude_128x128.png: :
+:abyss_dude:5:res/sprites/portrait_player_128x128.png: :
+:abyss_dude:6:res/sprites/portrait_randomdude_128x128.png: :
+:abyss_dude:7:res/sprites/portrait_player_128x128.png: :
 @sign_1
 :sign_1:0:res/sprites/scene_sign_32x32.png: :
 :sign_1:1:res/sprites/scene_sign_32x32.png: :
@@ -42,3 +46,4 @@
 :secret_randomdude:0:res/sprites/randomdude_32x32.png: :
 :secret_randomdude:1:res/sprites/randomdude_32x32.png: :
 :secret_randomdude:2:res/sprites/randomdude_32x32.png: :
+
